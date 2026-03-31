@@ -4,6 +4,11 @@
 - The homepage uses a sticky `1000vh` scroll track with a single pinned hero section.
 - From `0` to roughly `20%` scroll progress, the orbit completes one full rotation while the 3D tilt relaxes to flat.
 - At `20%` scroll progress, the large zoom phase begins and the bottom case-study overlay fades in.
+- On the live site at `1512x878`, the post-threshold zoom is already assertive:
+  around `22%` progress the dominant bubble is roughly `135px`,
+  around `34%` it is roughly `202px`,
+  around `58%` it is roughly `333px`,
+  and around `82%` it is roughly `419px`.
 - The center headline is only visible in the early phase and is animated off once scroll passes roughly `15%`.
 - After the zoom threshold, active case studies advance through scroll slots while the circle field remains strictly scroll-driven.
 - The homepage hero should not use hysteresis once the intro settles; the same scroll position should resolve to the same orbit state whether scrolling down or back up.
@@ -23,7 +28,7 @@
 - Clicking a circle fades the source bubble out immediately, then expands it in two steps:
 - Step 1: bubble grows toward a centered rounded rectangle over `0.5s`.
 - Step 2: it expands to the work-page hero frame over `0.6s`.
-- Route navigation happens after the second step completes.
+- The live handoff reaches the full-frame hero bounds before the route flips; at `1512x878` the carried image is effectively in hero position by `~1000ms` and the route changes shortly after, around `~1250ms`.
 
 ## Other Notes
 - Theme can switch between light and dark.

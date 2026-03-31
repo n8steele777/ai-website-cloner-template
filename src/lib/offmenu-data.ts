@@ -14,7 +14,8 @@ export const offMenuHeroWords = [
   "a",
   "design",
   "studio",
-  "shapinghow",
+  "shaping",
+  "how",
   "brands",
   "look,",
   "move,",
@@ -24,7 +25,7 @@ export const offMenuHeroWords = [
 ];
 
 export const offMenuNavigationLinks: NavLink[] = [
-  { label: "Work", href: "/", current: true },
+  { label: "Work", href: "/work", current: true },
   { label: "About", href: "/about" },
   { label: "Services", href: "/services", disabled: true },
   { label: "Writing", href: "/blog", disabled: true },
@@ -32,7 +33,7 @@ export const offMenuNavigationLinks: NavLink[] = [
 ];
 
 export const offMenuWorkNavigationLinks: NavLink[] = [
-  { label: "Work", href: "/", current: true },
+  { label: "Work", href: "/work", current: true },
   { label: "Services", href: "/services", disabled: true },
   { label: "Approach", href: "/approach", disabled: true },
   { label: "Writing", href: "/blog", disabled: true },
@@ -177,6 +178,13 @@ function formatCategory(category: string) {
   return parts.join(" / ");
 }
 
+function parseScopeItems(category: string) {
+  return category
+    .split(/\s{2,}|\/|,|\n|•/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 const csvPath = path.join(process.cwd(), "data", "Works.csv");
 const csvText = fs.readFileSync(csvPath, "utf8");
 const csvRows = parseCsv(csvText);
@@ -217,6 +225,7 @@ const allWorkProjectsInternal: WorkProjectDetail[] = worksRows.map((row, index, 
   const creditsNames = htmlToList(row["Credits"]);
   const introduction = htmlToText(row["Content"]);
   const summary = row["SEO"] ? decodeHtmlEntities(row["SEO"]).trim() : excerpt(introduction);
+  const scopeItems = parseScopeItems(row["Category"]);
   const nextOne = rows[(index + 1) % rows.length]?.["Slug"];
   const nextTwo = rows[(index + 2) % rows.length]?.["Slug"];
 
@@ -227,6 +236,7 @@ const allWorkProjectsInternal: WorkProjectDetail[] = worksRows.map((row, index, 
     heroImageDark: row["Main Image"] || row["Hover Image (footer)"],
     introduction,
     summary,
+    scopeItems,
     details: [
       { label: "Category", value: row["Category"] || "Work" },
       { label: "Studio", value: "Studio Finity" },

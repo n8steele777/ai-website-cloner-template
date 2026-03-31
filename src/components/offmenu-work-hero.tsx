@@ -165,14 +165,14 @@ export function OffMenuWorkHero({
         />
       </div>
 
-      <div className="relative z-10 flex min-h-screen flex-col justify-end p-8 md:p-16">
+      <div className="relative z-10 flex min-h-screen flex-col justify-end p-8 md:px-16 md:pb-24 md:pt-16">
         <div className="text-white">
           <h1
             ref={titleRef}
-          className="mb-4 text-3xl font-medium text-white md:text-4xl"
-        >
-          {title}
-        </h1>
+            className="text-3xl font-medium text-white md:text-4xl"
+          >
+            {title}
+          </h1>
           {description ? (
             <p className="mt-5 max-w-md text-base leading-relaxed text-white/76 md:text-lg">
               {description}

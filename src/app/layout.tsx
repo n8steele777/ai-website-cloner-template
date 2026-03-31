@@ -3,20 +3,19 @@ import { CaseStudyTransitionProvider } from "@/components/case-study-transition-
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.offmenu.design"),
-  title: "Off Menu — AI-Native Studio for Agentic Interfaces",
+  metadataBase: new URL("http://localhost:3000"),
+  title: "Studio Finity",
   description:
-    "Product studio designing agentic interfaces. AI-accelerated exploration meets expert judgment to ship faster.",
-  authors: [{ name: "Off Menu", url: "https://www.offmenu.design" }],
-  creator: "Off Menu",
+    "Studio Finity is a design studio working across brand, digital, and visual storytelling.",
+  authors: [{ name: "Studio Finity" }],
+  creator: "Studio Finity",
   keywords: [
-    "AI product studio",
-    "product design",
-    "software development",
-    "agentic interfaces",
-    "AI-native design",
-    "UI/UX design",
-    "brand design",
+    "Studio Finity",
+    "design studio",
+    "brand identity",
+    "web design",
+    "digital experiences",
+    "visual storytelling",
   ],
   manifest: "/seo/manifest.webmanifest",
   icons: {
@@ -27,10 +26,10 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Off Menu — AI-Native Studio for Agentic Interfaces",
+    title: "Studio Finity",
     description:
-      "Product studio designing agentic interfaces. AI-accelerated exploration meets expert judgment to ship faster.",
-    siteName: "Off Menu",
+      "Studio Finity is a design studio working across brand, digital, and visual storytelling.",
+    siteName: "Studio Finity",
     locale: "en_US",
     type: "website",
     images: [
@@ -38,15 +37,15 @@ export const metadata: Metadata = {
         url: "/seo/opengraph.jpg",
         width: 1200,
         height: 630,
-        alt: "Off Menu",
+        alt: "Studio Finity",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Off Menu — AI-Native Studio for Agentic Interfaces",
+    title: "Studio Finity",
     description:
-      "Product studio designing agentic interfaces. AI-accelerated exploration meets expert judgment to ship faster.",
+      "Studio Finity is a design studio working across brand, digital, and visual storytelling.",
     images: ["/seo/opengraph.jpg"],
   },
 };

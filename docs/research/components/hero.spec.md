@@ -21,10 +21,11 @@
 - Headline words animate upward on mount
 - Orbit bubbles fade and scale in on mount
 - From `0` to roughly `20%` scroll progress, the orbit completes one full rotation while the tilt relaxes to flat
-- After `20%`, the hero enters a zoom phase and the dominant bubble is selected by scroll position
+- After `20%`, the hero enters a zoom phase immediately; the dominant bubble should already be visibly larger by `~22%` progress rather than easing in too late
 - Reverse scroll must be deterministic: the same scroll position should produce the same bubble layout in both directions
 - Prev/next buttons scroll the track to the relevant case-study slot
 - Bubble click starts the shared transition into the work page
+- The circle-to-work transition should hold the full-frame hero state briefly before route navigation instead of pushing the route mid-morph
 - Active title animates directionally from the bottom only after the zoom phase begins
 - Theme switch swaps light/dark thumbnails
 

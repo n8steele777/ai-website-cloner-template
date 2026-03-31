@@ -23,7 +23,7 @@ export function OffMenuWorkPlaceholder({
   return (
     <main className="offmenu-shell min-h-screen bg-background text-foreground">
       <OffMenuHeader
-        activeHref="/"
+        activeHref="/work"
         navigationLinks={navigationLinks}
         resourceLinks={resourceLinks}
         themeMode={themeMode}

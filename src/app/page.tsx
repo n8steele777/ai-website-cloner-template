@@ -1,18 +1,12 @@
-import { OffMenuHomepage } from "@/components/offmenu-homepage";
-import {
-  homepageCaseStudies,
-  offMenuHeroWords,
-  offMenuResourceLinks,
-  offMenuWorkNavigationLinks,
-} from "@/lib/offmenu-data";
+import type { Metadata } from "next";
+import { CosmosHomepage } from "@/components/cosmos-homepage";
+import { cosmosHomepageData } from "@/lib/cosmos-data";
+
+export const metadata: Metadata = {
+  title: "Studio Finity",
+  description: "Studio Finity homepage built on a Cosmos-style editorial landing page shell.",
+};
 
 export default function Home() {
-  return (
-    <OffMenuHomepage
-      caseStudies={homepageCaseStudies}
-      heroWords={offMenuHeroWords}
-      navigationLinks={offMenuWorkNavigationLinks}
-      resourceLinks={offMenuResourceLinks}
-    />
-  );
+  return <CosmosHomepage data={cosmosHomepageData} />;
 }

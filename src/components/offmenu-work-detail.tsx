@@ -22,6 +22,7 @@ export function OffMenuWorkDetail({
   resourceLinks,
 }: OffMenuWorkDetailProps) {
   const { themeMode, setThemeMode } = useOffMenuTheme();
+  const creditsStatement = buildCreditsStatement(project);
   const relatedProjects = project.relatedSlugs
     .map((slug) => caseStudies.find((caseStudy) => caseStudy.slug === slug))
     .filter((caseStudy): caseStudy is CaseStudy => Boolean(caseStudy));
@@ -32,7 +33,7 @@ export function OffMenuWorkDetail({
   return (
     <main className="offmenu-shell bg-background text-foreground">
       <OffMenuHeader
-        activeHref="/"
+        activeHref="/work"
         navigationLinks={navigationLinks}
         resourceLinks={resourceLinks}
         themeMode={themeMode}
@@ -48,7 +49,7 @@ export function OffMenuWorkDetail({
           title={project.title}
         />
 
-        <section className="px-6 pb-18 pt-24 md:px-12 lg:px-20" id="introduction">
+        <section className="px-6 pb-16 pt-28 md:px-12 lg:px-20" id="introduction">
           <div className="flex flex-col gap-16">
             <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
               <div className="flex flex-col gap-8">
@@ -70,43 +71,41 @@ export function OffMenuWorkDetail({
                 </ul>
               </div>
             </div>
+
+            {project.scopeItems.length > 0 ? (
+              <div className="flex max-w-md flex-col gap-4">
+                <span className="text-sm font-medium">Scope</span>
+                <ul className="space-y-2 text-sm font-medium">
+                  {project.scopeItems.map((item, index) => (
+                    <li key={`${item}-${index}`} className="flex items-start gap-3">
+                      <span className="min-w-8 text-foreground/40">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </div>
         </section>
 
         {project.summary ? (
-          <section className="px-6 py-10 md:px-12 lg:px-20">
-            <div className="flex max-w-4xl flex-col gap-5">
-              <span className="text-sm font-medium text-foreground/40">Overview</span>
-              <p className="text-base font-medium leading-tight md:text-lg">{project.summary}</p>
-            </div>
-          </section>
+          <WorkNarrative
+            label="Overview"
+            content={project.summary}
+            size="body"
+          />
         ) : null}
 
         {primaryFigure ? <WorkFigure image={primaryFigure} /> : null}
 
-        {project.credits &&
-        (project.credits.roles.length > 0 || project.credits.names.length > 0) ? (
-          <section className="px-6 py-10 md:px-12 lg:px-20">
-            <div className="grid gap-12 lg:grid-cols-2">
-              <div className="flex flex-col gap-5">
-                <span className="text-sm font-medium text-foreground/40">Credits</span>
-                <ul className="flex flex-col gap-2 text-base font-medium">
-                  {project.credits.roles.map((role, index) => (
-                    <li key={`${role}-${index}`}>{role}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex flex-col gap-5">
-                <span className="text-sm font-medium text-foreground/40">Collaborators</span>
-                <ul className="flex flex-col gap-2 text-base font-medium">
-                  {project.credits.names.map((name, index) => (
-                    <li key={`${name}-${index}`}>{name}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </section>
+        {creditsStatement ? (
+          <WorkNarrative
+            label="Credits"
+            content={creditsStatement}
+            size="display"
+          />
         ) : null}
 
         {secondaryFigure ? <WorkFigure image={secondaryFigure} /> : null}
@@ -191,6 +190,60 @@ export function OffMenuWorkDetail({
 
       <OffMenuWorkFooter navigationLinks={navigationLinks} />
     </main>
+  );
+}
+
+function buildCreditsStatement(project: WorkProjectDetail) {
+  if (!project.credits) {
+    return null;
+  }
+
+  const roles = project.credits.roles
+    .map((role) => role.replace(/,+$/g, "").trim())
+    .filter(Boolean);
+  const names = project.credits.names
+    .map((name) => name.trim())
+    .filter(Boolean);
+
+  if (roles.length === 0 && names.length === 0) {
+    return null;
+  }
+
+  if (roles.length > 0 && names.length > 0) {
+    return `${roles.join(", ")} by ${names.join(", ")}.`;
+  }
+
+  if (roles.length > 0) {
+    return roles.join(", ");
+  }
+
+  return names.join(", ");
+}
+
+function WorkNarrative({
+  content,
+  label,
+  size,
+}: {
+  content: string;
+  label: string;
+  size: "body" | "display";
+}) {
+  return (
+    <section className="px-6 py-10 md:px-12 lg:px-20">
+      <div className="flex max-w-4xl flex-col gap-5">
+        <span className="text-sm font-medium text-foreground/40">{label}</span>
+        <p
+          className={
+            size === "display"
+              ? "max-w-3xl text-xl font-medium leading-tight md:text-3xl"
+              : "max-w-3xl text-base font-medium leading-tight md:text-lg"
+          }
+        >
+          {content}
+        </p>
+      </div>
+    </section>
   );
 }
 

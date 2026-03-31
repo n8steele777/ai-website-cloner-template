@@ -50,6 +50,7 @@ export interface WorkProjectDetail {
   introduction: string;
   summary?: string;
   details: WorkDetail[];
+  scopeItems: string[];
   credits?: {
     roles: string[];
     names: string[];

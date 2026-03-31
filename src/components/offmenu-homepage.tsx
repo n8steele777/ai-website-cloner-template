@@ -26,6 +26,25 @@ function smoothStep(value: number) {
   return value * value * value * (value * (6 * value - 15) + 10);
 }
 
+function advanceSpring(
+  state: { value: number; velocity: number },
+  target: number,
+  stiffness: number,
+  damping: number,
+  mass: number,
+  dt: number,
+) {
+  const displacement = state.value - target;
+  const dampingForce = -damping * state.velocity;
+  const velocity =
+    state.velocity + ((-stiffness * displacement + dampingForce) / mass) * dt;
+
+  return {
+    value: state.value + velocity * dt,
+    velocity,
+  };
+}
+
 export function OffMenuHomepage({
   caseStudies,
   heroWords,
@@ -58,6 +77,9 @@ export function OffMenuHomepage({
   const headlineVisibleRef = useRef(false);
   const openingRef = useRef(false);
   const hoverScaleMapRef = useRef(new Map<number, number>());
+  const zoomTweenRef = useRef<gsap.core.Tween | null>(null);
+  const zoomActiveRef = useRef(false);
+  const zoomInitializedRef = useRef(false);
 
   const rotationStateRef = useRef({ value: 0, velocity: 0 });
   const tiltYStateRef = useRef({ value: -0.6, velocity: 0 });
@@ -88,6 +110,10 @@ export function OffMenuHomepage({
     titleVisibleRef.current = false;
     headlineVisibleRef.current = false;
     hoverScaleMapRef.current.clear();
+    zoomTweenRef.current?.kill();
+    zoomTweenRef.current = null;
+    zoomActiveRef.current = false;
+    zoomInitializedRef.current = false;
 
     introOffsetRef.current = Math.PI;
     rotationStateRef.current = { value: 0, velocity: 0 };
@@ -242,6 +268,7 @@ export function OffMenuHomepage({
 
     let frameId = 0;
     let mounted = true;
+    let lastFrameTime = performance.now();
 
     const setHeadlineVisible = (visible: boolean, immediate = false) => {
       if (headlineVisibleRef.current === visible) {
@@ -298,6 +325,27 @@ export function OffMenuHomepage({
       });
     };
 
+    const syncZoomState = (visible: boolean, animated: boolean) => {
+      if (zoomActiveRef.current === visible && zoomInitializedRef.current) {
+        return;
+      }
+
+      zoomActiveRef.current = visible;
+      zoomInitializedRef.current = true;
+      zoomTweenRef.current?.kill();
+
+      if (!animated) {
+        zoomStateRef.current.value = visible ? 1 : 0;
+        return;
+      }
+
+      zoomTweenRef.current = gsap.to(zoomStateRef.current, {
+        value: visible ? 1 : 0,
+        duration: 1.5,
+        ease: "power2.out",
+      });
+    };
+
     const render = () => {
       if (!mounted) {
         return;
@@ -311,85 +359,95 @@ export function OffMenuHomepage({
       const rect = scrollTrack.getBoundingClientRect();
       const scrollRange = rect.height - window.innerHeight;
       const progress = scrollRange <= 0 ? 0 : clamp(-rect.top / scrollRange);
+      const snapThreshold = 0.2;
+      const zoomThreshold = 0.26;
       const fullRotation = Math.PI * 2;
       const step = fullRotation / caseStudies.length;
-      const zoomSlotCount = Math.max(caseStudies.length - 1, 1);
-      const zoomProgress = clamp((progress - 0.2) / 0.8);
-      const zoomFocusPosition = zoomProgress * zoomSlotCount;
-      const zoomSlotIndex = Math.min(Math.round(zoomFocusPosition), zoomSlotCount);
-      const orbitFocusIndex =
-        progress <= 0.2
-          ? (() => {
-              let initialFocus = Math.round(
-                (-((progress / 0.2) * fullRotation + introOffsetRef.current) / step) %
-                  caseStudies.length,
-              );
-              initialFocus =
-                ((initialFocus % caseStudies.length) + caseStudies.length) % caseStudies.length;
-              return initialFocus;
-            })()
-          : zoomFocusPosition;
+      const zoomSlotIndex =
+        progress <= snapThreshold
+          ? 0
+          : Math.min(
+              Math.max(
+                Math.round(
+                  ((progress - snapThreshold) / (1 - snapThreshold)) * caseStudies.length,
+                ),
+                0,
+              ),
+              caseStudies.length - 1,
+            );
 
       targetRotationRef.current =
-        progress <= 0.2
-          ? -((progress / 0.2) * fullRotation)
-          : -fullRotation - zoomFocusPosition * step;
-      targetTiltYRef.current = gsap.utils.interpolate(-0.6, 0, clamp(progress / 0.2));
-      targetTiltXRef.current = gsap.utils.interpolate(0.5236, 0, clamp(progress / 0.2));
+        progress <= snapThreshold
+          ? -((progress / snapThreshold) * fullRotation)
+          : -fullRotation - zoomSlotIndex * step;
+      targetTiltYRef.current = gsap.utils.interpolate(-0.6, 0, clamp(progress / snapThreshold));
+      targetTiltXRef.current = gsap.utils.interpolate(0.5236, 0, clamp(progress / snapThreshold));
 
       setHeadlineVisible(progress < 0.15, false);
-      setTitleVisible(progress >= 0.2, false);
+      setTitleVisible(progress >= zoomThreshold, false);
 
-      rotationStateRef.current = {
-        value: targetRotationRef.current,
-        velocity: 0,
-      };
-      tiltYStateRef.current = {
-        value: targetTiltYRef.current,
-        velocity: 0,
-      };
-      tiltXStateRef.current = {
-        value: targetTiltXRef.current,
-        velocity: 0,
-      };
-      zoomStateRef.current.value = smoothStep(zoomProgress);
+      const now = performance.now();
+      const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
+      lastFrameTime = now;
+
+      rotationStateRef.current = advanceSpring(
+        rotationStateRef.current,
+        targetRotationRef.current,
+        60,
+        25,
+        0.8,
+        dt,
+      );
+      tiltYStateRef.current = advanceSpring(
+        tiltYStateRef.current,
+        targetTiltYRef.current,
+        100,
+        30,
+        0.5,
+        dt,
+      );
+      tiltXStateRef.current = advanceSpring(
+        tiltXStateRef.current,
+        targetTiltXRef.current,
+        100,
+        30,
+        0.5,
+        dt,
+      );
+      syncZoomState(progress >= zoomThreshold, true);
 
       const rotation = rotationStateRef.current.value;
       const tiltY = tiltYStateRef.current.value;
       const tiltX = tiltXStateRef.current.value;
       const zoom = zoomStateRef.current.value;
       const compositeRotation = rotation + introOffsetRef.current;
-      const sceneSize = Math.min(window.innerWidth, window.innerHeight);
-      const orbitRadius = Math.max(400, sceneSize * 0.8);
-
+      orbitStage.style.setProperty("--container-scale", `${0.5 + 0.5 * zoom}`);
+      orbitStage.style.setProperty("--zoom-offset", `calc(${zoom} * max(400px, 80cqmin))`);
+      orbitStage.style.setProperty("--tilt-offset-x", `${5 * tiltY}%`);
+      orbitStage.style.setProperty("--tilt-offset-y", `${-5 * tiltX}%`);
+      orbitStage.style.setProperty("--zoom", `${zoom}`);
       orbitStage.style.setProperty("--sphere-size-scale", `${0.6 + 0.4 * zoom}`);
-      orbitStage.style.transform = `scale(${0.5 + 0.5 * zoom}) translateX(${zoom * orbitRadius + sceneSize * 0.05 * tiltY}px) translateY(${-sceneSize * 0.05 * tiltX}px)`;
-      const roundedFocus = progress <= 0.2 ? orbitFocusIndex : zoomSlotIndex;
+
+      let roundedFocus = Math.round(((-compositeRotation / step) % caseStudies.length + caseStudies.length) % caseStudies.length);
+      roundedFocus %= caseStudies.length;
 
       let smoothFocus = focusSmoothingRef.current;
       let delta = roundedFocus - smoothFocus;
       const half = caseStudies.length / 2;
 
-      if (progress <= 0.2 && Math.abs(delta) > half) {
+      if (Math.abs(delta) > half) {
         delta += delta > 0 ? -caseStudies.length : caseStudies.length;
       }
 
       smoothFocus += delta * 0.05;
 
-      if (progress <= 0.2) {
-        if (smoothFocus < 0) {
-          smoothFocus += caseStudies.length;
-        } else if (smoothFocus >= caseStudies.length) {
-          smoothFocus -= caseStudies.length;
-        }
-      } else {
-        smoothFocus = orbitFocusIndex;
+      if (smoothFocus < 0) {
+        smoothFocus += caseStudies.length;
+      } else if (smoothFocus >= caseStudies.length) {
+        smoothFocus -= caseStudies.length;
       }
 
       focusSmoothingRef.current = smoothFocus;
-
-      let dominantBubbleIndex = roundedFocus;
-      let dominantBubbleScale = -Infinity;
 
       orbitBubbleRefs.current.forEach((bubble, index) => {
         if (!bubble) {
@@ -419,15 +477,10 @@ export function OffMenuHomepage({
           distance = caseStudies.length - distance;
         }
 
-        const activeFocusScale = gsap.utils.interpolate(1, 1.85, zoom);
-        const adjacentFocusScale = gsap.utils.interpolate(1, 1.13, zoom);
+        const activeFocusScale = 1.5 + 0.5 * zoom;
         const focusScale =
-          distance <= 1
-            ? activeFocusScale -
-              smoothStep(distance) * (activeFocusScale - adjacentFocusScale)
-            : distance <= 2
-              ? adjacentFocusScale - smoothStep(distance - 1) * (adjacentFocusScale - 1)
-              : 1;
+          activeFocusScale -
+          smoothStep(Math.min(distance, 1)) * (activeFocusScale - 1);
         const depthScale = 1 + 0.1 * z;
         const previousHoverScale = hoverScaleMapRef.current.get(index) ?? 1;
         const targetHoverScale = hoverIndexRef.current === index ? 1.1 : 1;
@@ -436,12 +489,15 @@ export function OffMenuHomepage({
 
         hoverScaleMapRef.current.set(index, nextHoverScale);
 
-        if (progress >= 0.2 && visualScale > dominantBubbleScale) {
-          dominantBubbleScale = visualScale;
-          dominantBubbleIndex = index;
-        }
-
-        bubble.style.transform = `translate(${x * orbitRadius}px, ${-y * orbitRadius}px) scale(${visualScale * nextHoverScale})`;
+        bubble.style.setProperty("--pos-x", `${x}`);
+        bubble.style.setProperty("--pos-y", `${-y}`);
+        bubble.style.transform = `
+          translate(
+            calc(var(--pos-x) * max(400px, 80cqmin)),
+            calc(var(--pos-y) * max(400px, 80cqmin))
+          )
+          scale(${visualScale * nextHoverScale})
+        `;
       });
 
       dotRefs.current.forEach((dot, index) => {
@@ -453,7 +509,7 @@ export function OffMenuHomepage({
         const x = 18 * Math.cos(angle);
         const y = -(18 * Math.sin(angle));
         const dotSize = Math.min(5, ((fullRotation * 18) / caseStudies.length) * 0.6);
-        const isActive = index === (progress >= 0.2 ? dominantBubbleIndex : roundedFocus);
+        const isActive = index === roundedFocus;
 
         dot.style.transform = `translate(${x}px, ${y}px)`;
         dot.style.width = `${dotSize}px`;
@@ -465,7 +521,7 @@ export function OffMenuHomepage({
         dot.style.border = isActive ? "none" : "1px solid currentColor";
       });
 
-      const displayedIndex = progress >= 0.2 ? dominantBubbleIndex : roundedFocus;
+      const displayedIndex = roundedFocus;
 
       if (activeIndexRef.current !== displayedIndex) {
         activeIndexRef.current = displayedIndex;
@@ -489,6 +545,8 @@ export function OffMenuHomepage({
     return () => {
       mounted = false;
       window.cancelAnimationFrame(frameId);
+      zoomTweenRef.current?.kill();
+      zoomTweenRef.current = null;
       gsap.killTweensOf(headlineNodes);
       if (titleOverlay) {
         gsap.killTweensOf(titleOverlay);
@@ -569,7 +627,7 @@ export function OffMenuHomepage({
   return (
     <main className="min-h-screen">
       <OffMenuHeader
-        activeHref="/"
+        activeHref="/work"
         navigationLinks={navigationLinks}
         resourceLinks={resourceLinks}
         themeMode={themeMode}
@@ -579,7 +637,7 @@ export function OffMenuHomepage({
       <div ref={scrollTrackRef} className="relative" style={{ height: "1000vh" }}>
         <section
           id="work"
-          className="sticky top-0 h-screen w-full bg-background p-8"
+          className="sticky top-0 flex h-screen w-full items-end justify-start bg-background p-8"
         >
           <div
             ref={orbitFadeRef}
@@ -594,6 +652,8 @@ export function OffMenuHomepage({
                   width: "min(400vw, 100vh)",
                   height: "min(400vw, 100vh)",
                   containerType: "inline-size",
+                  transform:
+                    "scale(var(--container-scale, 1)) translateX(calc(var(--zoom-offset, 0px) + var(--tilt-offset-x, 0%))) translateY(var(--tilt-offset-y, 0%))",
                 }}
               >
                 <div
@@ -670,7 +730,7 @@ export function OffMenuHomepage({
           </div>
 
           <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
-            <h1 className="pointer-events-auto max-w-[28ch] text-center text-sm font-medium leading-none text-foreground md:text-base">
+            <h1 className="pointer-events-auto max-w-[28ch] text-pretty text-center text-sm font-medium leading-none text-foreground md:text-base">
               {heroWords.map((word, index) => (
                 <span
                   key={`${word}-${index}`}
@@ -719,7 +779,7 @@ export function OffMenuHomepage({
             </div>
 
             <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 px-8 md:bottom-4 md:top-auto md:translate-y-0">
-              <div className="relative flex items-center justify-center overflow-hidden py-3">
+              <div className="relative flex items-center justify-center py-3 [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)]">
                 <div className="relative flex w-full justify-center pointer-events-none">
                   {caseStudies.map((caseStudy, index) => (
                     <div

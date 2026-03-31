@@ -44,10 +44,35 @@
   src: url("/fonts/Neue Montreal/woff2/PPNeueMontreal-Medium.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "Cosmos Oracle";
+  font-style: normal;
+  font-weight: 300;
+  font-display: block;
+  src: url("/fonts/cosmos/cosmos-oracle-book.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Cosmos Oracle";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/fonts/cosmos/cosmos-oracle-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Cosmos Oracle";
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url("/fonts/cosmos/cosmos-oracle-medium.woff2") format("woff2");
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: "Neue Montreal", sans-serif;
+  --font-cosmos: "Cosmos Oracle", serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
   --font-heading: var(--font-sans);
@@ -90,6 +115,7 @@
 }
 
 :root {
+  --font-cosmos: "Cosmos Oracle", serif;
   --background: #fdfdfc;
   --foreground: #12110d;
   --card: #fdfdfc;
@@ -186,6 +212,10 @@ html.is-safari {
 
 html.is-safari body {
   -webkit-font-smoothing: auto;
+}
+
+.font-cosmos {
+  font-family: "Cosmos Oracle", serif;
 }
 
 .hero-word {

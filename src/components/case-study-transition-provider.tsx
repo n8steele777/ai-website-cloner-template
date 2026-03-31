@@ -247,9 +247,11 @@ export function CaseStudyTransitionProvider({
         width: targetWidth,
         height: targetHeight,
         borderRadius: "24px",
-        duration: 0.34,
+        duration: 0.42,
         ease: "power4.inOut",
       });
+
+      timeline.to({}, { duration: 0.12 });
 
       return;
     }

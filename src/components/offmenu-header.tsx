@@ -97,7 +97,7 @@ export function OffMenuHeader({
   return (
     <header className="fixed left-0 right-0 top-0 z-50 p-4">
       <div className="relative flex items-center justify-between">
-        <Link href="/" aria-label="Off Menu home" className="block">
+        <Link href="/" aria-label="Studio Finity home" className="block">
           <OffMenuLogo className="h-10 w-auto" />
         </Link>
 
