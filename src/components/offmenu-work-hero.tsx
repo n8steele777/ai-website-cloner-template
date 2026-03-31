@@ -4,23 +4,18 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useCaseStudyTransition } from "@/components/case-study-transition-provider";
-import type { ThemeMode } from "@/types/offmenu";
 
 interface OffMenuWorkHeroProps {
   description?: string;
-  heroImageDark: string;
-  heroImageLight: string;
+  heroImage: string;
   slug: string;
-  themeMode: ThemeMode;
   title: string;
 }
 
 export function OffMenuWorkHero({
   description,
-  heroImageDark,
-  heroImageLight,
+  heroImage,
   slug,
-  themeMode,
   title,
 }: OffMenuWorkHeroProps) {
   const imageRef = useRef<HTMLImageElement>(null);
@@ -29,7 +24,7 @@ export function OffMenuWorkHero({
   const readyRef = useRef(false);
   const { signalHeroReady, state } = useCaseStudyTransition();
   const transitionMatches = state.isTransitioning && state.slug === slug;
-  const finalHeroImage = themeMode === "dark" ? heroImageDark : heroImageLight;
+  const finalHeroImage = heroImage;
   const transitionHeroImage = transitionMatches
     ? state.thumbnailXlLoaded && state.thumbnailXl
       ? state.thumbnailXl

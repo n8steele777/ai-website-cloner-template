@@ -103,7 +103,7 @@ export const cosmosHomepageData: CosmosHomepageData = {
   filmCta: "Watch our new film (ft. Odessa A'zion)",
   filmVideo: {
     src: "https://cdn.sanity.io/files/ca81n2nu/production/a6cc82d75d824ae49ad989e7d18d3d3ec06ab431.mp4",
-    alt: "Cosmos film preview video",
+    alt: "Studio-finity film preview video",
     kind: "video",
   },
   searchWorld: {
@@ -141,7 +141,7 @@ export const cosmosHomepageData: CosmosHomepageData = {
     media: [
       {
         src: "https://cdn.sanity.io/files/ca81n2nu/production/a6cc82d75d824ae49ad989e7d18d3d3ec06ab431.mp4",
-        alt: "Cosmos search interaction video",
+        alt: "Studio-finity search interaction video",
         kind: "video",
       },
       {
@@ -153,7 +153,7 @@ export const cosmosHomepageData: CosmosHomepageData = {
   attribution: {
     title: "Know what you're looking at.",
     body:
-      "Cosmos uses AI to research images—surfacing the artist, source, and story.",
+      "Studio-finity uses AI to research images - surfacing the artist, source, and story.",
     credits: [
       "Editorial photography by Guiri",
       "Photograph from Unformen der Kunst",
@@ -253,14 +253,9 @@ export const cosmosHomepageData: CosmosHomepageData = {
     {
       label: "Social",
       links: [
-        { label: "Instagram", href: "https://www.instagram.com/cosmos/", external: true },
-        { label: "TikTok", href: "https://www.tiktok.com/@inspirethecosmos", external: true },
-        { label: "X", href: "https://x.com/thecosmos", external: true },
-        {
-          label: "Substack",
-          href: "https://sequencebycosmos.substack.com/",
-          external: true,
-        },
+        { label: "Instagram", href: "https://www.instagram.com/weareoffmenu", external: true },
+        { label: "X", href: "https://x.com/weareoffmenu", external: true },
+        { label: "LinkedIn", href: "https://linkedin.com/company/offmenudesign", external: true },
       ],
     },
     {

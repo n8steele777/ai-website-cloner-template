@@ -4,7 +4,7 @@ import { cosmosHomepageData } from "@/lib/cosmos-data";
 
 export const metadata: Metadata = {
   title: "Studio Finity",
-  description: "Studio Finity homepage built on a Cosmos-style editorial landing page shell.",
+  description: "Studio Finity homepage with an editorial landing page experience.",
 };
 
 export default function Home() {

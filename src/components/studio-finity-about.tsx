@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { OffMenuHeader } from "@/components/offmenu-header";
-import { useOffMenuTheme } from "@/hooks/use-offmenu-theme";
+import { StudioFinityHeader } from "@/components/studio-finity-header";
 import type { NavLink, StudioAboutContent } from "@/types/offmenu";
 
 interface StudioFinityAboutProps {
@@ -15,11 +14,10 @@ interface StudioFinityAboutProps {
 export function StudioFinityAbout({
   content,
   navigationLinks,
-  resourceLinks,
+  resourceLinks: _resourceLinks,
 }: StudioFinityAboutProps) {
   const rootRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const { themeMode, setThemeMode } = useOffMenuTheme();
 
   useEffect(() => {
     if (!rootRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -93,13 +91,9 @@ export function StudioFinityAbout({
 
   return (
     <main ref={rootRef} className="offmenu-shell min-h-screen bg-background text-foreground">
-      <OffMenuHeader
+      <StudioFinityHeader
         activeHref="/about"
-        eyebrow="Studio Finity"
-        navigationLinks={navigationLinks}
-        resourceLinks={resourceLinks}
-        themeMode={themeMode}
-        onToggleTheme={() => setThemeMode((current) => (current === "light" ? "dark" : "light"))}
+        links={navigationLinks}
       />
 
       <section className="px-6 pb-16 pt-28 md:px-12 md:pt-32 lg:px-20">

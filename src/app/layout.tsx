@@ -21,8 +21,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/seo/favicon.ico", sizes: "256x256", type: "image/x-icon" },
-      { url: "/seo/favicon-light.svg", media: "(prefers-color-scheme: light)" },
-      { url: "/seo/favicon-dark.svg", media: "(prefers-color-scheme: dark)" },
+      { url: "/seo/favicon-light.svg" },
     ],
   },
   openGraph: {
@@ -57,13 +56,6 @@ export default function RootLayout({
 }>) {
   const themeScript = `
     (function() {
-      try {
-        var savedTheme = window.localStorage.getItem("offmenu-theme");
-        if (savedTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        }
-      } catch (error) {}
-
       var ua = navigator.userAgent;
       var isIOSWebKit = /iPhone|iPad|iPod/i.test(ua) && /AppleWebKit/i.test(ua);
       var isDesktopSafari = /Safari/i.test(ua) && !/Chrome|Chromium|EdgiOS|FxiOS|Android/i.test(ua);

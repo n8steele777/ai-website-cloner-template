@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type SVGProps } from "react";
 import { ArrowRightIcon } from "@/components/icons";
+import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { cn } from "@/lib/utils";
 import type {
   CosmosButton,
@@ -200,17 +201,12 @@ function getHeroHeadlineThreshold(viewportHeight: number) {
 }
 
 export function CosmosHomepage({ data }: CosmosHomepageProps) {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [heroScrollProgress, setHeroScrollProgress] = useState(0);
   const [heroViewportHeight, setHeroViewportHeight] = useState(900);
   const [heroViewportWidth, setHeroViewportWidth] = useState(1440);
 
   useEffect(() => {
     const onResize = () => {
-      if (window.innerWidth >= 768) {
-        setMenuOpen(false);
-      }
-
       setHeroViewportHeight(window.innerHeight);
       setHeroViewportWidth(window.innerWidth);
     };
@@ -246,145 +242,26 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
   );
 
   return (
-    <main className="min-h-screen bg-[#f9f7f3] font-cosmos text-[#101010]">
-      <header className="sticky top-0 z-[200] hidden h-[105px] w-full items-center justify-between gap-[72px] px-3 py-6 text-[#111] md:flex md:px-8">
-        <div className="relative z-20 flex min-w-0 items-center gap-1">
-          <Link
-            href="/"
-            aria-label="Studio Finity home"
-            className="hidden h-[54px] w-[54px] shrink-0 items-center justify-center rounded-full border border-black/10 bg-[#f5f2eb] lg:flex"
-          >
-            <img src="/cosmos-icon-light.svg" alt="" className="h-auto w-[22px]" />
-          </Link>
+    <main className="min-h-screen bg-[var(--sf-bg)] font-display text-[var(--sf-text)]">
+      <StudioFinityHeader links={data.headerLinks} actions={data.headerActions} activeHref="/" />
 
-          <button
-            type="button"
-            aria-expanded={menuOpen}
-            aria-label="Toggle navigation"
-            className="relative z-20 flex h-[54px] min-w-[140px] items-center justify-center gap-2 rounded-full border border-black/10 bg-[#f5f2eb] px-4 text-[14px] font-medium tracking-[-0.02em] xl:hidden"
-            onClick={() => setMenuOpen((current) => !current)}
-          >
-            <span className="max-w-[12ch] truncate">{menuOpen ? "Close" : "Menu"}</span>
-            <ChevronDownIcon
-              className={cn("h-4 w-4 transition-transform duration-300", menuOpen && "rotate-180")}
-            />
-          </button>
-
-          <div className="hidden h-[54px] items-center gap-6 rounded-full border border-black/10 bg-[#f5f2eb] px-8 text-[14px] font-medium tracking-[-0.02em] xl:flex">
-            {data.headerLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-black/62 transition-colors hover:text-black"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div className="absolute inset-x-0 mx-auto hidden max-w-[600px] items-center justify-center md:flex">
-          <div className="pointer-events-auto flex h-[54px] min-w-[392px] items-center rounded-full font-medium tracking-[-0.02em] transition-[flex-grow] duration-500 ease-out lg:min-w-[416px]">
-            <div className="group relative flex h-full w-full flex-1 items-center gap-2 rounded-full border border-black/10 bg-[#f5f2eb] p-2">
-              <div className="flex shrink-0 items-center gap-1">
-                <SearchIcon className="ml-2 mr-0.5 h-4 w-4 text-black/42" />
-              </div>
-              <input
-                type="text"
-                readOnly
-                value=""
-                placeholder="Search Cosmos..."
-                className="h-full w-full bg-transparent text-[14px] font-normal text-black outline-none placeholder:text-black/42"
-              />
-              <div className="flex items-center">
-                <button type="button" className="flex h-9.5 w-9.5 items-center justify-center rounded-full">
-                  <FocusIcon className="h-5 w-5 text-black/42" />
-                </button>
-                <button
-                  type="button"
-                  className="hidden h-9.5 w-9.5 items-center justify-center rounded-full lg:flex"
-                >
-                  <PaletteIcon className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-1">
-          {data.headerActions.map((action) => (
-            <TopNavActionLink key={action.label} action={action} />
-          ))}
-        </div>
-      </header>
-
-      <div className="px-4 pt-3 md:hidden">
-        <div className="flex items-center justify-between gap-2">
-          <Link
-            href="/"
-            aria-label="Studio Finity home"
-            className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full border border-black/10 bg-[#f5f2eb]"
-          >
-            <img src="/cosmos-icon-light.svg" alt="" className="h-auto w-5" />
-          </Link>
-          <button
-            type="button"
-            aria-expanded={menuOpen}
-            aria-label="Toggle navigation"
-            className="flex h-[48px] flex-1 items-center justify-center gap-2 rounded-full border border-black/10 bg-[#f5f2eb] px-4 text-[13px] font-medium tracking-[-0.02em]"
-            onClick={() => setMenuOpen((current) => !current)}
-          >
-            {menuOpen ? "Close" : "Menu"}
-            <ChevronDownIcon
-              className={cn("h-4 w-4 transition-transform duration-300", menuOpen && "rotate-180")}
-            />
-          </button>
-          <TopNavActionLink action={data.headerActions[1]} compact />
-        </div>
-        {menuOpen ? (
-          <div className="mt-2 rounded-[24px] border border-black/10 bg-[#f5f2eb] p-4">
-            <div className="flex flex-col gap-3 text-[14px] tracking-[-0.02em]">
-              {data.headerLinks.map((link) => (
-                <Link key={link.label} href={link.href} className="text-black/72">
-                  {link.label}
-                </Link>
-              ))}
-              <a href={data.headerActions[0].href} className="text-black/72">
-                {data.headerActions[0].label}
-              </a>
-            </div>
-          </div>
-        ) : null}
-      </div>
-
-      <section className="sticky top-0 z-0 -mt-[72px] flex h-dvh flex-col items-center justify-center overflow-hidden bg-[#f9f7f3] md:-mt-[105px]">
+      <section className="sticky top-0 z-0 -mt-[72px] flex h-dvh flex-col items-center justify-center overflow-hidden bg-[var(--sf-bg)] md:-mt-[105px]">
         <CosmosHeroWhirl imageUrls={data.heroSpiralImages} filmProgress={filmHandoffProgress} />
 
         <div style={heroHeadlineStyle}>
           <div className="relative z-10 flex flex-col items-center gap-5">
-            <CosmosWordmark className="h-auto w-25 text-[#111]" />
+            <img
+              src="/logos/Studio%20Finity%20Text%20Logo.png"
+              alt="STUDIO FINITY"
+              className="h-auto w-[min(260px,42vw)] max-w-full md:w-[min(320px,30vw)]"
+            />
 
-            <h1 className="font-cosmos text-pretty text-center text-[54px] font-[350] leading-none tracking-[-2.7px] text-[#111] md:text-[74px] md:tracking-[-3.7px]">
+            <h1 className="font-cosmos text-pretty text-center text-[54px] font-[350] leading-none tracking-[-2.7px] text-[var(--sf-text)] md:text-[74px] md:tracking-[-3.7px]">
               Your space
               <br />
               for inspiration
             </h1>
 
-            <div className="mt-2.5">
-              <div className="flex gap-2">
-                <HeroActionLink action={data.heroButtons[0]} className="pointer-events-auto lg:hidden" />
-                <HeroActionLink
-                  action={data.heroButtons[0]}
-                  desktopPrimary
-                  className="pointer-events-auto hidden lg:flex"
-                />
-                <HeroActionLink
-                  action={data.heroButtons[1]}
-                  desktopSecondary
-                  className="pointer-events-auto hidden lg:flex"
-                />
-              </div>
-            </div>
           </div>
         </div>
 
@@ -492,7 +369,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
               {data.teams.logos.map((logo, index) => (
                 <div
                   key={`${logo.src}-${index}`}
-                  className="flex h-14 items-center justify-center rounded-[18px] bg-[#f8f6f1]"
+                  className="flex h-14 items-center justify-center rounded-[18px] bg-[#f3f4f6]"
                 >
                   <img src={logo.src} alt={logo.alt} className="max-h-7 w-auto max-w-[90%] object-contain" />
                 </div>
@@ -513,7 +390,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
       />
 
       <section className="px-4 pb-20 pt-8 md:px-6 md:pb-28">
-        <div className="mx-auto max-w-[1440px] rounded-[40px] bg-[#efebe1] px-6 py-14 md:px-10 md:py-18">
+        <div className="mx-auto max-w-[1440px] rounded-[40px] bg-[var(--sf-surface-strong)] px-6 py-14 md:px-10 md:py-18">
           <h2 className="max-w-[8ch] font-[family:var(--font-cosmos)] text-[3.1rem] leading-[0.98] tracking-[-0.06em] md:text-[4.75rem]">
             {data.finalCta.title}
           </h2>
@@ -839,9 +716,9 @@ function CosmosHeroWhirl({
         opacity: clamp(1 - (filmProgress - 0.25) / 0.15),
         top: "calc(50% - 50vh)",
         transition: "opacity 220ms linear",
-        WebkitMaskImage: "radial-gradient(45% 45%, transparent 0% 50.5%, #F9F7F3 90%)",
+        WebkitMaskImage: "radial-gradient(45% 45%, transparent 0% 50.5%, #F7F7F8 90%)",
         contain: "layout style",
-        maskImage: "radial-gradient(45% 45%, transparent 0% 50.5%, #F9F7F3 90%)",
+        maskImage: "radial-gradient(45% 45%, transparent 0% 50.5%, #F7F7F8 90%)",
       }}
     >
       <div
@@ -852,7 +729,7 @@ function CosmosHeroWhirl({
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[30%]"
           style={{
             background:
-              "linear-gradient(to bottom, transparent 0%, rgba(249,247,243,0.45) 30%, rgba(249,247,243,0.8) 55%, #F9F7F3 80%)",
+              "linear-gradient(to bottom, transparent 0%, rgba(247,247,248,0.45) 30%, rgba(247,247,248,0.8) 55%, #F7F7F8 80%)",
           }}
         />
         <div
@@ -942,19 +819,6 @@ function CosmosFilmHandoff({
   );
 }
 
-function CosmosWordmark(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="89" height="15" viewBox="0 0 89 15" fill="none" {...props}>
-      <path d="M83.5012 15C80.0429 15 77.7929 13.125 77.5012 10.3333H80.1887C80.6262 12 81.9804 12.625 83.5012 12.625C85.0637 12.625 86.1471 11.8542 86.1471 10.7708C86.1471 9.58333 85.2721 9.10417 83.3346 8.6875L82.0637 8.41667C79.9387 7.95833 77.9804 6.85417 77.9804 4.35417C77.9804 1.875 80.1262 0 83.2304 0C86.4387 0 88.2929 1.75 88.7512 4.47917H86.0637C85.7304 3.08333 84.7929 2.35417 83.2304 2.35417C81.6887 2.35417 80.7304 3.125 80.7304 4.14583C80.7304 5.1875 81.6054 5.60417 83.2929 6L84.5637 6.29167C86.8971 6.83333 88.9596 7.83333 88.9596 10.5208C88.9596 13.125 86.7929 15 83.5012 15Z" fill="currentColor" />
-      <path d="M69.1056 15C64.9181 15 61.7097 11.8542 61.7097 7.5C61.7097 3.14583 64.9181 0 69.1056 0C73.2931 0 76.5014 3.14583 76.5014 7.5C76.5014 11.8542 73.2931 15 69.1056 15ZM69.1056 12.5C71.7931 12.5 73.6264 10.3125 73.6264 7.5C73.6264 4.6875 71.7931 2.5 69.1056 2.5C66.4181 2.5 64.5847 4.6875 64.5847 7.5C64.5847 10.3125 66.4181 12.5 69.1056 12.5Z" fill="currentColor" />
-      <path d="M47.1996 14.6875H44.7205V0.3125H48.7621L52.408 11.0625L56.0955 0.3125H59.9705V14.6875H57.4705V3L53.5955 14.6875H51.1163L47.1996 2.9375V14.6875Z" fill="currentColor" />
-      <path d="M37.366 15C33.9076 15 31.6576 13.125 31.366 10.3333H34.0535C34.491 12 35.8451 12.625 37.366 12.625C38.9285 12.625 40.0118 11.8542 40.0118 10.7708C40.0118 9.58333 39.1368 9.10417 37.1993 8.6875L35.9285 8.41667C33.8035 7.95833 31.8451 6.85417 31.8451 4.35417C31.8451 1.875 33.991 0 37.0951 0C40.3035 0 42.1576 1.75 42.616 4.47917H39.9285C39.5951 3.08333 38.6576 2.35417 37.0951 2.35417C35.5535 2.35417 34.5951 3.125 34.5951 4.14583C34.5951 5.1875 35.4701 5.60417 37.1576 6L38.4285 6.29167C40.7618 6.83333 42.8243 7.83333 42.8243 10.5208C42.8243 13.125 40.6576 15 37.366 15Z" fill="currentColor" />
-      <path d="M22.9703 15C18.7828 15 15.5745 11.8542 15.5745 7.5C15.5745 3.14583 18.7828 0 22.9703 0C27.1578 0 30.3661 3.14583 30.3661 7.5C30.3661 11.8542 27.1578 15 22.9703 15ZM22.9703 12.5C25.6578 12.5 27.4911 10.3125 27.4911 7.5C27.4911 4.6875 25.6578 2.5 22.9703 2.5C20.2828 2.5 18.4495 4.6875 18.4495 7.5C18.4495 10.3125 20.2828 12.5 22.9703 12.5Z" fill="currentColor" />
-      <path d="M7.39583 15C3.27083 15 0 11.8958 0 7.52083C0 3.16667 3.27083 0 7.39583 0C11.0417 0 13.8542 2.3125 14.5 5.75H11.6458C11.0833 3.83333 9.52083 2.5 7.39583 2.5C4.72917 2.5 2.875 4.625 2.875 7.5C2.875 10.3333 4.72917 12.5 7.39583 12.5C9.45833 12.5 11 11.2708 11.6042 9.45833H14.4792C13.7917 12.75 11.0208 15 7.39583 15Z" fill="currentColor" />
-    </svg>
-  );
-}
-
 function SectionFrame({
   section,
   content,
@@ -1011,86 +875,6 @@ function MediaTile({ item, className }: { item: CosmosMediaItem; className?: str
   );
 }
 
-function TopNavActionLink({
-  action,
-  compact = false,
-}: {
-  action: CosmosButton;
-  compact?: boolean;
-}) {
-  const className = cn(
-    "relative inline-flex select-none items-center justify-center gap-x-1 rounded-full border border-transparent transition-all duration-200",
-    action.variant === "primary"
-      ? "bg-[#111] text-white hover:opacity-90"
-      : "text-[#111] hover:bg-black/[0.04]",
-    compact
-      ? "h-[48px] min-w-[48px] px-4 py-3 text-[13px] font-medium tracking-[-0.02em]"
-      : "h-12 px-6 py-4 text-[15px] font-medium tracking-[-0.02em]",
-  );
-
-  const label = compact ? "Work" : action.label;
-
-  if (action.external || action.href.startsWith("mailto:")) {
-    return (
-      <a
-        href={action.href}
-        target={action.href.startsWith("http") ? "_blank" : undefined}
-        rel={action.href.startsWith("http") ? "noreferrer" : undefined}
-        className={className}
-      >
-        {label}
-      </a>
-    );
-  }
-
-  return (
-    <Link href={action.href} className={className}>
-      {label}
-    </Link>
-  );
-}
-
-function HeroActionLink({
-  action,
-  className,
-  desktopPrimary = false,
-  desktopSecondary = false,
-}: {
-  action: CosmosButton;
-  className?: string;
-  desktopPrimary?: boolean;
-  desktopSecondary?: boolean;
-}) {
-  const actionClassName = cn(
-    "relative inline-flex cursor-pointer select-none items-center justify-center gap-x-1 rounded-full transition-all",
-    desktopPrimary
-      ? "h-14 border border-transparent bg-[#111] px-6 py-4 text-[16px] font-medium tracking-[-0.02em] text-white"
-      : desktopSecondary
-        ? "h-14 border border-black/12 bg-transparent px-6 py-4 text-[16px] font-medium tracking-[-0.02em] text-[#111] hover:bg-black/[0.03]"
-        : "h-12 border border-transparent bg-[#111] px-6 py-4 text-[15px] font-medium tracking-[-0.02em] text-white",
-    className,
-  );
-
-  if (action.external || action.href.startsWith("mailto:")) {
-    return (
-      <a
-        href={action.href}
-        target={action.href.startsWith("http") ? "_blank" : undefined}
-        rel={action.href.startsWith("http") ? "noreferrer" : undefined}
-        className={actionClassName}
-      >
-        {action.label}
-      </a>
-    );
-  }
-
-  return (
-    <Link href={action.href} className={actionClassName}>
-      {action.label}
-    </Link>
-  );
-}
-
 function ActionLink({
   action,
   className,
@@ -1125,55 +909,6 @@ function ActionLink({
     <Link href={action.href} className={sharedClassName}>
       {action.label}
     </Link>
-  );
-}
-
-function SearchIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
-      <path stroke="currentColor" strokeWidth="1.75" d="M20.25 20.25 16 16" />
-      <circle cx="10.75" cy="10.75" r="7.5" stroke="currentColor" strokeWidth="1.754" />
-    </svg>
-  );
-}
-
-function FocusIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
-      <path
-        fill="currentColor"
-        d="M8.498 11.996a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0m5.2.009a1.7 1.7 0 1 0-3.4-.02 1.7 1.7 0 0 0 3.4.02M18.195 15.002h1.795a.4.4 0 0 1 .008.054c0 .355.009.71 0 1.064a3.9 3.9 0 0 1-.837 2.326 3.95 3.95 0 0 1-2.356 1.47q-.38.08-.768.08h-1.021c-.018-.066-.022-1.693-.005-1.8h.984a2.16 2.16 0 0 0 1.85-1.01c.229-.342.35-.744.349-1.156v-1.0250000000000001M15.001 5.798V4.01a.2.2 0 0 1 .045-.01c.392 0 .786-.01 1.177.01.917.042 1.79.407 2.462 1.032a3.99 3.99 0 0 1 1.306 2.925v1.028h-1.8v-.087c0-.325.006-.65 0-.976a2.185 2.185 0 0 0-1.453-2 2 2 0 0 0-.694-.128H15M4.004 15.001h1.792v.985c-.004.411.11.815.33 1.163a2.17 2.17 0 0 0 1.9 1.041h.963v1.795l-.058.006c-.347 0-.694.007-1.04 0a3.9 3.9 0 0 1-2.115-.672 3.95 3.95 0 0 1-1.633-2.247 3.9 3.9 0 0 1-.147-1.067v-1.008M4.007 8.994v-.048c-.006-.382-.012-.768.002-1.145a3.8 3.8 0 0 1 .524-1.791A3.96 3.96 0 0 1 6.75 4.202a3.9 3.9 0 0 1 1.236-.2h1.0090000000000001v1.797H7.958A2.2 2.2 0 0 0 5.8 7.989v1.004z"
-      />
-    </svg>
-  );
-}
-
-function PaletteIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {...props}>
-      <ellipse cx="6.796" cy="17.118" fill="#4694F6" rx="1.952" ry="1.941" />
-      <ellipse cx="17.205" cy="17.231" fill="#C877CB" rx="1.952" ry="1.941" />
-      <ellipse cx="6.796" cy="6.882" fill="#81B386" rx="1.952" ry="1.941" />
-      <ellipse cx="17.205" cy="6.769" fill="#9C6030" rx="1.952" ry="1.941" />
-      <ellipse cx="19.548" cy="11.686" fill="#A0213E" rx="1.952" ry="1.941" />
-      <ellipse cx="12.001" cy="4.441" fill="#EBB042" rx="1.952" ry="1.941" />
-      <ellipse cx="4.452" cy="11.686" fill="#77CDD0" rx="1.952" ry="1.941" />
-      <ellipse cx="12" cy="19.559" fill="#6951F5" rx="1.952" ry="1.941" />
-    </svg>
-  );
-}
-
-function ChevronDownIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" {...props}>
-      <path
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M4.25 9.25 12 17l7.75-7.75"
-      />
-    </svg>
   );
 }
 

@@ -7,8 +7,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
 import { useCaseStudyTransition } from "@/components/case-study-transition-provider";
-import { OffMenuHeader } from "@/components/offmenu-header";
-import { useOffMenuTheme } from "@/hooks/use-offmenu-theme";
+import { StudioFinityHeader } from "@/components/studio-finity-header";
 import type { CaseStudy, NavLink } from "@/types/offmenu";
 
 interface OffMenuHomepageProps {
@@ -49,7 +48,7 @@ export function OffMenuHomepage({
   caseStudies,
   heroWords,
   navigationLinks,
-  resourceLinks,
+  resourceLinks: _resourceLinks,
 }: OffMenuHomepageProps) {
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   const orbitFadeRef = useRef<HTMLDivElement>(null);
@@ -90,7 +89,6 @@ export function OffMenuHomepage({
   const zoomStateRef = useRef({ value: 0 });
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const { themeMode, setThemeMode } = useOffMenuTheme();
   const { prefetchCaseStudy, startCaseStudyTransition, state: transitionState } =
     useCaseStudyTransition();
   const transitionActive = transitionState.isTransitioning;
@@ -604,9 +602,8 @@ export function OffMenuHomepage({
     gsap.set(target, { opacity: 0 });
     void target.offsetHeight;
 
-    const thumbnail = themeMode === "dark" ? caseStudy.thumbnailDark : caseStudy.thumbnailLight;
-    const thumbnailXl =
-      themeMode === "dark" ? caseStudy.thumbnailDarkXl : caseStudy.thumbnailLightXl;
+    const thumbnail = caseStudy.thumbnailLight;
+    const thumbnailXl = caseStudy.thumbnailLightXl;
 
     startCaseStudyTransition({
       element: target,
@@ -626,12 +623,9 @@ export function OffMenuHomepage({
 
   return (
     <main className="min-h-screen">
-      <OffMenuHeader
+      <StudioFinityHeader
         activeHref="/work"
-        navigationLinks={navigationLinks}
-        resourceLinks={resourceLinks}
-        themeMode={themeMode}
-        onToggleTheme={() => setThemeMode((current) => (current === "light" ? "dark" : "light"))}
+        links={navigationLinks}
       />
 
       <div ref={scrollTrackRef} className="relative" style={{ height: "1000vh" }}>
@@ -661,8 +655,7 @@ export function OffMenuHomepage({
                   style={{ gridTemplateAreas: "'layer'" }}
                 >
                   {caseStudies.map((caseStudy, index) => {
-                    const imageSrc =
-                      themeMode === "dark" ? caseStudy.thumbnailDark : caseStudy.thumbnailLight;
+                    const imageSrc = caseStudy.thumbnailLight;
 
                     return (
                       <Link
@@ -754,7 +747,7 @@ export function OffMenuHomepage({
 
           <div
             ref={titleOverlayRef}
-            className="fixed inset-0 z-50 h-screen w-screen bg-transparent text-background opacity-0 mix-blend-exclusion pointer-events-none dark:text-foreground"
+            className="fixed inset-0 z-50 h-screen w-screen bg-transparent text-background opacity-0 mix-blend-exclusion pointer-events-none"
             style={{
               visibility: transitionActive ? "hidden" : "visible",
             }}

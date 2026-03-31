@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { OffMenuHeader } from "@/components/offmenu-header";
+import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { OffMenuWorkFooter } from "@/components/offmenu-work-footer";
 import { OffMenuWorkHero } from "@/components/offmenu-work-hero";
-import { useOffMenuTheme } from "@/hooks/use-offmenu-theme";
 import type { CaseStudy, NavLink } from "@/types/offmenu";
 
 interface OffMenuWorkPlaceholderProps {
@@ -16,27 +15,19 @@ interface OffMenuWorkPlaceholderProps {
 export function OffMenuWorkPlaceholder({
   caseStudy,
   navigationLinks,
-  resourceLinks,
+  resourceLinks: _resourceLinks,
 }: OffMenuWorkPlaceholderProps) {
-  const { themeMode, setThemeMode } = useOffMenuTheme();
-
   return (
     <main className="offmenu-shell min-h-screen bg-background text-foreground">
-      <OffMenuHeader
+      <StudioFinityHeader
         activeHref="/work"
-        navigationLinks={navigationLinks}
-        resourceLinks={resourceLinks}
-        themeMode={themeMode}
-        onToggleTheme={() => setThemeMode((current) => (current === "light" ? "dark" : "light"))}
-        variant="work"
+        links={navigationLinks}
       />
 
       <OffMenuWorkHero
         description="The full case study is still being rebuilt, but this route is live so the homepage orbit and work navigation already have a real destination."
-        heroImageDark={caseStudy.thumbnailDarkXl}
-        heroImageLight={caseStudy.thumbnailLightXl}
+        heroImage={caseStudy.thumbnailLightXl}
         slug={caseStudy.slug}
-        themeMode={themeMode}
         title={caseStudy.title}
       />
 

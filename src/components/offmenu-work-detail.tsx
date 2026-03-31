@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { OffMenuHeader } from "@/components/offmenu-header";
+import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { OffMenuWorkFooter } from "@/components/offmenu-work-footer";
 import { OffMenuWorkHero } from "@/components/offmenu-work-hero";
-import { useOffMenuTheme } from "@/hooks/use-offmenu-theme";
 import type { CaseStudy, NavLink, WorkMediaImage, WorkProjectDetail } from "@/types/offmenu";
 
 interface OffMenuWorkDetailProps {
@@ -19,9 +18,8 @@ export function OffMenuWorkDetail({
   caseStudies,
   navigationLinks,
   project,
-  resourceLinks,
+  resourceLinks: _resourceLinks,
 }: OffMenuWorkDetailProps) {
-  const { themeMode, setThemeMode } = useOffMenuTheme();
   const creditsStatement = buildCreditsStatement(project);
   const relatedProjects = project.relatedSlugs
     .map((slug) => caseStudies.find((caseStudy) => caseStudy.slug === slug))
@@ -32,20 +30,15 @@ export function OffMenuWorkDetail({
 
   return (
     <main className="offmenu-shell bg-background text-foreground">
-      <OffMenuHeader
+      <StudioFinityHeader
         activeHref="/work"
-        navigationLinks={navigationLinks}
-        resourceLinks={resourceLinks}
-        themeMode={themeMode}
-        onToggleTheme={() => setThemeMode((current) => (current === "light" ? "dark" : "light"))}
+        links={navigationLinks}
       />
 
       <div className="min-h-screen">
         <OffMenuWorkHero
-          heroImageDark={project.heroImageDark}
-          heroImageLight={project.heroImageLight}
+          heroImage={project.heroImageLight}
           slug={project.slug}
-          themeMode={themeMode}
           title={project.title}
         />
 
@@ -140,10 +133,7 @@ export function OffMenuWorkDetail({
         <div className="py-16 md:py-24">
           <div className="group/row flex flex-col md:h-[68vh] md:flex-row">
             {relatedProjects.map((relatedProject, index) => {
-              const relatedImage =
-                themeMode === "dark"
-                  ? relatedProject.thumbnailDarkXl
-                  : relatedProject.thumbnailLightXl;
+              const relatedImage = relatedProject.thumbnailLightXl;
 
               return (
                 <Link

@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
-
 @font-face {
   font-family: "Neue Montreal";
   font-style: normal;
@@ -116,24 +114,27 @@
 
 :root {
   --font-cosmos: "Cosmos Oracle", serif;
-  --background: #fdfdfc;
-  --foreground: #12110d;
-  --card: #fdfdfc;
-  --card-foreground: #12110d;
-  --popover: #fdfdfc;
-  --popover-foreground: #12110d;
-  --primary: #12110d;
-  --primary-foreground: #fdfdfc;
-  --secondary: rgba(18, 17, 13, 0.08);
-  --secondary-foreground: #12110d;
-  --muted: rgba(18, 17, 13, 0.06);
-  --muted-foreground: rgba(18, 17, 13, 0.5);
-  --accent: rgba(18, 17, 13, 0.08);
-  --accent-foreground: #12110d;
+  --font-body: "Neue Montreal", sans-serif;
+  --font-display: "Neue Montreal", sans-serif;
+  --font-brand: "Cosmos Oracle", serif;
+  --background: #fcfcfd;
+  --foreground: #111111;
+  --card: #fcfcfd;
+  --card-foreground: #111111;
+  --popover: #fcfcfd;
+  --popover-foreground: #111111;
+  --primary: #111111;
+  --primary-foreground: #fcfcfd;
+  --secondary: rgba(17, 17, 17, 0.08);
+  --secondary-foreground: #111111;
+  --muted: rgba(17, 17, 17, 0.06);
+  --muted-foreground: rgba(17, 17, 17, 0.5);
+  --accent: rgba(17, 17, 17, 0.08);
+  --accent-foreground: #111111;
   --destructive: #bf000f;
-  --border: rgba(18, 17, 13, 0.1);
-  --input: rgba(18, 17, 13, 0.15);
-  --ring: rgba(18, 17, 13, 0.2);
+  --border: rgba(17, 17, 17, 0.1);
+  --input: rgba(17, 17, 17, 0.15);
+  --ring: rgba(17, 17, 17, 0.2);
   --chart-1: #e5e7eb;
   --chart-2: #6a7282;
   --chart-3: #4a5565;
@@ -141,52 +142,27 @@
   --chart-5: #101828;
   --radius: 0.75rem;
   --sidebar: #fdfdfc;
-  --sidebar-foreground: #12110d;
-  --sidebar-primary: #12110d;
-  --sidebar-primary-foreground: #fdfdfc;
-  --sidebar-accent: rgba(18, 17, 13, 0.06);
-  --sidebar-accent-foreground: #12110d;
-  --sidebar-border: rgba(18, 17, 13, 0.1);
-  --sidebar-ring: rgba(18, 17, 13, 0.2);
+  --sidebar-foreground: #111111;
+  --sidebar-primary: #111111;
+  --sidebar-primary-foreground: #fcfcfd;
+  --sidebar-accent: rgba(17, 17, 17, 0.06);
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: rgba(17, 17, 17, 0.1);
+  --sidebar-ring: rgba(17, 17, 17, 0.2);
   --halo: rgba(255, 255, 255, 0.3);
-  --menu-shadow: 0 30px 80px rgba(18, 17, 13, 0.12);
+  --menu-shadow: 0 30px 80px rgba(17, 17, 17, 0.12);
+
+  /* Studio Finity semantic neutrals */
+  --sf-bg: #fcfcfd;
+  --sf-surface: #f3f4f6;
+  --sf-surface-strong: #eceff1;
+  --sf-text: #111111;
+  --sf-text-muted: rgba(17, 17, 17, 0.66);
+  --sf-border: rgba(17, 17, 17, 0.1);
+  --sf-inverse-bg: #111111;
+  --sf-inverse-text: #ffffff;
 }
 
-.dark {
-  --background: #12110d;
-  --foreground: #edecec;
-  --card: #12110d;
-  --card-foreground: #edecec;
-  --popover: #12110d;
-  --popover-foreground: #edecec;
-  --primary: #edecec;
-  --primary-foreground: #12110d;
-  --secondary: rgba(255, 255, 255, 0.08);
-  --secondary-foreground: #edecec;
-  --muted: rgba(255, 255, 255, 0.08);
-  --muted-foreground: rgba(237, 236, 236, 0.55);
-  --accent: rgba(255, 255, 255, 0.08);
-  --accent-foreground: #edecec;
-  --destructive: #ff6568;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.15);
-  --ring: rgba(255, 255, 255, 0.18);
-  --chart-1: #d1d5dc;
-  --chart-2: #99a1af;
-  --chart-3: #6a7282;
-  --chart-4: #4a5565;
-  --chart-5: #1e2939;
-  --sidebar: #12110d;
-  --sidebar-foreground: #edecec;
-  --sidebar-primary: #edecec;
-  --sidebar-primary-foreground: #12110d;
-  --sidebar-accent: rgba(255, 255, 255, 0.08);
-  --sidebar-accent-foreground: #edecec;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: rgba(255, 255, 255, 0.18);
-  --halo: rgba(255, 255, 255, 0.1);
-  --menu-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
-}
 
 @layer base {
   html {
@@ -200,9 +176,15 @@
 
   body {
     @apply min-h-full bg-background text-foreground;
+    font-family: var(--font-body);
     transition:
       background-color 300ms ease,
       color 300ms ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 }
 
@@ -215,7 +197,20 @@ html.is-safari body {
 }
 
 .font-cosmos {
-  font-family: "Cosmos Oracle", serif;
+  font-family: var(--font-brand);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.sf-text-muted {
+  color: var(--sf-text-muted);
+}
+
+.sf-surface {
+  background-color: var(--sf-surface);
+  border-color: var(--sf-border);
 }
 
 .hero-word {
@@ -288,12 +283,6 @@ html.is-safari body {
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, white 35%, transparent),
     0 10px 30px rgba(18, 17, 13, 0.08);
-}
-
-.dark .offmenu-glass-button {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .offmenu-dot {
