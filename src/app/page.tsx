@@ -1,9 +1,18 @@
+import { OffMenuHomepage } from "@/components/offmenu-homepage";
+import {
+  homepageCaseStudies,
+  offMenuHeroWords,
+  offMenuResourceLinks,
+  offMenuWorkNavigationLinks,
+} from "@/lib/offmenu-data";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <p className="text-muted-foreground">
-        Clone target not yet built. Run <code className="font-mono text-foreground">/clone-website</code> to start.
-      </p>
-    </main>
+    <OffMenuHomepage
+      caseStudies={homepageCaseStudies}
+      heroWords={offMenuHeroWords}
+      navigationLinks={offMenuWorkNavigationLinks}
+      resourceLinks={offMenuResourceLinks}
+    />
   );
 }
