@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatedWords } from "@/components/animated-words";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { OffMenuWorkFooter } from "@/components/offmenu-work-footer";
 import { OffMenuWorkHero } from "@/components/offmenu-work-hero";
@@ -20,6 +21,7 @@ export function OffMenuWorkDetail({
   project,
   resourceLinks: _resourceLinks,
 }: OffMenuWorkDetailProps) {
+  void _resourceLinks;
   const creditsStatement = buildCreditsStatement(project);
   const relatedProjects = project.relatedSlugs
     .map((slug) => caseStudies.find((caseStudy) => caseStudy.slug === slug))
@@ -33,6 +35,7 @@ export function OffMenuWorkDetail({
       <StudioFinityHeader
         activeHref="/work"
         links={navigationLinks}
+        overlay
       />
 
       <div className="min-h-screen">
@@ -57,7 +60,7 @@ export function OffMenuWorkDetail({
                 <ul className="text-sm font-medium [&>li]:mb-0 [&>li]:list-none [&>li]:items-center [&>li]:gap-2 [&>li]:border-t [&>li]:border-foreground/10 [&>li]:py-3 lg:[&>li]:flex">
                   {project.details.map((detail, index) => (
                     <li key={`${detail.label}-${index}`}>
-                      <span className="flex-1 text-foreground/40">{detail.label}</span>
+                      <span className="sf-copy-subtle flex-1">{detail.label}</span>
                       <span>{detail.value}</span>
                     </li>
                   ))}
@@ -71,7 +74,7 @@ export function OffMenuWorkDetail({
                 <ul className="space-y-2 text-sm font-medium">
                   {project.scopeItems.map((item, index) => (
                     <li key={`${item}-${index}`} className="flex items-start gap-3">
-                      <span className="min-w-8 text-foreground/40">
+                      <span className="sf-copy-subtle min-w-8">
                         {String(index + 1).padStart(2, "0")}
                       </span>
                       <span>{item}</span>
@@ -128,7 +131,12 @@ export function OffMenuWorkDetail({
       </div>
 
       <section className="px-4 pb-4 pt-24 md:px-6 lg:px-8">
-        <h2 className="-mb-12 text-2xl font-medium md:text-4xl">Want to see more?</h2>
+        <AnimatedWords
+          as="h2"
+          text="Want to see more?"
+          className="-mb-12 text-2xl font-medium md:text-4xl"
+          triggerOnView
+        />
 
         <div className="py-16 md:py-24">
           <div className="group/row flex flex-col md:h-[68vh] md:flex-row">
@@ -167,12 +175,15 @@ export function OffMenuWorkDetail({
       </section>
 
       <section className="flex flex-col items-center justify-center gap-8 pb-35 pt-24">
-        <h2 className="text-center text-3xl font-medium md:text-4xl lg:text-5xl">
-          {project.ctaTitle}
-        </h2>
+        <AnimatedWords
+          as="h2"
+          text={project.ctaTitle}
+          className="text-center text-3xl font-medium md:text-4xl lg:text-5xl"
+          triggerOnView
+        />
         <a
           href={project.ctaHref}
-          className="rounded-full bg-foreground px-8 py-4 text-lg font-medium text-background transition-opacity hover:opacity-80"
+          className="sf-interactive sf-pill-button sf-pill-button-primary text-lg"
         >
           {project.ctaLabel}
         </a>
@@ -213,25 +224,18 @@ function buildCreditsStatement(project: WorkProjectDetail) {
 function WorkNarrative({
   content,
   label,
-  size,
+  size: _size,
 }: {
   content: string;
   label: string;
   size: "body" | "display";
 }) {
+  void _size;
   return (
     <section className="px-6 py-10 md:px-12 lg:px-20">
       <div className="flex max-w-4xl flex-col gap-5">
-        <span className="text-sm font-medium text-foreground/40">{label}</span>
-        <p
-          className={
-            size === "display"
-              ? "max-w-3xl text-xl font-medium leading-tight md:text-3xl"
-              : "max-w-3xl text-base font-medium leading-tight md:text-lg"
-          }
-        >
-          {content}
-        </p>
+        <span className="sf-copy-subtle text-sm font-medium">{label}</span>
+        <p className="max-w-3xl text-base font-medium leading-tight md:text-lg">{content}</p>
       </div>
     </section>
   );

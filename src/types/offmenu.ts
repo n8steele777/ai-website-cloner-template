@@ -63,6 +63,12 @@ export interface WorkProjectDetail {
 export interface StudioRule {
   id: string;
   statement: string;
+  reference?: {
+    image: string;
+    name: string;
+    quote: string;
+    rotation?: number;
+  };
 }
 
 export interface StudioAboutContent {

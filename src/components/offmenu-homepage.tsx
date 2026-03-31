@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
 import { useCaseStudyTransition } from "@/components/case-study-transition-provider";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
+import { scrollToInstant, scrollToSmooth } from "@/lib/smooth-scroll";
 import type { CaseStudy, NavLink } from "@/types/offmenu";
 
 interface OffMenuHomepageProps {
@@ -50,6 +51,7 @@ export function OffMenuHomepage({
   navigationLinks,
   resourceLinks: _resourceLinks,
 }: OffMenuHomepageProps) {
+  void _resourceLinks;
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   const orbitFadeRef = useRef<HTMLDivElement>(null);
   const orbitStageRef = useRef<HTMLDivElement>(null);
@@ -94,9 +96,7 @@ export function OffMenuHomepage({
   const transitionActive = transitionState.isTransitioning;
 
   useLayoutEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+    scrollToInstant(0);
 
     openingRef.current = false;
     hoverIndexRef.current = null;
@@ -571,10 +571,7 @@ export function OffMenuHomepage({
       scrollTrack.offsetTop +
       (0.2 + 0.8 * (index / Math.max(caseStudies.length - 1, 1))) * scrollTrack.offsetHeight;
 
-    window.scrollTo({
-      top: targetTop,
-      behavior: "smooth",
-    });
+    scrollToSmooth(targetTop);
   }
 
   function cycleCaseStudy(direction: "prev" | "next") {
@@ -626,6 +623,7 @@ export function OffMenuHomepage({
       <StudioFinityHeader
         activeHref="/work"
         links={navigationLinks}
+        overlay
       />
 
       <div ref={scrollTrackRef} className="relative" style={{ height: "1000vh" }}>

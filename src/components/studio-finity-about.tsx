@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import { AnimatedWords } from "@/components/animated-words";
+import { StudioGroundRules } from "@/components/studio-ground-rules";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
+import { usePageTransition } from "@/components/page-transition-provider";
 import type { NavLink, StudioAboutContent } from "@/types/offmenu";
 
 interface StudioFinityAboutProps {
@@ -16,78 +19,161 @@ export function StudioFinityAbout({
   navigationLinks,
   resourceLinks: _resourceLinks,
 }: StudioFinityAboutProps) {
-  const rootRef = useRef<HTMLElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
+  void _resourceLinks;
+  const { pageReady } = usePageTransition();
+  const heroParts = content.hero.split("Studio Finity");
+  const rootRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
-    if (!rootRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+
+    if (!root) {
       return;
     }
 
-    const ctx = gsap.context(() => {
-      const heroElements = Array.from(
-        heroRef.current?.querySelectorAll<HTMLElement>("[data-about-hero]") ?? [],
-      );
-      const blocks = Array.from(
-        rootRef.current?.querySelectorAll<HTMLElement>("[data-about-block]") ?? [],
-      );
+    let cancelled = false;
+    const cleanups: Array<() => void> = [];
 
-      gsap.fromTo(
-        heroElements,
-        { y: 28, opacity: 0, filter: "blur(10px)" },
-        {
-          y: 0,
-          opacity: 1,
-          filter: "blur(0px)",
-          duration: 0.8,
-          ease: "power3.out",
-          stagger: 0.08,
-          clearProps: "transform,opacity,filter",
-        },
-      );
+    const readyPromise =
+      "fonts" in document ? document.fonts.ready.catch(() => undefined) : Promise.resolve();
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) {
-              return;
-            }
+    void readyPromise.then(() => {
+      if (cancelled || !pageReady) {
+        return;
+      }
 
-            observer.unobserve(entry.target);
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        root.querySelectorAll<HTMLElement>("[data-about-reveal], [data-about-stagger]").forEach((node) => {
+          gsap.set(node, { clearProps: "all" });
+        });
+        return;
+      }
 
-            gsap.fromTo(
-              entry.target,
-              { y: 32, opacity: 0, filter: "blur(12px)" },
-              {
-                y: 0,
-                opacity: 1,
-                filter: "blur(0px)",
-                duration: 0.78,
-                ease: "power3.out",
-                clearProps: "transform,opacity,filter",
-              },
-            );
-          });
-        },
-        {
-          rootMargin: "0px 0px -14% 0px",
-          threshold: 0.18,
-        },
-      );
+      const revealNodes = Array.from(root.querySelectorAll<HTMLElement>("[data-about-reveal]"));
+      revealNodes.forEach((node, index) => {
+        let observer: IntersectionObserver | null = null;
+        let hasAnimated = false;
 
-      blocks.forEach((block) => {
-        observer.observe(block);
+        const animate = () => {
+          if (hasAnimated) {
+            return;
+          }
+
+          hasAnimated = true;
+          gsap.fromTo(
+            node,
+            {
+              autoAlpha: 0,
+              y: 28,
+              filter: "blur(8px)",
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              filter: "blur(0px)",
+              duration: 0.72,
+              delay: index * 0.03,
+              ease: "power3.out",
+              clearProps: "filter",
+            },
+          );
+        };
+
+        const rect = node.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        if (rect.bottom > 0 && rect.top < viewportHeight * 0.96) {
+          animate();
+        } else {
+          gsap.set(node, { autoAlpha: 0, y: 28, filter: "blur(8px)" });
+          observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                  return;
+                }
+
+                observer?.disconnect();
+                animate();
+              });
+            },
+            { threshold: 0, rootMargin: "0px 0px -12% 0px" },
+          );
+          observer.observe(node);
+        }
+
+        cleanups.push(() => {
+          observer?.disconnect();
+          gsap.killTweensOf(node);
+        });
       });
 
-      return () => {
-        observer.disconnect();
-      };
-    }, rootRef);
+      const staggerNodes = Array.from(root.querySelectorAll<HTMLElement>("[data-about-stagger]"));
+      staggerNodes.forEach((group) => {
+        const items = Array.from(group.querySelectorAll<HTMLElement>("[data-about-item]"));
+
+        if (items.length === 0) {
+          return;
+        }
+
+        let observer: IntersectionObserver | null = null;
+        let hasAnimated = false;
+
+        const animate = () => {
+          if (hasAnimated) {
+            return;
+          }
+
+          hasAnimated = true;
+          gsap.fromTo(
+            items,
+            {
+              autoAlpha: 0,
+              y: 22,
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.58,
+              ease: "power3.out",
+              stagger: 0.05,
+            },
+          );
+        };
+
+        const rect = group.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        if (rect.bottom > 0 && rect.top < viewportHeight * 0.96) {
+          animate();
+        } else {
+          gsap.set(items, { autoAlpha: 0, y: 22 });
+          observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                  return;
+                }
+
+                observer?.disconnect();
+                animate();
+              });
+            },
+            { threshold: 0, rootMargin: "0px 0px -12% 0px" },
+          );
+          observer.observe(group);
+        }
+
+        cleanups.push(() => {
+          observer?.disconnect();
+          gsap.killTweensOf(items);
+        });
+      });
+    });
 
     return () => {
-      ctx.revert();
+      cancelled = true;
+      cleanups.forEach((cleanup) => cleanup());
     };
-  }, []);
+  }, [pageReady]);
 
   return (
     <main ref={rootRef} className="offmenu-shell min-h-screen bg-background text-foreground">
@@ -96,107 +182,80 @@ export function StudioFinityAbout({
         links={navigationLinks}
       />
 
-      <section className="px-6 pb-16 pt-28 md:px-12 md:pt-32 lg:px-20">
-        <div ref={heroRef} className="max-w-6xl">
-          <p
-            data-about-hero
-            className="text-[11px] font-medium uppercase tracking-[0.28em] text-foreground/45"
-          >
-            About
-          </p>
-          <h1
-            data-about-hero
-            className="mt-6 max-w-5xl text-4xl font-medium leading-[0.98] tracking-tight md:text-6xl lg:text-7xl"
-          >
-            {content.hero}
-          </h1>
+      <section className="px-4 pb-16 pt-28 md:px-10 md:pt-32 lg:px-14">
+        <div className="relative overflow-hidden rounded-[28px] px-4 pb-10 pt-6 md:px-8 md:pb-16 md:pt-10 lg:px-10 lg:pb-20">
+          <div className="relative pt-14 md:pt-20">
+            <AnimatedWords
+              as="h1"
+              text={`${heroParts[0]}${heroParts[1] ? `\nStudio Finity${heroParts[1]}` : ""}`}
+              className="max-w-[13ch] text-[2.45rem] font-medium leading-[0.92] tracking-[-0.04em] md:text-[4.5rem] lg:text-[6rem]"
+              lineClassName="leading-[0.92]"
+              delay={0.08}
+              stagger={0.022}
+            />
+          </div>
         </div>
       </section>
 
-      <section className="px-6 pb-20 md:px-12 lg:px-20">
-        <div
-          data-about-block
-          className="grid gap-8 border-t border-foreground/10 pt-8 md:grid-cols-[10rem_1fr]"
-        >
-          <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-foreground/45">
+      <section className="px-4 pb-22 md:px-10 lg:px-14">
+        <div className="max-w-[1180px] px-4 md:px-8 lg:px-10">
+          <p data-about-reveal className="text-[1.05rem] font-medium tracking-[0em] text-black/34">
             {content.introLabel}
           </p>
-          <div className="max-w-4xl">
-            <p className="text-2xl font-medium leading-tight md:text-3xl">{content.intro}</p>
-            <p className="mt-5 text-lg text-foreground/58">{content.location}</p>
-          </div>
+          <AnimatedWords
+            as="p"
+            text={`${content.intro}\nBased in ${content.location.replace(/^Based in /, "")}`}
+            className="mt-3 max-w-[20ch] text-[2.15rem] font-medium leading-[0.95] tracking-[-0.04em] md:text-[3.45rem] lg:text-[4.25rem]"
+            lineClassName="leading-[0.95]"
+            delay={0.14}
+            stagger={0.02}
+            triggerOnView
+          />
         </div>
       </section>
 
-      <section className="px-6 pb-20 md:px-12 lg:px-20">
-        <div
-          data-about-block
-          className="grid gap-8 border-t border-foreground/10 pt-8 md:grid-cols-[10rem_1fr]"
-        >
-          <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-foreground/45">
-            Ground Rules
-          </p>
-          <div className="grid gap-x-10 gap-y-4 md:grid-cols-2">
-            {content.rules.map((rule) => (
-              <div key={rule.id} className="flex gap-4 border-b border-foreground/8 pb-4">
-                <span className="w-10 shrink-0 text-[11px] font-medium uppercase tracking-[0.28em] text-foreground/42">
-                  {rule.id}
-                </span>
-                <p className="text-lg font-medium leading-tight">{rule.statement}</p>
-              </div>
-            ))}
-          </div>
+      <section className="px-4 pb-28 md:px-10 lg:px-14">
+        <div className="mx-auto max-w-[1040px] px-4 md:px-8 lg:px-10">
+          <StudioGroundRules rules={content.rules} />
         </div>
       </section>
 
-      <section className="px-6 pb-24 md:px-12 lg:px-20">
-        <div className="grid gap-14 border-t border-foreground/10 pt-8 lg:grid-cols-3">
-          <div data-about-block>
-            <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-foreground/45">
+      <section className="px-4 pb-28 md:px-10 lg:px-14">
+        <div className="grid gap-14 px-4 md:px-8 lg:grid-cols-[1.55fr_0.8fr] lg:px-10">
+          <div>
+            <p data-about-reveal className="text-[1.05rem] font-medium tracking-[0em] text-black/34">
               Expertise
             </p>
-            <div className="mt-6 flex flex-col gap-2 text-3xl font-medium tracking-tight">
+            <div data-about-stagger className="mt-4 flex flex-col text-[2.45rem] font-medium leading-[0.9] tracking-[-0.04em] md:text-[4.6rem] lg:text-[5rem]">
               {content.expertise.map((item) => (
-                <p key={item}>{item}</p>
+                <p key={item} data-about-item>{item}</p>
               ))}
             </div>
           </div>
 
-          <div data-about-block>
-            <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-foreground/45">
+          <div>
+            <p data-about-reveal className="text-[1.05rem] font-medium tracking-[0em] text-black/34">
               Industries
             </p>
-            <div className="mt-6 flex flex-col gap-2 text-lg text-foreground/78">
+            <div data-about-stagger className="mt-4 flex max-w-[20rem] flex-col gap-1.5 text-[1.05rem] leading-[1.2] tracking-[0em] text-black/92 md:text-[1.25rem]">
               {content.industries.map((item) => (
-                <p key={item}>{item}</p>
-              ))}
-            </div>
-          </div>
-
-          <div data-about-block>
-            <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-foreground/45">
-              Clients
-            </p>
-            <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 text-lg font-medium">
-              {content.clients.map((client) => (
-                <p key={client}>{client}</p>
+                <p key={item} data-about-item>{item}</p>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="px-6 pb-28 md:px-12 lg:px-20">
-        <div data-about-block className="border-t border-foreground/10 pt-10">
-          <p className="max-w-3xl text-3xl font-medium leading-tight md:text-5xl">
-            Distinct brands. Elevated digital experiences. Sharp storytelling.
+      <section className="px-4 pb-28 md:px-10 lg:px-14">
+        <div className="mx-auto max-w-[760px] px-4 md:px-8 lg:px-10">
+          <p data-about-reveal className="text-[1.05rem] font-medium tracking-[0em] text-black/34">
+            Clients
           </p>
-          <a
-            href="mailto:christian@offmenu.design"
-            className="mt-8 inline-flex rounded-full bg-foreground px-8 py-4 text-base font-medium text-background transition-opacity hover:opacity-80"
-          >
-            Start a conversation
-          </a>
+          <div data-about-stagger className="mt-4 flex flex-col text-[2.45rem] font-medium leading-[0.92] tracking-[-0.04em] md:text-[4.4rem] lg:text-[4.95rem]">
+            {content.clients.map((client) => (
+              <p key={client} data-about-item>{client}</p>
+            ))}
+          </div>
         </div>
       </section>
     </main>

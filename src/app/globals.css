@@ -3,77 +3,45 @@
 @import "shadcn/tailwind.css";
 
 @font-face {
-  font-family: "Neue Montreal";
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: block;
-  src: url("/fonts/Neue Montreal/PPNeueMontreal-Variable.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Neue Montreal";
-  font-style: italic;
-  font-weight: 100 900;
-  font-display: block;
-  src: url("/fonts/Neue Montreal/PPNeueMontreal-Variable.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Neue Montreal Safari";
+  font-family: "Open Sauce Sans";
   font-style: normal;
   font-weight: 400;
-  font-display: block;
-  src: url("/fonts/Neue Montreal/woff2/PPNeueMontreal-Regular.woff2") format("woff2");
+  font-display: swap;
+  src: url("/fonts/Open-Sauce-Sans/TTF/OpenSauceSans-Regular.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Neue Montreal Safari";
+  font-family: "Open Sauce Sans";
   font-style: normal;
   font-weight: 500;
-  font-display: block;
-  src: url("/fonts/Neue Montreal/woff2/PPNeueMontreal-Regular.woff2") format("woff2");
+  font-display: swap;
+  src: url("/fonts/Open-Sauce-Sans/TTF/OpenSauceSans-Medium.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Neue Montreal Safari";
+  font-family: "Open Sauce Sans";
   font-style: normal;
   font-weight: 600;
-  font-display: block;
-  src: url("/fonts/Neue Montreal/woff2/PPNeueMontreal-Medium.woff2") format("woff2");
+  font-display: swap;
+  src: url("/fonts/Open-Sauce-Sans/TTF/OpenSauceSans-SemiBold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Cosmos Oracle";
+  font-family: "Open Sauce Sans";
   font-style: normal;
-  font-weight: 300;
-  font-display: block;
-  src: url("/fonts/cosmos/cosmos-oracle-book.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Cosmos Oracle";
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url("/fonts/cosmos/cosmos-oracle-regular.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Cosmos Oracle";
-  font-style: normal;
-  font-weight: 500;
-  font-display: block;
-  src: url("/fonts/cosmos/cosmos-oracle-medium.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/Open-Sauce-Sans/TTF/OpenSauceSans-Bold.ttf") format("truetype");
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Neue Montreal", sans-serif;
-  --font-cosmos: "Cosmos Oracle", serif;
+  --font-sans: "Open Sauce Sans", sans-serif;
+  --font-cosmos: "Open Sauce Sans", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
-  --font-heading: var(--font-sans);
+  --font-heading: "Open Sauce Sans", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -113,10 +81,11 @@
 }
 
 :root {
-  --font-cosmos: "Cosmos Oracle", serif;
-  --font-body: "Neue Montreal", sans-serif;
-  --font-display: "Neue Montreal", sans-serif;
-  --font-brand: "Cosmos Oracle", serif;
+  --font-cosmos: "Open Sauce Sans", sans-serif;
+  --font-body: "Open Sauce Sans", sans-serif;
+  --font-display: "Open Sauce Sans", sans-serif;
+  --font-brand: "Open Sauce Sans", sans-serif;
+  --font-heading: "Open Sauce Sans", sans-serif;
   --background: #fcfcfd;
   --foreground: #111111;
   --card: #fcfcfd;
@@ -156,11 +125,17 @@
   --sf-bg: #fcfcfd;
   --sf-surface: #f3f4f6;
   --sf-surface-strong: #eceff1;
+  --sf-surface-elevated: rgba(255, 255, 255, 0.82);
   --sf-text: #111111;
-  --sf-text-muted: rgba(17, 17, 17, 0.66);
+  --sf-text-soft: rgba(17, 17, 17, 0.82);
+  --sf-text-muted: rgba(17, 17, 17, 0.72);
+  --sf-text-subtle: rgba(17, 17, 17, 0.56);
   --sf-border: rgba(17, 17, 17, 0.1);
+  --sf-border-strong: rgba(17, 17, 17, 0.14);
   --sf-inverse-bg: #111111;
   --sf-inverse-text: #ffffff;
+  --sf-focus-ring: rgba(17, 17, 17, 0.14);
+  --sf-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 
@@ -177,6 +152,7 @@
   body {
     @apply min-h-full bg-background text-foreground;
     font-family: var(--font-body);
+    letter-spacing: 0;
     transition:
       background-color 300ms ease,
       color 300ms ease;
@@ -184,20 +160,53 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
+  }
+
+  p, li, span, label, input, textarea, select, button, a {
+    letter-spacing: 0;
   }
 }
 
 html.is-safari {
-  --font-sans: "Neue Montreal Safari", sans-serif;
+  --font-sans: "Open Sauce Sans", sans-serif;
+  --font-body: "Open Sauce Sans", sans-serif;
+  --font-display: "Open Sauce Sans", sans-serif;
+  --font-brand: "Open Sauce Sans", sans-serif;
+  --font-heading: "Open Sauce Sans", sans-serif;
 }
 
 html.is-safari body {
   -webkit-font-smoothing: auto;
 }
 
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
 .font-cosmos {
   font-family: var(--font-brand);
+}
+
+.font-heading {
+  font-family: var(--font-heading);
 }
 
 .font-display {
@@ -208,9 +217,100 @@ html.is-safari body {
   color: var(--sf-text-muted);
 }
 
+.sf-copy-soft {
+  color: var(--sf-text-soft);
+}
+
+.sf-copy-subtle {
+  color: var(--sf-text-subtle);
+}
+
+.sf-eyebrow {
+  color: var(--sf-text-subtle);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
 .sf-surface {
   background-color: var(--sf-surface);
   border-color: var(--sf-border);
+}
+
+.sf-panel {
+  border: 1px solid var(--sf-border);
+  background: var(--sf-surface-elevated);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.06);
+}
+
+.sf-interactive {
+  transition:
+    transform 220ms var(--sf-ease-out),
+    opacity 220ms var(--sf-ease-out),
+    background-color 220ms var(--sf-ease-out),
+    border-color 220ms var(--sf-ease-out),
+    color 220ms var(--sf-ease-out),
+    box-shadow 220ms var(--sf-ease-out);
+}
+
+@media (hover: hover) {
+  .sf-interactive:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.sf-interactive:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--sf-focus-ring);
+}
+
+.sf-pill-button {
+  display: inline-flex;
+  min-height: 48px;
+  min-width: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.875rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.sf-pill-button-primary {
+  background: var(--sf-inverse-bg);
+  color: var(--sf-inverse-text);
+}
+
+.sf-pill-button-primary:hover {
+  opacity: 0.92;
+}
+
+.sf-pill-button-secondary {
+  border: 1px solid var(--sf-border);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--sf-text);
+}
+
+.sf-pill-button-secondary:hover {
+  background: rgba(17, 17, 17, 0.04);
+}
+
+.sf-inline-link {
+  color: var(--sf-text-muted);
+  transition: opacity 180ms var(--sf-ease-out), color 180ms var(--sf-ease-out);
+}
+
+.sf-inline-link:hover {
+  color: var(--sf-text);
+}
+
+.sf-inline-link:focus-visible {
+  outline: none;
+  color: var(--sf-text);
+  box-shadow: 0 2px 0 0 var(--sf-text);
 }
 
 .hero-word {
@@ -219,6 +319,17 @@ html.is-safari body {
 }
 
 .hero-word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  padding-block: 0.15em;
+  margin-block: -0.15em;
+}
+
+.animated-word {
+  will-change: transform, opacity;
+}
+
+.animated-word-wrap {
   display: inline-block;
   overflow: hidden;
   padding-block: 0.15em;
@@ -261,30 +372,6 @@ html.is-safari body {
   box-shadow: var(--menu-shadow);
 }
 
-.offmenu-glass {
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--background) 58%, transparent), color-mix(in srgb, var(--background) 42%, transparent)),
-    linear-gradient(135deg, color-mix(in srgb, var(--foreground) 7%, transparent), transparent 58%);
-  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-  box-shadow: var(--menu-shadow);
-  backdrop-filter: blur(28px) saturate(160%);
-  -webkit-backdrop-filter: blur(28px) saturate(160%);
-}
-
-.offmenu-glass-shell {
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--background) 52%, transparent), color-mix(in srgb, var(--background) 28%, transparent)),
-    linear-gradient(135deg, color-mix(in srgb, var(--foreground) 6%, transparent), transparent 64%);
-}
-
-.offmenu-glass-button {
-  background: color-mix(in srgb, var(--background) 36%, transparent);
-  border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 35%, transparent),
-    0 10px 30px rgba(18, 17, 13, 0.08);
-}
-
 .offmenu-dot {
   width: 5px;
   height: 5px;
@@ -317,6 +404,10 @@ html.is-safari body {
 
 @media (prefers-reduced-motion: reduce) {
   .hero-word {
+    transform: none;
+  }
+
+  .animated-word {
     transform: none;
   }
 

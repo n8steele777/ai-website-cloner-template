@@ -1,15 +1,14 @@
 import type { CosmosHomepageData } from "@/types/cosmos";
 
-const contactHref = "mailto:christian@offmenu.design";
+const contactHref = "mailto:hello@studio-finity.com";
 
 export const cosmosHomepageData: CosmosHomepageData = {
   headerLinks: [
-    { label: "Work", href: "/work" },
     { label: "About", href: "/about" },
+    { label: "Works", href: "/work" },
   ],
   headerActions: [
-    { label: "Contact", href: contactHref, external: true, variant: "ghost" },
-    { label: "View work", href: "/work", variant: "primary" },
+    { label: "Contact", href: contactHref, external: true, variant: "primary" },
   ],
   heroTitle: "Your space for inspiration",
   heroButtons: [

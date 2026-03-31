@@ -17,6 +17,7 @@ export function OffMenuWorkPlaceholder({
   navigationLinks,
   resourceLinks: _resourceLinks,
 }: OffMenuWorkPlaceholderProps) {
+  void _resourceLinks;
   return (
     <main className="offmenu-shell min-h-screen bg-background text-foreground">
       <StudioFinityHeader
@@ -32,17 +33,15 @@ export function OffMenuWorkPlaceholder({
       />
 
       <section className="px-6 pb-24 pt-4 md:px-12 lg:px-20">
-        <div className="offmenu-glass mx-auto hidden max-w-sm rounded-[1.5rem] p-6 text-foreground md:block">
-          <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-foreground/50">
-            In progress
-          </p>
+        <div className="sf-panel mx-auto hidden max-w-sm rounded-[1.5rem] p-6 text-foreground md:block">
+          <p className="sf-eyebrow">In progress</p>
           <p className="mt-4 text-lg font-medium leading-tight">
             Flex is the fully cloned base right now. The remaining work pages can inherit the same
             structure next.
           </p>
           <Link
             href="/work/flex"
-            className="offmenu-glass-button mt-6 inline-flex rounded-full px-5 py-3 text-sm font-medium text-foreground transition-opacity hover:opacity-80"
+            className="sf-interactive sf-pill-button sf-pill-button-secondary mt-6 text-sm"
           >
             Open Flex case study
           </Link>

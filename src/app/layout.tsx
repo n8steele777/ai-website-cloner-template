@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { CaseStudyTransitionProvider } from "@/components/case-study-transition-provider";
+import { PageTransitionProvider } from "@/components/page-transition-provider";
+import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -69,7 +71,11 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full bg-background text-foreground">
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <CaseStudyTransitionProvider>{children}</CaseStudyTransitionProvider>
+        <SmoothScrollProvider>
+          <CaseStudyTransitionProvider>
+            <PageTransitionProvider>{children}</PageTransitionProvider>
+          </CaseStudyTransitionProvider>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

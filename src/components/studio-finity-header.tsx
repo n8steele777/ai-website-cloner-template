@@ -2,8 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import Link from "next/link";
-import { useMemo, useState, type SVGProps } from "react";
+import { useMemo } from "react";
+import { TransitionLink } from "@/components/transition-link";
 import { cn } from "@/lib/utils";
 import type { NavLink } from "@/types/offmenu";
 
@@ -18,123 +18,111 @@ interface StudioFinityHeaderProps {
   links: NavLink[];
   activeHref?: string;
   actions?: HeaderAction[];
+  overlay?: boolean;
 }
 
 const defaultActions: HeaderAction[] = [
-  { label: "Contact", href: "mailto:christian@offmenu.design", external: true, variant: "ghost" },
-  { label: "View work", href: "/work", variant: "primary" },
+  { label: "Contact", href: "mailto:hello@studio-finity.com", external: true, variant: "primary" },
 ];
 
-export function StudioFinityHeader({ links, activeHref, actions = defaultActions }: StudioFinityHeaderProps) {
-  const [menuOpen, setMenuOpen] = useState(false);
+export function StudioFinityHeader({
+  links,
+  activeHref,
+  actions = defaultActions,
+  overlay = false,
+}: StudioFinityHeaderProps) {
   const visibleLinks = useMemo(() => links.filter((link) => !link.disabled), [links]);
+  const navButtons = useMemo<HeaderAction[]>(
+    () =>
+      visibleLinks.map((link) => ({
+        label: link.label,
+        href: link.href,
+        external: link.external,
+        variant: "secondary",
+      })),
+    [visibleLinks],
+  );
+  const allActions = [...navButtons, ...actions];
 
   return (
     <>
-      <header className="sticky top-0 z-[200] hidden h-[105px] w-full items-center justify-between gap-[72px] px-3 py-6 text-[var(--sf-text)] md:flex md:px-8">
+      <header
+        className={cn(
+          "hidden h-[105px] w-full items-center justify-between gap-[72px] px-3 py-6 text-[var(--sf-text)] md:flex md:px-8",
+          overlay ? "fixed inset-x-0 top-0 z-[200]" : "sticky top-0 z-[200]",
+        )}
+      >
         <div className="relative z-20 flex min-w-0 items-center gap-1">
-          <Link
+          <TransitionLink
             href="/"
             aria-label="Studio Finity home"
-            className="hidden h-[54px] w-[54px] shrink-0 items-center justify-center rounded-full border bg-[var(--sf-surface)] lg:flex"
+            className="sf-interactive hidden min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-full p-2 lg:flex"
           >
-            <img src="/logos/SF-Logo-Dark.png" alt="STUDIO FINITY logo" className="h-auto w-[22px]" />
-          </Link>
-
-          <button
-            type="button"
-            aria-expanded={menuOpen}
-            aria-label="Toggle navigation"
-            className="relative z-20 flex h-[54px] min-w-[140px] items-center justify-center gap-2 rounded-full border bg-[var(--sf-surface)] px-4 text-[14px] font-medium tracking-[-0.02em] xl:hidden"
-            onClick={() => setMenuOpen((current) => !current)}
-          >
-            <span className="max-w-[12ch] truncate">{menuOpen ? "Close" : "Menu"}</span>
-            <ChevronDownIcon
-              className={cn("h-4 w-4 transition-transform duration-300", menuOpen && "rotate-180")}
-            />
-          </button>
-
-          <div className="hidden h-[54px] items-center gap-6 rounded-full border bg-[var(--sf-surface)] px-8 text-[14px] font-medium tracking-[-0.02em] xl:flex">
-            {visibleLinks.map((link) => {
-              const current = activeHref ? link.href === activeHref : false;
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={cn(
-                    "transition-colors hover:text-[var(--sf-text)]",
-                    current ? "text-[var(--sf-text)]" : "text-[var(--sf-text-muted)]",
-                  )}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </div>
+            <img src="/logos/SF-Logo-Dark.png" alt="STUDIO FINITY logo" className="h-auto w-[28px]" />
+          </TransitionLink>
         </div>
 
         <div className="flex items-center gap-1">
-          {actions.map((action) => (
-            <TopNavActionLink key={action.label} action={action} />
+          {allActions.map((action) => (
+            <TopNavActionLink key={action.label} action={action} active={action.href === activeHref} />
           ))}
         </div>
       </header>
 
-      <div className="px-4 pt-3 md:hidden">
+      <div
+        className={cn(
+          "md:hidden",
+          overlay ? "fixed inset-x-0 top-0 z-[200] px-4 pt-3" : "px-4 pt-3",
+        )}
+      >
         <div className="flex items-center justify-between gap-2">
-          <Link
+          <TransitionLink
             href="/"
             aria-label="Studio Finity home"
-            className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full border bg-[var(--sf-surface)]"
+            className="sf-interactive flex min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-full p-2"
           >
-            <img src="/logos/SF-Logo-Dark.png" alt="STUDIO FINITY logo" className="h-auto w-5" />
-          </Link>
-          <button
-            type="button"
-            aria-expanded={menuOpen}
-            aria-label="Toggle navigation"
-            className="flex h-[48px] flex-1 items-center justify-center gap-2 rounded-full border bg-[var(--sf-surface)] px-4 text-[13px] font-medium tracking-[-0.02em]"
-            onClick={() => setMenuOpen((current) => !current)}
-          >
-            {menuOpen ? "Close" : "Menu"}
-            <ChevronDownIcon
-              className={cn("h-4 w-4 transition-transform duration-300", menuOpen && "rotate-180")}
-            />
-          </button>
-          <TopNavActionLink action={actions[1] ?? defaultActions[1]!} compact />
-        </div>
-        {menuOpen ? (
-          <div className="mt-2 rounded-[24px] border bg-[var(--sf-surface)] p-4">
-            <div className="flex flex-col gap-3 text-[14px] tracking-[-0.02em]">
-              {visibleLinks.map((link) => (
-                <Link key={link.label} href={link.href} className="text-[var(--sf-text-muted)]">
-                  {link.label}
-                </Link>
-              ))}
-              <a href={(actions[0] ?? defaultActions[0]!).href} className="text-[var(--sf-text-muted)]">
-                {(actions[0] ?? defaultActions[0]!).label}
-              </a>
-            </div>
+            <img src="/logos/SF-Logo-Dark.png" alt="STUDIO FINITY logo" className="h-auto w-6" />
+          </TransitionLink>
+
+          <div className="flex items-center gap-2 overflow-x-auto">
+            {allActions.map((action) => (
+              <TopNavActionLink
+                key={action.label}
+                action={action}
+                active={action.href === activeHref}
+                compact
+              />
+            ))}
           </div>
-        ) : null}
+        </div>
       </div>
     </>
   );
 }
 
-function TopNavActionLink({ action, compact = false }: { action: HeaderAction; compact?: boolean }) {
+function TopNavActionLink({
+  action,
+  active = false,
+  compact = false,
+}: {
+  action: HeaderAction;
+  active?: boolean;
+  compact?: boolean;
+}) {
   const className = cn(
-    "relative inline-flex select-none items-center justify-center gap-x-1 rounded-full border border-transparent transition-all duration-200",
+    "sf-interactive sf-pill-button relative select-none gap-x-1",
     action.variant === "primary"
-      ? "bg-[var(--sf-inverse-bg)] text-[var(--sf-inverse-text)] hover:opacity-90"
-      : "text-[var(--sf-text)] hover:bg-black/[0.04]",
+      ? "sf-pill-button-primary"
+      : "sf-pill-button-secondary",
+    active && action.variant !== "primary"
+      ? "border-[var(--sf-border-strong)] bg-black/[0.05] text-[var(--sf-text)]"
+      : null,
     compact
-      ? "h-[48px] min-w-[48px] px-4 py-3 text-[13px] font-medium tracking-[-0.02em]"
-      : "h-12 px-6 py-4 text-[15px] font-medium tracking-[-0.02em]",
+      ? "px-4 py-3 text-[13px]"
+      : "px-6 py-4 text-[15px]",
   );
 
-  const label = compact ? "Work" : action.label;
-
+  const label = action.label;
   if (action.external || action.href.startsWith("mailto:")) {
     return (
       <a
@@ -149,22 +137,8 @@ function TopNavActionLink({ action, compact = false }: { action: HeaderAction; c
   }
 
   return (
-    <Link href={action.href} className={className}>
+    <TransitionLink href={action.href} className={className} aria-current={active ? "page" : undefined}>
       {label}
-    </Link>
-  );
-}
-
-function ChevronDownIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" {...props}>
-      <path
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M4.25 9.25 12 17l7.75-7.75"
-      />
-    </svg>
+    </TransitionLink>
   );
 }

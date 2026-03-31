@@ -14,6 +14,7 @@ import {
 import { flushSync } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
+import { scrollToInstant } from "@/lib/smooth-scroll";
 
 interface TransitionRequest {
   element: HTMLElement;
@@ -64,9 +65,7 @@ const defaultState: TransitionState = {
 const CaseStudyTransitionContext = createContext<CaseStudyTransitionContextValue | null>(null);
 
 function scrollToTopNow() {
-  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
+  scrollToInstant(0);
 }
 
 export function CaseStudyTransitionProvider({

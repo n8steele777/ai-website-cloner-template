@@ -2,10 +2,11 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import Link from "next/link";
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type SVGProps } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { AnimatedWords } from "@/components/animated-words";
 import { ArrowRightIcon } from "@/components/icons";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
+import { TransitionLink } from "@/components/transition-link";
 import { cn } from "@/lib/utils";
 import type {
   CosmosButton,
@@ -242,7 +243,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
   );
 
   return (
-    <main className="min-h-screen bg-[var(--sf-bg)] font-display text-[var(--sf-text)]">
+    <main className="min-h-screen bg-[var(--sf-bg)] text-[var(--sf-text)]">
       <StudioFinityHeader links={data.headerLinks} actions={data.headerActions} activeHref="/" />
 
       <section className="sticky top-0 z-0 -mt-[72px] flex h-dvh flex-col items-center justify-center overflow-hidden bg-[var(--sf-bg)] md:-mt-[105px]">
@@ -253,14 +254,16 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
             <img
               src="/logos/Studio%20Finity%20Text%20Logo.png"
               alt="STUDIO FINITY"
-              className="h-auto w-[min(260px,42vw)] max-w-full md:w-[min(320px,30vw)]"
+              className="h-auto w-[min(220px,38vw)] max-w-full md:w-[min(280px,26vw)]"
             />
 
-            <h1 className="font-cosmos text-pretty text-center text-[54px] font-[350] leading-none tracking-[-2.7px] text-[var(--sf-text)] md:text-[74px] md:tracking-[-3.7px]">
-              Your space
-              <br />
-              for inspiration
-            </h1>
+            <AnimatedWords
+              as="h1"
+              text={"Your space\nfor inspiration"}
+              className="font-cosmos text-pretty text-center text-[54px] font-[350] leading-none tracking-[-0.04em] text-[var(--sf-text)] md:text-[74px]"
+              lineClassName="leading-none"
+              delay={0.2}
+            />
 
           </div>
         </div>
@@ -282,10 +285,8 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         content={
           <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
             <div className="max-w-[22rem]">
-              <p className="text-[0.78rem] uppercase tracking-[0.18em] text-black/42">
-                {data.searchWorld.sideLabel}
-              </p>
-              <p className="mt-4 text-[1.35rem] leading-[1.18] tracking-[-0.04em] text-black/82 md:text-[1.7rem]">
+              <p className="sf-eyebrow">{data.searchWorld.sideLabel}</p>
+              <p className="sf-copy-soft mt-4 text-[1.35rem] leading-[1.18] tracking-[0em] md:text-[1.7rem]">
                 {data.searchWorld.sideBody}
               </p>
             </div>
@@ -308,7 +309,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         content={
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div className="max-w-[30rem]">
-              <p className="text-lg tracking-[-0.04em] text-black/68 md:text-xl">{data.filters.body}</p>
+              <p className="sf-copy-muted text-lg tracking-[0em] md:text-xl">{data.filters.body}</p>
             </div>
 
             <div className="grid gap-4">
@@ -316,7 +317,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                 {data.filters.chips.map((chip) => (
                   <span
                     key={chip.label}
-                    className="rounded-full border border-black/10 bg-white/70 px-4 py-2 text-[0.83rem] tracking-[-0.03em] text-black/80"
+                    className="sf-panel rounded-full px-4 py-2 text-[0.83rem] tracking-[0em]"
                   >
                     {chip.label}
                   </span>
@@ -339,7 +340,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         content={
           <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
             <div>
-              <div className="space-y-5 text-[0.98rem] leading-[1.35] tracking-[-0.03em] text-black/64 md:text-[1.06rem]">
+              <div className="sf-copy-muted space-y-5 text-[0.98rem] leading-[1.35] tracking-[0em] md:text-[1.06rem]">
                 {data.attribution.credits.map((item) => (
                   <p key={item}>{item}</p>
                 ))}
@@ -350,7 +351,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
               <MediaTile item={data.attribution.media[0]} className="aspect-[0.8/1]" />
               <div className="space-y-6">
                 <MediaTile item={data.attribution.media[1]} className="aspect-[0.95/1]" />
-                <p className="max-w-[28rem] text-[1.15rem] leading-[1.2] tracking-[-0.04em] text-black/82 md:text-[1.5rem]">
+                <p className="sf-copy-soft max-w-[28rem] text-[1.15rem] leading-[1.2] tracking-[0em] md:text-[1.5rem]">
                   {data.attribution.body}
                 </p>
               </div>
@@ -365,11 +366,11 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         titleClassName="max-w-[11ch]"
         content={
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-8 rounded-[28px] border border-black/8 bg-white/72 p-6 md:grid-cols-3">
+            <div className="sf-panel grid grid-cols-2 gap-x-6 gap-y-8 rounded-[28px] p-6 md:grid-cols-3">
               {data.teams.logos.map((logo, index) => (
                 <div
                   key={`${logo.src}-${index}`}
-                  className="flex h-14 items-center justify-center rounded-[18px] bg-[#f3f4f6]"
+                  className="flex h-14 items-center justify-center rounded-[18px] bg-[var(--sf-surface)]"
                 >
                   <img src={logo.src} alt={logo.alt} className="max-h-7 w-auto max-w-[90%] object-contain" />
                 </div>
@@ -391,9 +392,12 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
 
       <section className="px-4 pb-20 pt-8 md:px-6 md:pb-28">
         <div className="mx-auto max-w-[1440px] rounded-[40px] bg-[var(--sf-surface-strong)] px-6 py-14 md:px-10 md:py-18">
-          <h2 className="max-w-[8ch] font-[family:var(--font-cosmos)] text-[3.1rem] leading-[0.98] tracking-[-0.06em] md:text-[4.75rem]">
-            {data.finalCta.title}
-          </h2>
+          <AnimatedWords
+            as="h2"
+            text={data.finalCta.title}
+            className="max-w-[8ch] font-[family:var(--font-cosmos)] text-[3.1rem] leading-[0.98] tracking-[-0.04em] md:text-[4.75rem]"
+            triggerOnView
+          />
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             {data.finalCta.buttons.map((button) => (
@@ -783,13 +787,13 @@ function CosmosFilmHandoff({
         >
           <button
             type="button"
-            className="pointer-events-auto mb-7 flex cursor-pointer items-center gap-2"
+            className="sf-interactive pointer-events-auto mb-7 flex cursor-pointer items-center gap-2 rounded-full px-2 py-1"
             style={{ opacity: buttonOpacity }}
           >
-            <span className="inline-flex h-4 w-4 items-center justify-center text-black/72">
+            <span className="sf-copy-muted inline-flex h-4 w-4 items-center justify-center">
               <ArrowRightIcon className="h-4 w-4" />
             </span>
-            <p className="font-cosmos text-[1.05rem] tracking-[-0.04em] text-black/85">{cta}</p>
+            <p className="sf-copy-soft text-[1.05rem] tracking-[0em]">{cta}</p>
           </button>
 
           <div
@@ -836,18 +840,17 @@ function SectionFrame({
         <div className="grid gap-10 border-t border-black/10 pt-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             {section.eyebrow ? (
-              <p className="mb-4 text-[0.78rem] uppercase tracking-[0.18em] text-black/42">
-                {section.eyebrow}
-              </p>
+              <p className="sf-eyebrow mb-4">{section.eyebrow}</p>
             ) : null}
-            <h2
+            <AnimatedWords
+              as="h2"
+              text={section.title}
               className={cn(
-                "font-[family:var(--font-cosmos)] text-[3rem] leading-[0.98] tracking-[-0.055em] text-[#111] md:text-[4.125rem]",
+                "font-[family:var(--font-cosmos)] text-[3rem] leading-[0.98] tracking-[-0.04em] text-[#111] md:text-[4.125rem]",
                 titleClassName,
               )}
-            >
-              {section.title}
-            </h2>
+              triggerOnView
+            />
           </div>
           <div>{content}</div>
         </div>
@@ -858,7 +861,7 @@ function SectionFrame({
 
 function MediaTile({ item, className }: { item: CosmosMediaItem; className?: string }) {
   return (
-    <div className={cn("overflow-hidden rounded-[30px] bg-white/70 shadow-[0_18px_50px_rgba(0,0,0,0.06)]", className)}>
+    <div className={cn("sf-panel overflow-hidden rounded-[30px]", className)}>
       {item.kind === "video" ? (
         <video
           src={item.src}
@@ -883,12 +886,12 @@ function ActionLink({
   className?: string;
 }) {
   const sharedClassName = cn(
-    "inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] tracking-[-0.03em] transition-transform duration-200 hover:-translate-y-0.5",
+    "sf-interactive sf-pill-button items-center gap-2 text-[0.92rem] tracking-[0em]",
     action.variant === "primary"
-      ? "bg-[#101010] text-white"
+      ? "sf-pill-button-primary"
       : action.variant === "ghost"
-        ? "text-black/72"
-        : "border border-black/10 bg-white/76 text-black",
+        ? "sf-inline-link px-2 py-2"
+        : "sf-pill-button-secondary",
     className,
   );
 
@@ -906,17 +909,17 @@ function ActionLink({
   }
 
   return (
-    <Link href={action.href} className={sharedClassName}>
+    <TransitionLink href={action.href} className={sharedClassName}>
       {action.label}
-    </Link>
+    </TransitionLink>
   );
 }
 
 function FooterGroup({ group }: { group: CosmosFooterGroup }) {
   return (
     <div>
-      <p className="mb-3 text-[0.78rem] uppercase tracking-[0.18em] text-black/42">{group.label}</p>
-      <div className="flex flex-wrap gap-x-5 gap-y-2 text-[0.95rem] tracking-[-0.03em] text-black/72">
+      <p className="sf-eyebrow mb-3">{group.label}</p>
+      <div className="sf-copy-muted flex flex-wrap gap-x-5 gap-y-2 text-[0.95rem] tracking-[0em]">
         {group.links.map((link) =>
           link.external || link.href.startsWith("mailto:") ? (
             <a
@@ -924,14 +927,14 @@ function FooterGroup({ group }: { group: CosmosFooterGroup }) {
               href={link.href}
               target={link.href.startsWith("http") ? "_blank" : undefined}
               rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-              className="transition-opacity hover:opacity-60"
+              className="sf-inline-link"
             >
               {link.label}
             </a>
           ) : (
-            <Link key={link.label} href={link.href} className="transition-opacity hover:opacity-60">
+            <TransitionLink key={link.label} href={link.href} className="sf-inline-link">
               {link.label}
-            </Link>
+            </TransitionLink>
           ),
         )}
       </div>

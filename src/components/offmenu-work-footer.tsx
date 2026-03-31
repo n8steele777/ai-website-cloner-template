@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { TransitionLink } from "@/components/transition-link";
 import type { NavLink } from "@/types/offmenu";
 
 interface OffMenuWorkFooterProps {
@@ -30,9 +30,9 @@ export function OffMenuWorkFooter({ navigationLinks }: OffMenuWorkFooterProps) {
           }
 
           return (
-            <Link key={link.label} href={link.href}>
+            <TransitionLink key={link.label} href={link.href}>
               {link.label}
-            </Link>
+            </TransitionLink>
           );
         })}
       </div>

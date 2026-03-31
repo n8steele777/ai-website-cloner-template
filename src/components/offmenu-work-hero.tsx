@@ -3,6 +3,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { AnimatedWords } from "@/components/animated-words";
 import { useCaseStudyTransition } from "@/components/case-study-transition-provider";
 
 interface OffMenuWorkHeroProps {
@@ -20,7 +21,6 @@ export function OffMenuWorkHero({
 }: OffMenuWorkHeroProps) {
   const imageRef = useRef<HTMLImageElement>(null);
   const gradientRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const readyRef = useRef(false);
   const { signalHeroReady, state } = useCaseStudyTransition();
   const transitionMatches = state.isTransitioning && state.slug === slug;
@@ -84,11 +84,7 @@ export function OffMenuWorkHero({
   ]);
 
   useLayoutEffect(() => {
-    if (
-      !titleRef.current ||
-      !gradientRef.current ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
+    if (!gradientRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
 
@@ -103,20 +99,6 @@ export function OffMenuWorkHero({
         delay: transitionMatches ? 0.2 : 0,
         ease: "power3.out",
       },
-    );
-
-    timeline.fromTo(
-      titleRef.current,
-      { y: 30, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.72,
-        delay: transitionMatches ? 0.02 : 0.24,
-        ease: "power3.out",
-        clearProps: "transform,opacity",
-      },
-      transitionMatches ? "<" : ">"
     );
 
     return () => {
@@ -162,12 +144,12 @@ export function OffMenuWorkHero({
 
       <div className="relative z-10 flex min-h-screen flex-col justify-end p-8 md:px-16 md:pb-24 md:pt-16">
         <div className="text-white">
-          <h1
-            ref={titleRef}
+          <AnimatedWords
+            as="h1"
+            text={title}
             className="text-3xl font-medium text-white md:text-4xl"
-          >
-            {title}
-          </h1>
+            delay={transitionMatches ? 0.24 : 0.28}
+          />
           {description ? (
             <p className="mt-5 max-w-md text-base leading-relaxed text-white/76 md:text-lg">
               {description}
