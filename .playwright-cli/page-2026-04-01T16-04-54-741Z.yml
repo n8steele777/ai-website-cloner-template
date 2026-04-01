@@ -1,0 +1,98 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - link "Studio Finity home" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "STUDIO FINITY logo" [ref=e7]
+      - generic [ref=e8]:
+        - link "About" [ref=e9] [cursor=pointer]:
+          - /url: /about
+        - link "Works" [ref=e10] [cursor=pointer]:
+          - /url: /work
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: mailto:hello@studio-finity.com
+    - heading "We shape brands and build visual work with the same level of precision. From identity systems to digital experiences, campaigns, and films, Studio Finity creates work with clear ideas, sharp execution, and a finish that holds weight." [level=1] [ref=e15]:
+      - generic [ref=e16]: We shape brands and build visual work with the same level of precision. From identity systems to digital experiences, campaigns, and films,
+      - text: Studio Finity
+      - generic [ref=e17]: creates work with clear ideas, sharp execution, and a finish that holds weight.
+    - generic [ref=e20]:
+      - paragraph [ref=e21]: OUR GROUND RULES
+      - generic [ref=e23]:
+        - button "001 / The answer could be right in front of you." [ref=e24]:
+          - generic [ref=e25]: "001"
+          - generic [ref=e26]: /
+          - generic [ref=e27]: The answer could be right in front of you.
+        - button "002 / If it doesn’t engage, it doesn’t work." [ref=e28]:
+          - generic [ref=e29]: "002"
+          - generic [ref=e30]: /
+          - generic [ref=e31]: If it doesn’t engage, it doesn’t work.
+        - button "003 / Focus is a weapon. Use it." [ref=e32]:
+          - generic [ref=e33]: "003"
+          - generic [ref=e34]: /
+          - generic [ref=e35]: Focus is a weapon. Use it.
+        - button "004 / Simplicity is the standard." [ref=e36]:
+          - generic [ref=e37]: "004"
+          - generic [ref=e38]: /
+          - generic [ref=e39]: Simplicity is the standard.
+        - button "005 / Nothing is new. Only perspective is." [ref=e40]:
+          - generic [ref=e41]: "005"
+          - generic [ref=e42]: /
+          - generic [ref=e43]: Nothing is new. Only perspective is.
+        - button "006 / Decide what not to do. Ruthlessly." [ref=e44]:
+          - generic [ref=e45]: "006"
+          - generic [ref=e46]: /
+          - generic [ref=e47]: Decide what not to do. Ruthlessly.
+        - button "007 / Consistency is everything." [ref=e48]:
+          - generic [ref=e49]: "007"
+          - generic [ref=e50]: /
+          - generic [ref=e51]: Consistency is everything.
+        - button "008 / Excellence comes from discipline, not talent." [ref=e52]:
+          - generic [ref=e53]: "008"
+          - generic [ref=e54]: /
+          - generic [ref=e55]: Excellence comes from discipline, not talent.
+        - button "009 / If it costs nothing, it means nothing." [ref=e56]:
+          - generic [ref=e57]: "009"
+          - generic [ref=e58]: /
+          - generic [ref=e59]: If it costs nothing, it means nothing.
+        - button "010 / Do what is right. Not what is easy." [ref=e60]:
+          - generic [ref=e61]: "010"
+          - generic [ref=e62]: /
+          - generic [ref=e63]: Do what is right. Not what is easy.
+        - button "011 / Fail. Learn. Fail. Learn." [ref=e64]:
+          - generic [ref=e65]: "011"
+          - generic [ref=e66]: /
+          - generic [ref=e67]: Fail. Learn. Fail. Learn.
+    - generic [ref=e69]:
+      - generic [ref=e70]:
+        - paragraph [ref=e71]: Expertise
+        - generic [ref=e72]:
+          - paragraph [ref=e73]: Brand Identity
+          - paragraph [ref=e74]: Web Design
+          - paragraph [ref=e75]: Digital Experiences
+          - paragraph [ref=e76]: Photo
+          - paragraph [ref=e77]: Video
+      - generic [ref=e78]:
+        - paragraph [ref=e79]: Industries
+        - generic [ref=e80]:
+          - paragraph [ref=e81]: Digital Products
+          - paragraph [ref=e82]: Architecture & Design
+          - paragraph [ref=e83]: Technology
+          - paragraph [ref=e84]: Fashion & Beauty
+          - paragraph [ref=e85]: Lifestyle
+          - paragraph [ref=e86]: Real Estate & Development
+          - paragraph [ref=e87]: Culture & Galleries
+          - paragraph [ref=e88]: Wellness & Sport
+    - generic [ref=e90]:
+      - paragraph [ref=e91]: Clients
+      - generic [ref=e92]:
+        - paragraph [ref=e93]: "ON"
+        - paragraph [ref=e94]: Compassion
+        - paragraph [ref=e95]: RE/MAX
+        - paragraph [ref=e96]: Port of Subs
+        - paragraph [ref=e97]: Milk Tea People
+        - paragraph [ref=e98]: Baxo
+        - paragraph [ref=e99]: Casting Crowns
+        - paragraph [ref=e100]: Fight The New Drug
+        - paragraph [ref=e101]: Thompson Hotels
+  - button "Open Next.js Dev Tools" [ref=e107] [cursor=pointer]:
+    - img [ref=e108]

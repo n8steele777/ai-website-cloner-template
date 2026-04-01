@@ -148,13 +148,6 @@ function htmlToText(html: string) {
     .join("\n\n");
 }
 
-function htmlToList(html: string) {
-  return htmlToText(html)
-    .split(/\n+/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
 function excerpt(text: string, length = 190) {
   if (text.length <= length) {
     return text;
@@ -172,13 +165,6 @@ function formatCategory(category: string) {
   return parts.join(" / ");
 }
 
-function parseScopeItems(category: string) {
-  return category
-    .split(/\s{2,}|\/|,|\n|•/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
 const csvPath = path.join(process.cwd(), "data", "Works.csv");
 const csvText = fs.readFileSync(csvPath, "utf8");
 const csvRows = parseCsv(csvText);
@@ -188,38 +174,41 @@ const worksRows: CsvRow[] = csvRows.slice(1).map((row) =>
 );
 
 const allWorkProjectsInternal: WorkProjectDetail[] = worksRows.map((row, index, rows) => {
-  const galleryImages = [
+  const galleryMedia = [
     {
+      kind: "image" as const,
       src: row["Image (full 1)"],
       alt: row["Image (full 1):alt"],
     },
     {
+      kind: "image" as const,
       src: row["Image (full 2) or Poster for vid"],
       alt: row["Image (full 2) or Poster for vid:alt"],
     },
     {
+      kind: "image" as const,
       src: row["Image (full 3)"],
       alt: row["Image (full 3):alt"],
     },
     {
+      kind: "image" as const,
       src: row["Image (full 4)"],
       alt: row["Image (full 4):alt"],
     },
     {
+      kind: "image" as const,
       src: row["Image (full 5)"],
       alt: row["Image (full 5):alt"],
     },
     {
+      kind: "image" as const,
       src: row["Image (full 6)"],
       alt: row["Image (full 6):alt"],
     },
   ].filter((image) => image.src);
 
-  const creditsRoles = htmlToList(row["Credits (left side)"]);
-  const creditsNames = htmlToList(row["Credits"]);
   const introduction = htmlToText(row["Content"]);
   const summary = row["SEO"] ? decodeHtmlEntities(row["SEO"]).trim() : excerpt(introduction);
-  const scopeItems = parseScopeItems(row["Category"]);
   const nextOne = rows[(index + 1) % rows.length]?.["Slug"];
   const nextTwo = rows[(index + 2) % rows.length]?.["Slug"];
 
@@ -230,20 +219,7 @@ const allWorkProjectsInternal: WorkProjectDetail[] = worksRows.map((row, index, 
     heroImageDark: row["Main Image"] || row["Hover Image (footer)"],
     introduction,
     summary,
-    scopeItems,
-    details: [
-      { label: "Category", value: row["Category"] || "Work" },
-      { label: "Studio", value: "Studio Finity" },
-      {
-        label: "Credits",
-        value: creditsNames.length > 0 ? `${creditsNames.length} collaborators` : "Studio Finity",
-      },
-    ],
-    credits: {
-      roles: creditsRoles,
-      names: creditsNames,
-    },
-    galleryImages,
+    galleryMedia,
     relatedSlugs: [nextOne, nextTwo].filter(Boolean) as string[],
     ctaTitle: "Let's build something.",
     ctaHref: "mailto:hello@studio-finity.com",

@@ -1,47 +1,16 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-
-@font-face {
-  font-family: "Open Sauce Sans";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/Open-Sauce-Sans/TTF/OpenSauceSans-Regular.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Open Sauce Sans";
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("/fonts/Open-Sauce-Sans/TTF/OpenSauceSans-Medium.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Open Sauce Sans";
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("/fonts/Open-Sauce-Sans/TTF/OpenSauceSans-SemiBold.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Open Sauce Sans";
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("/fonts/Open-Sauce-Sans/TTF/OpenSauceSans-Bold.ttf") format("truetype");
-}
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Open Sauce Sans", sans-serif;
-  --font-cosmos: "Open Sauce Sans", sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
-  --font-heading: "Open Sauce Sans", sans-serif;
+  --font-sans: var(--font-geist-sans), Arial, sans-serif;
+  --font-cosmos: var(--font-geist-sans), Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), "SFMono-Regular", Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --font-heading: var(--font-geist-sans), Arial, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -81,11 +50,16 @@
 }
 
 :root {
-  --font-cosmos: "Open Sauce Sans", sans-serif;
-  --font-body: "Open Sauce Sans", sans-serif;
-  --font-display: "Open Sauce Sans", sans-serif;
-  --font-brand: "Open Sauce Sans", sans-serif;
-  --font-heading: "Open Sauce Sans", sans-serif;
+  --font-cosmos: var(--font-geist-sans), Arial, sans-serif;
+  --font-body: var(--font-geist-sans), Arial, sans-serif;
+  --font-display: var(--font-geist-sans), Arial, sans-serif;
+  --font-brand: var(--font-geist-sans), Arial, sans-serif;
+  --font-heading: var(--font-geist-sans), Arial, sans-serif;
+  --font-oh-nav: var(--font-geist-sans), Arial, sans-serif;
+  --sf-weight-body: 450;
+  --sf-weight-strong: 500;
+  --sf-weight-ui: 500;
+  --sf-weight-display: 500;
   --background: #fcfcfd;
   --foreground: #111111;
   --card: #fcfcfd;
@@ -152,6 +126,7 @@
   body {
     @apply min-h-full bg-background text-foreground;
     font-family: var(--font-body);
+    font-weight: var(--sf-weight-body);
     letter-spacing: 0;
     transition:
       background-color 300ms ease,
@@ -160,6 +135,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    font-weight: var(--sf-weight-display);
     letter-spacing: -0.04em;
   }
 
@@ -169,11 +145,11 @@
 }
 
 html.is-safari {
-  --font-sans: "Open Sauce Sans", sans-serif;
-  --font-body: "Open Sauce Sans", sans-serif;
-  --font-display: "Open Sauce Sans", sans-serif;
-  --font-brand: "Open Sauce Sans", sans-serif;
-  --font-heading: "Open Sauce Sans", sans-serif;
+  --font-sans: var(--font-geist-sans), Arial, sans-serif;
+  --font-body: var(--font-geist-sans), Arial, sans-serif;
+  --font-display: var(--font-geist-sans), Arial, sans-serif;
+  --font-brand: var(--font-geist-sans), Arial, sans-serif;
+  --font-heading: var(--font-geist-sans), Arial, sans-serif;
 }
 
 html.is-safari body {
@@ -213,12 +189,66 @@ html.lenis {
   font-family: var(--font-display);
 }
 
+.font-oh-nav {
+  font-family: var(--font-oh-nav);
+}
+
+.sf-oh-wordmark {
+  font-family: var(--font-brand);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+}
+
+.sf-oh-nav-link {
+  font-family: var(--font-oh-nav);
+  font-size: 0.82rem;
+  font-weight: var(--sf-weight-ui);
+  letter-spacing: 0.015em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.sf-oh-pill {
+  font-family: var(--font-oh-nav);
+  border-radius: 999px;
+  transition:
+    transform 220ms var(--sf-ease-out),
+    opacity 220ms var(--sf-ease-out),
+    background-color 220ms var(--sf-ease-out),
+    color 220ms var(--sf-ease-out),
+    border-color 220ms var(--sf-ease-out);
+}
+
+.sf-oh-pill:hover {
+  transform: translateY(-1px);
+}
+
 .sf-text-muted {
   color: var(--sf-text-muted);
 }
 
+.sf-caption {
+  color: var(--sf-text-subtle);
+  font-size: 0.92rem;
+  font-weight: var(--sf-weight-ui);
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+.sf-caption-strong {
+  color: var(--sf-text);
+  font-size: 0.98rem;
+  font-weight: var(--sf-weight-strong);
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
 .sf-copy-soft {
   color: var(--sf-text-soft);
+}
+
+.sf-copy-muted {
+  color: var(--sf-text-muted);
 }
 
 .sf-copy-subtle {
@@ -228,9 +258,207 @@ html.lenis {
 .sf-eyebrow {
   color: var(--sf-text-subtle);
   font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0;
+  font-weight: var(--sf-weight-ui);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
   text-transform: uppercase;
+}
+
+.sf-meta-label {
+  color: rgba(17, 17, 17, 0.34);
+  font-size: 1.05rem;
+  font-weight: var(--sf-weight-ui);
+  letter-spacing: 0;
+}
+
+.sf-display-tight {
+  color: var(--sf-text);
+  font-family: var(--font-display);
+  font-weight: var(--sf-weight-display);
+  letter-spacing: -0.045em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.sf-display-hero {
+  font-size: clamp(3rem, 8.8vw, 7rem);
+}
+
+.sf-display-page {
+  font-size: clamp(3.35rem, 6.4vw, 5.75rem);
+}
+
+.sf-display-section {
+  font-size: clamp(2.85rem, 6.2vw, 6rem);
+}
+
+.sf-display-overlay {
+  font-size: clamp(2.65rem, 7vw, 3.9rem);
+  font-weight: var(--sf-weight-display);
+  letter-spacing: -0.045em;
+  line-height: 0.94;
+}
+
+.sf-brand-display {
+  color: var(--sf-text);
+  font-family: var(--font-brand);
+  font-size: clamp(3.4rem, 9vw, 6rem);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.sf-nav-wordmark {
+  font-size: clamp(1.75rem, 4.8vw, 3.85rem);
+  line-height: 1;
+}
+
+.sf-editorial-lead {
+  color: var(--sf-text-soft);
+  font-size: clamp(1.35rem, 2.4vw, 1.95rem);
+  font-weight: var(--sf-weight-body);
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.sf-body-copy {
+  color: var(--sf-text-muted);
+  font-size: 1rem;
+  font-weight: var(--sf-weight-body);
+  letter-spacing: 0;
+  line-height: 1.52;
+}
+
+.sf-body-large {
+  color: var(--sf-text-soft);
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  font-weight: var(--sf-weight-body);
+  letter-spacing: 0;
+  line-height: 1.24;
+}
+
+.sf-title-md {
+  color: var(--sf-text);
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  font-weight: var(--sf-weight-strong);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+.sf-title-lg {
+  color: var(--sf-text);
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.45vw, 2.1rem);
+  font-weight: var(--sf-weight-strong);
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.sf-title-xl {
+  color: var(--sf-text);
+  font-family: var(--font-display);
+  font-size: clamp(2.15rem, 4.8vw, 3.6rem);
+  font-weight: var(--sf-weight-display);
+  letter-spacing: -0.04em;
+  line-height: 1.04;
+}
+
+.about-hero-display {
+  font-size: clamp(3.2rem, 9.5vw, 7.9rem);
+  letter-spacing: -0.055em;
+  line-height: 0.86;
+}
+
+.about-expertise-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.06em;
+}
+
+.about-expertise-display > * {
+  color: var(--sf-text);
+  font-family: var(--font-display);
+  font-size: clamp(2.85rem, 5.9vw, 5.45rem);
+  font-weight: var(--sf-weight-display);
+  letter-spacing: -0.065em;
+  line-height: 0.82;
+}
+
+.about-clients-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08em;
+}
+
+.about-clients-display > * {
+  color: var(--sf-text);
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.6vw, 4.2rem);
+  font-weight: var(--sf-weight-display);
+  letter-spacing: -0.06em;
+  line-height: 0.84;
+}
+
+.sf-section-list {
+  color: var(--sf-text);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: var(--sf-weight-display);
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.sf-rule-card-title {
+  color: var(--sf-inverse-text);
+  font-size: 0.8rem;
+  font-weight: var(--sf-weight-strong);
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+
+.sf-rule-card-copy {
+  color: rgb(255 255 255 / 0.88);
+  font-size: 0.68rem;
+  font-weight: var(--sf-weight-body);
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+.sf-soft-card {
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.sf-page-pad {
+  padding-inline: 1rem;
+}
+
+.sf-page-content {
+  padding-inline: 1rem;
+}
+
+.sf-home-section {
+  padding-inline: 1rem;
+  padding-block: 5rem;
+}
+
+.sf-home-section-inner {
+  margin-inline: auto;
+  max-width: 1440px;
+}
+
+.sf-home-divider {
+  border-top: 1px solid rgba(17, 17, 17, 0.1);
+  padding-top: 2.5rem;
+}
+
+.sf-home-cta-section {
+  padding-inline: 1rem;
+  padding-top: 3rem;
+  padding-bottom: 6rem;
 }
 
 .sf-surface {
@@ -273,9 +501,10 @@ html.lenis {
   justify-content: center;
   border-radius: 999px;
   padding: 0.875rem 1.25rem;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.92rem;
+  font-weight: var(--sf-weight-ui);
   letter-spacing: 0;
+  line-height: 1;
   white-space: nowrap;
 }
 
@@ -355,6 +584,41 @@ html.lenis {
 }
 
 @media (min-width: 768px) {
+  .sf-body-copy {
+    font-size: 1.08rem;
+  }
+
+  .sf-rule-card-title {
+    font-size: 0.84rem;
+  }
+
+  .sf-rule-card-copy {
+    font-size: 0.72rem;
+  }
+
+  .sf-page-pad {
+    padding-inline: 2.5rem;
+  }
+
+  .sf-page-content {
+    padding-inline: 2rem;
+  }
+
+  .sf-home-section {
+    padding-inline: 1.5rem;
+    padding-block: 6rem;
+  }
+
+  .sf-home-divider {
+    padding-top: 3.5rem;
+  }
+
+  .sf-home-cta-section {
+    padding-inline: 1.5rem;
+    padding-top: 4rem;
+    padding-bottom: 8rem;
+  }
+
   .offmenu-orbit {
     width: min(96vw, 96vh);
     height: min(96vw, 96vh);
@@ -365,6 +629,16 @@ html.lenis {
     top: var(--bubble-y);
     width: clamp(7.5rem, var(--bubble-size), 18.75rem);
     height: clamp(7.5rem, var(--bubble-size), 18.75rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .sf-page-pad {
+    padding-inline: 3.5rem;
+  }
+
+  .sf-page-content {
+    padding-inline: 2.5rem;
   }
 }
 

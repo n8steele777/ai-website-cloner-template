@@ -24,14 +24,14 @@ export interface CaseStudy {
   mobilePosition: OrbitPosition;
 }
 
-export interface WorkDetail {
-  label: string;
-  value: string;
-}
-
-export interface WorkMediaImage {
+export interface WorkGalleryItem {
+  kind: "image" | "video";
   src: string;
-  alt: string;
+  alt?: string;
+  aspectRatio?: number;
+  height?: number;
+  title?: string;
+  width?: number;
 }
 
 export interface WorkTextSection {
@@ -47,13 +47,7 @@ export interface WorkProjectDetail {
   heroImageDark: string;
   introduction: string;
   summary?: string;
-  details: WorkDetail[];
-  scopeItems: string[];
-  credits?: {
-    roles: string[];
-    names: string[];
-  };
-  galleryImages: WorkMediaImage[];
+  galleryMedia: WorkGalleryItem[];
   relatedSlugs: string[];
   ctaTitle: string;
   ctaHref: string;

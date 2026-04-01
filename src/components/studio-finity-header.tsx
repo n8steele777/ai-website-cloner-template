@@ -1,8 +1,6 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TransitionLink } from "@/components/transition-link";
 import { cn } from "@/lib/utils";
 import type { NavLink } from "@/types/offmenu";
@@ -31,98 +29,244 @@ export function StudioFinityHeader({
   actions = defaultActions,
   overlay = false,
 }: StudioFinityHeaderProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const visibleLinks = useMemo(() => links.filter((link) => !link.disabled), [links]);
-  const navButtons = useMemo<HeaderAction[]>(
-    () =>
-      visibleLinks.map((link) => ({
-        label: link.label,
-        href: link.href,
-        external: link.external,
-        variant: "secondary",
-      })),
-    [visibleLinks],
-  );
-  const allActions = [...navButtons, ...actions];
+  const toneClass = overlay ? "text-white" : "text-[#080807]";
+
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+
+    const previousOverflow = document.documentElement.style.overflow;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    document.documentElement.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.documentElement.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
   return (
     <>
-      <header
-        className={cn(
-          "hidden h-[105px] w-full items-center justify-between gap-[72px] px-3 py-6 text-[var(--sf-text)] md:flex md:px-8",
-          overlay ? "fixed inset-x-0 top-0 z-[200]" : "sticky top-0 z-[200]",
-        )}
-      >
-        <div className="relative z-20 flex min-w-0 items-center gap-1">
+      <header className="fixed inset-x-0 top-0 z-[220] px-[14px] pt-[14px] md:px-[22px] md:pt-6">
+        <div className="relative flex items-start justify-between gap-4">
           <TransitionLink
             href="/"
             aria-label="Studio Finity home"
-            className="sf-interactive hidden min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-full p-2 lg:flex"
+            className={cn(
+              "sf-nav-wordmark sf-oh-wordmark relative z-10 whitespace-nowrap",
+              toneClass,
+            )}
           >
-            <img src="/logos/SF-Logo-Dark.png" alt="STUDIO FINITY logo" className="h-auto w-[28px]" />
+            Studio Finity
           </TransitionLink>
-        </div>
 
-        <div className="flex items-center gap-1">
-          {allActions.map((action) => (
-            <TopNavActionLink key={action.label} action={action} active={action.href === activeHref} />
-          ))}
+          <nav
+            aria-label="Primary"
+            className={cn(
+              "absolute left-1/2 top-[18px] hidden -translate-x-1/2 items-center gap-[11px] md:flex",
+              toneClass,
+            )}
+          >
+            {visibleLinks.map((link, index) => (
+              <div key={link.href} className="flex items-center gap-[11px]">
+                <DesktopNavLink href={link.href} active={link.href === activeHref} external={link.external}>
+                  {link.label}
+                </DesktopNavLink>
+                {index < visibleLinks.length - 1 ? (
+                  <span aria-hidden="true" className="sf-oh-nav-link opacity-90">
+                    ,
+                  </span>
+                ) : null}
+              </div>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-2 md:flex">
+            {actions.map((action) => (
+              <HeaderActionLink key={action.label} action={action} />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="studio-finity-mobile-nav"
+            onClick={() => setMenuOpen(true)}
+            className="sf-oh-pill sf-oh-nav-link flex items-center rounded-full bg-[#f2f0eb] px-3 py-[0.9rem] text-[#080807] md:hidden"
+          >
+            Menu
+          </button>
         </div>
       </header>
 
       <div
+        id="studio-finity-mobile-nav"
+        aria-hidden={!menuOpen}
         className={cn(
-          "md:hidden",
-          overlay ? "fixed inset-x-0 top-0 z-[200] px-4 pt-3" : "px-4 pt-3",
+          "fixed inset-0 z-[230] bg-[#080807] px-[14px] pb-[20px] pt-[14px] text-white transition-[opacity,visibility] duration-300 md:hidden",
+          menuOpen ? "visible opacity-100" : "pointer-events-none invisible opacity-0",
         )}
       >
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-start justify-between gap-4">
           <TransitionLink
             href="/"
             aria-label="Studio Finity home"
-            className="sf-interactive flex min-h-[48px] min-w-[48px] shrink-0 items-center justify-center rounded-full p-2"
+            className="sf-nav-wordmark sf-oh-wordmark whitespace-nowrap"
+            onClick={() => setMenuOpen(false)}
           >
-            <img src="/logos/SF-Logo-Dark.png" alt="STUDIO FINITY logo" className="h-auto w-6" />
+            Studio Finity
           </TransitionLink>
 
-          <div className="flex items-center gap-2 overflow-x-auto">
-            {allActions.map((action) => (
-              <TopNavActionLink
-                key={action.label}
-                action={action}
-                active={action.href === activeHref}
-                compact
-              />
-            ))}
-          </div>
+          <button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            className="sf-oh-nav-link pt-1 text-white/88"
+          >
+            Close
+          </button>
+        </div>
+
+        <nav aria-label="Mobile primary" className="mt-[4.5rem] flex flex-col gap-5">
+          {visibleLinks.map((link) => (
+            <OverlayNavLink
+              key={link.href}
+              href={link.href}
+              active={link.href === activeHref}
+              external={link.external}
+              onNavigate={() => setMenuOpen(false)}
+            >
+              {link.label}
+            </OverlayNavLink>
+          ))}
+        </nav>
+
+        <div className="mt-10 flex flex-col gap-3">
+          {actions.map((action) => (
+            <HeaderActionLink key={action.label} action={action} mobile onNavigate={() => setMenuOpen(false)} />
+          ))}
         </div>
       </div>
     </>
   );
 }
 
-function TopNavActionLink({
-  action,
-  active = false,
-  compact = false,
+function DesktopNavLink({
+  href,
+  active,
+  children,
+  external,
 }: {
-  action: HeaderAction;
+  href: string;
   active?: boolean;
-  compact?: boolean;
+  children: string;
+  external?: boolean;
 }) {
   const className = cn(
-    "sf-interactive sf-pill-button relative select-none gap-x-1",
-    action.variant === "primary"
-      ? "sf-pill-button-primary"
-      : "sf-pill-button-secondary",
-    active && action.variant !== "primary"
-      ? "border-[var(--sf-border-strong)] bg-black/[0.05] text-[var(--sf-text)]"
-      : null,
-    compact
-      ? "px-4 py-3 text-[13px]"
-      : "px-6 py-4 text-[15px]",
+    "sf-oh-nav-link uppercase transition-opacity duration-200",
+    active ? "opacity-100" : "opacity-[0.86] hover:opacity-100",
   );
 
-  const label = action.label;
+  if (external || href.startsWith("mailto:")) {
+    return (
+      <a
+        href={href}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel={href.startsWith("http") ? "noreferrer" : undefined}
+        className={className}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <TransitionLink href={href} className={className} aria-current={active ? "page" : undefined}>
+      {children}
+    </TransitionLink>
+  );
+}
+
+function OverlayNavLink({
+  href,
+  active,
+  children,
+  external,
+  onNavigate,
+}: {
+  href: string;
+  active?: boolean;
+  children: string;
+  external?: boolean;
+  onNavigate?: () => void;
+}) {
+  const className = cn(
+    "sf-display-overlay sf-oh-wordmark text-white transition-opacity duration-200",
+    active ? "opacity-100" : "opacity-[0.86] hover:opacity-100",
+  );
+
+  if (external || href.startsWith("mailto:")) {
+    return (
+      <a
+        href={href}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel={href.startsWith("http") ? "noreferrer" : undefined}
+        className={className}
+        onClick={onNavigate}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <TransitionLink
+      href={href}
+      className={className}
+      aria-current={active ? "page" : undefined}
+      onClick={onNavigate}
+    >
+      {children}
+    </TransitionLink>
+  );
+}
+
+function HeaderActionLink({
+  action,
+  mobile = false,
+  onNavigate,
+}: {
+  action: HeaderAction;
+  mobile?: boolean;
+  onNavigate?: () => void;
+}) {
+  const className = cn(
+    "sf-oh-pill font-oh-nav flex w-fit items-center gap-4 rounded-full px-5 py-4 text-[0.95rem] leading-none md:text-base",
+    mobile ? "min-h-[54px] bg-[#f2f0eb] text-[#080807]" : "bg-[#080807] text-white",
+  );
+  const content = (
+    <>
+      <span className="font-oh-nav font-medium tracking-[0em]">
+        {action.label}
+      </span>
+      <span
+        aria-hidden="true"
+        className={cn(
+          "h-2.5 w-2.5 rounded-full border",
+          mobile ? "border-[#080807]/60" : "border-white/70",
+        )}
+      />
+    </>
+  );
+
   if (action.external || action.href.startsWith("mailto:")) {
     return (
       <a
@@ -130,15 +274,16 @@ function TopNavActionLink({
         target={action.href.startsWith("http") ? "_blank" : undefined}
         rel={action.href.startsWith("http") ? "noreferrer" : undefined}
         className={className}
+        onClick={onNavigate}
       >
-        {label}
+        {content}
       </a>
     );
   }
 
   return (
-    <TransitionLink href={action.href} className={className} aria-current={active ? "page" : undefined}>
-      {label}
+    <TransitionLink href={action.href} className={className} onClick={onNavigate}>
+      {content}
     </TransitionLink>
   );
 }

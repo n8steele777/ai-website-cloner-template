@@ -4,7 +4,7 @@ import {
   offMenuNavigationLinks,
   offMenuResourceLinks,
   studioFinityAboutContent,
-} from "@/lib/offmenu-data";
+} from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "About | Studio Finity",

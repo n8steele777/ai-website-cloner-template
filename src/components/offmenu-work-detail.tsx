@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { AnimatedWords } from "@/components/animated-words";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { OffMenuWorkFooter } from "@/components/offmenu-work-footer";
 import { OffMenuWorkHero } from "@/components/offmenu-work-hero";
-import type { CaseStudy, NavLink, WorkMediaImage, WorkProjectDetail } from "@/types/offmenu";
+import type { CaseStudy, NavLink, WorkGalleryItem, WorkProjectDetail } from "@/types/offmenu";
 
 interface OffMenuWorkDetailProps {
   caseStudies: CaseStudy[];
@@ -22,13 +23,10 @@ export function OffMenuWorkDetail({
   resourceLinks: _resourceLinks,
 }: OffMenuWorkDetailProps) {
   void _resourceLinks;
-  const creditsStatement = buildCreditsStatement(project);
   const relatedProjects = project.relatedSlugs
     .map((slug) => caseStudies.find((caseStudy) => caseStudy.slug === slug))
     .filter((caseStudy): caseStudy is CaseStudy => Boolean(caseStudy));
-  const [primaryFigure, secondaryFigure, ...remainingFigures] = project.galleryImages;
-  const twoUpFigures = remainingFigures.slice(0, 2);
-  const trailingFigures = remainingFigures.slice(2);
+  const galleryBlocks = buildGalleryBlocks(project.galleryMedia);
 
   return (
     <main className="offmenu-shell bg-background text-foreground">
@@ -45,101 +43,28 @@ export function OffMenuWorkDetail({
           title={project.title}
         />
 
-        <section className="px-6 pb-16 pt-28 md:px-12 lg:px-20" id="introduction">
-          <div className="flex flex-col gap-16">
-            <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-              <div className="flex flex-col gap-8">
-                <span className="text-sm font-medium">Introduction</span>
-                <p className="max-w-5xl whitespace-pre-line text-2xl font-medium leading-tight md:text-3xl">
-                  {project.introduction}
-                </p>
-              </div>
-
-              <div className="flex w-full flex-col gap-8 lg:max-w-md lg:justify-self-end">
-                <span className="text-sm font-medium">Details</span>
-                <ul className="text-sm font-medium [&>li]:mb-0 [&>li]:list-none [&>li]:items-center [&>li]:gap-2 [&>li]:border-t [&>li]:border-foreground/10 [&>li]:py-3 lg:[&>li]:flex">
-                  {project.details.map((detail, index) => (
-                    <li key={`${detail.label}-${index}`}>
-                      <span className="sf-copy-subtle flex-1">{detail.label}</span>
-                      <span>{detail.value}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {project.scopeItems.length > 0 ? (
-              <div className="flex max-w-md flex-col gap-4">
-                <span className="text-sm font-medium">Scope</span>
-                <ul className="space-y-2 text-sm font-medium">
-                  {project.scopeItems.map((item, index) => (
-                    <li key={`${item}-${index}`} className="flex items-start gap-3">
-                      <span className="sf-copy-subtle min-w-8">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+        <section className="px-6 pb-14 pt-24 md:px-12 md:pb-16 md:pt-28 lg:px-20" id="introduction">
+          <div className="max-w-5xl">
+            <span className="sf-eyebrow text-foreground">Introduction</span>
+            <p className="sf-title-xl mt-8 max-w-4xl whitespace-pre-line">
+              {project.introduction}
+            </p>
           </div>
         </section>
 
-        {project.summary ? (
-          <WorkNarrative
-            label="Overview"
-            content={project.summary}
-            size="body"
-          />
-        ) : null}
-
-        {primaryFigure ? <WorkFigure image={primaryFigure} /> : null}
-
-        {creditsStatement ? (
-          <WorkNarrative
-            label="Credits"
-            content={creditsStatement}
-            size="display"
-          />
-        ) : null}
-
-        {secondaryFigure ? <WorkFigure image={secondaryFigure} /> : null}
-
-        {twoUpFigures.length > 0 ? (
-          <section className="px-4 py-4 md:px-6 lg:px-8">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-3 lg:gap-4">
-              {twoUpFigures.map((image, index) => (
-                <div key={`${image.src}-${index}`} className="overflow-hidden rounded-lg md:rounded-2xl">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={1200}
-                    height={1200}
-                    sizes="(max-width: 767px) 100vw, 50vw"
-                    className="h-auto w-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        {trailingFigures.map((image, index) => (
-          <WorkFigure key={`${image.src}-${index}`} image={image} />
-        ))}
+        {galleryBlocks.length > 0 ? <WorkGallery blocks={galleryBlocks} /> : null}
       </div>
 
-      <section className="px-4 pb-4 pt-24 md:px-6 lg:px-8">
-        <AnimatedWords
-          as="h2"
-          text="Want to see more?"
-          className="-mb-12 text-2xl font-medium md:text-4xl"
-          triggerOnView
-        />
+      {relatedProjects.length > 0 ? (
+        <section className="px-4 pb-10 pt-18 md:px-6 md:pb-12 md:pt-20 lg:px-8">
+          <AnimatedWords
+            as="h2"
+            text="Want to see more?"
+            className="sf-title-xl mb-8 md:mb-10"
+            triggerOnView
+          />
 
-        <div className="py-16 md:py-24">
-          <div className="group/row flex flex-col md:h-[68vh] md:flex-row">
+          <div className="group/row flex flex-col gap-4 md:min-h-[32rem] md:flex-row md:gap-6 lg:min-h-[36rem]">
             {relatedProjects.map((relatedProject, index) => {
               const relatedImage = relatedProject.thumbnailLightXl;
 
@@ -149,8 +74,8 @@ export function OffMenuWorkDetail({
                   href={relatedProject.href}
                   className={
                     index === 0
-                      ? "peer/left aspect-[2/3] flex-1 pb-2 transition-[flex] duration-700 ease-[cubic-bezier(0.85,0.09,0.15,0.91)] md:h-full md:aspect-auto md:pr-2 md:hover:flex-[1.75] md:peer-hover/right:flex-1"
-                      : "peer/right aspect-square flex-1 pt-2 transition-[flex] duration-700 ease-[cubic-bezier(0.85,0.09,0.15,0.91)] md:h-full md:aspect-auto md:pl-2 md:hover:flex-[1.75] md:peer-hover/left:flex-1"
+                      ? "peer/left aspect-[1.18/1] flex-1 transition-[flex] duration-700 ease-[cubic-bezier(0.85,0.09,0.15,0.91)] md:h-full md:aspect-auto md:hover:flex-[1.55] md:peer-hover/right:flex-[0.92]"
+                      : "peer/right aspect-[1.18/1] flex-1 transition-[flex] duration-700 ease-[cubic-bezier(0.85,0.09,0.15,0.91)] md:h-full md:aspect-auto md:hover:flex-[1.55] md:peer-hover/left:flex-[0.92]"
                   }
                 >
                   <div className="flex h-full flex-col">
@@ -165,25 +90,25 @@ export function OffMenuWorkDetail({
                         />
                       </div>
                     </div>
-                    <p className="mt-3 text-sm font-medium text-foreground">{relatedProject.title}</p>
+                    <p className="sf-caption-strong mt-3 text-foreground">{relatedProject.title}</p>
                   </div>
                 </Link>
               );
             })}
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
-      <section className="flex flex-col items-center justify-center gap-8 pb-35 pt-24">
+      <section className="flex flex-col items-center justify-center gap-8 px-6 pb-24 pt-18 text-center md:px-8 md:pb-28 md:pt-24">
         <AnimatedWords
           as="h2"
           text={project.ctaTitle}
-          className="text-center text-3xl font-medium md:text-4xl lg:text-5xl"
+          className="sf-title-xl text-center"
           triggerOnView
         />
         <a
           href={project.ctaHref}
-          className="sf-interactive sf-pill-button sf-pill-button-primary text-lg"
+          className="sf-interactive sf-pill-button sf-pill-button-primary text-base md:text-lg"
         >
           {project.ctaLabel}
         </a>
@@ -194,66 +119,166 @@ export function OffMenuWorkDetail({
   );
 }
 
-function buildCreditsStatement(project: WorkProjectDetail) {
-  if (!project.credits) {
-    return null;
+type GalleryBlock =
+  | {
+      items: [WorkGalleryItem];
+      type: "feature";
+    }
+  | {
+      items: [WorkGalleryItem, WorkGalleryItem];
+      type: "pair";
+    }
+  | {
+      items: [WorkGalleryItem, WorkGalleryItem, WorkGalleryItem];
+      type: "triptych";
+    };
+
+function buildGalleryBlocks(items: WorkGalleryItem[]): GalleryBlock[] {
+  const blocks: GalleryBlock[] = [];
+  let index = 0;
+  let useFeature = true;
+
+  while (index < items.length) {
+    const remaining = items.length - index;
+
+    if (useFeature || remaining === 1) {
+      blocks.push({
+        type: "feature",
+        items: [items[index]!],
+      });
+      index += 1;
+      useFeature = false;
+      continue;
+    }
+
+    if (remaining >= 3) {
+      blocks.push({
+        type: "triptych",
+        items: [items[index]!, items[index + 1]!, items[index + 2]!],
+      });
+      index += 3;
+      useFeature = true;
+      continue;
+    }
+
+    blocks.push({
+      type: "pair",
+      items: [items[index]!, items[index + 1]!],
+    });
+    index += 2;
+    useFeature = true;
   }
 
-  const roles = project.credits.roles
-    .map((role) => role.replace(/,+$/g, "").trim())
-    .filter(Boolean);
-  const names = project.credits.names
-    .map((name) => name.trim())
-    .filter(Boolean);
-
-  if (roles.length === 0 && names.length === 0) {
-    return null;
-  }
-
-  if (roles.length > 0 && names.length > 0) {
-    return `${roles.join(", ")} by ${names.join(", ")}.`;
-  }
-
-  if (roles.length > 0) {
-    return roles.join(", ");
-  }
-
-  return names.join(", ");
+  return blocks;
 }
 
-function WorkNarrative({
-  content,
-  label,
-  size: _size,
-}: {
-  content: string;
-  label: string;
-  size: "body" | "display";
-}) {
-  void _size;
+function WorkGallery({ blocks }: { blocks: GalleryBlock[] }) {
   return (
-    <section className="px-6 py-10 md:px-12 lg:px-20">
-      <div className="flex max-w-4xl flex-col gap-5">
-        <span className="sf-copy-subtle text-sm font-medium">{label}</span>
-        <p className="max-w-3xl text-base font-medium leading-tight md:text-lg">{content}</p>
+    <section className="px-4 pb-8 pt-4 md:px-6 md:pb-10 lg:px-8">
+      <div className="space-y-4 md:space-y-6">
+        {blocks.map((block, index) => {
+          if (block.type === "feature") {
+            return (
+              <div key={`${block.items[0].src}-${index}`} className="overflow-hidden rounded-[20px] md:rounded-[28px]">
+                <WorkGalleryCard item={block.items[0]} fallbackAspectRatio={1.45} sizes="100vw" />
+              </div>
+            );
+          }
+
+          if (block.type === "pair") {
+            return (
+              <div
+                key={`${block.items[0].src}-${block.items[1].src}-${index}`}
+                className="grid grid-cols-1 gap-4 md:grid-cols-[1.15fr_0.85fr] md:gap-6"
+              >
+                <WorkGalleryCard item={block.items[0]} fallbackAspectRatio={0.95} sizes="(max-width: 767px) 100vw, 58vw" />
+                <WorkGalleryCard item={block.items[1]} fallbackAspectRatio={0.82} sizes="(max-width: 767px) 100vw, 42vw" />
+              </div>
+            );
+          }
+
+          return (
+            <div
+              key={`${block.items[0].src}-${block.items[1].src}-${block.items[2].src}-${index}`}
+              className="grid grid-cols-1 gap-4 md:grid-cols-[0.95fr_1.1fr] md:grid-rows-2 md:gap-6"
+            >
+              <WorkGalleryCard
+                item={block.items[0]}
+                cardClassName="md:row-span-2"
+                fallbackAspectRatio={0.9}
+                sizes="(max-width: 767px) 100vw, 44vw"
+              />
+              <WorkGalleryCard
+                item={block.items[1]}
+                fallbackAspectRatio={1.25}
+                sizes="(max-width: 767px) 100vw, 56vw"
+              />
+              <WorkGalleryCard
+                item={block.items[2]}
+                fallbackAspectRatio={1.25}
+                sizes="(max-width: 767px) 100vw, 56vw"
+              />
+            </div>
+          );
+        })}
       </div>
     </section>
   );
 }
 
-function WorkFigure({ image }: { image: WorkMediaImage }) {
+function WorkGalleryCard({
+  cardClassName,
+  item,
+  fallbackAspectRatio,
+  sizes,
+}: {
+  cardClassName?: string;
+  item: WorkGalleryItem;
+  fallbackAspectRatio: number;
+  sizes: string;
+}) {
+  const defaultAspectRatio =
+    item.aspectRatio ??
+    (item.width && item.height ? item.width / item.height : item.kind === "video" ? 16 / 9 : fallbackAspectRatio);
+  const [aspectRatio, setAspectRatio] = useState(defaultAspectRatio);
+
+  useEffect(() => {
+    setAspectRatio(defaultAspectRatio);
+  }, [defaultAspectRatio]);
+
   return (
-    <figure className="px-4 py-4 md:px-6 lg:px-8">
-      <div className="relative w-full overflow-hidden rounded-lg md:rounded-2xl">
-        <Image
-          src={image.src}
-          alt={image.alt}
-          width={1800}
-          height={1200}
-          sizes="100vw"
-          className="h-auto w-full object-cover"
+    <div
+      className={`${cardClassName ?? ""} overflow-hidden rounded-[20px] bg-black/[0.03] md:rounded-[28px]`}
+      style={{ aspectRatio: `${aspectRatio}` }}
+    >
+      {item.kind === "video" ? (
+        <video
+          src={item.src}
+          aria-label={item.alt ?? item.title ?? "Gallery video"}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="h-full w-full object-cover"
+          onLoadedMetadata={(event) => {
+            const { videoHeight, videoWidth } = event.currentTarget;
+
+            if (videoWidth > 0 && videoHeight > 0) {
+              setAspectRatio(videoWidth / videoHeight);
+            }
+          }}
         />
-      </div>
-    </figure>
+      ) : (
+        <Image
+          src={item.src}
+          alt={item.alt ?? item.title ?? "Gallery image"}
+          width={item.width ?? 1400}
+          height={item.height ?? Math.round((item.width ?? 1400) / fallbackAspectRatio)}
+          sizes={sizes}
+          className="h-full w-full object-cover"
+        />
+      )}
+    </div>
   );
 }

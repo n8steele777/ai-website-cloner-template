@@ -82,12 +82,16 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
 
   return (
     <div className="pt-2">
-      <p className="text-[14px] font-normal leading-[19.6px] tracking-[0em] text-[#a6a6a7]">
-        Our ground rules
+      <p
+        data-about-reveal
+        className="sf-eyebrow text-[#a6a6a7]"
+      >
+        OUR GROUND RULES
       </p>
 
       <div
         ref={containerRef}
+        data-about-stagger
         className="relative mt-5"
         onMouseLeave={() => {
           setActiveRuleId(null);
@@ -113,6 +117,7 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
               <button
                 key={rule.id}
                 type="button"
+                data-about-item
                 className={cn(
                   "group flex w-full items-start gap-[10px] py-0.5 text-left transition-opacity duration-200 md:gap-[12px]",
                   isActive ? "opacity-100" : "opacity-[0.1] hover:opacity-[0.18]",
@@ -141,13 +146,13 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
                   setActiveRuleId(rule.id);
                 }}
               >
-                <span className="min-w-[52px] text-[24px] font-normal leading-[1.1] tracking-[-0.04em] text-black md:min-w-[58px] md:text-[32px] md:leading-[35.2px]">
+                <span className="sf-section-list min-w-[52px] md:min-w-[58px]">
                   {rule.id}
                 </span>
-                <span className="text-[24px] font-normal leading-[1.1] tracking-[-0.04em] text-black md:text-[32px] md:leading-[35.2px]">
+                <span className="sf-section-list">
                   /
                 </span>
-                <span className="flex-1 text-[24px] font-normal leading-[1.1] tracking-[-0.04em] text-black md:text-[32px] md:leading-[35.2px]">
+                <span className="sf-section-list flex-1">
                   {rule.statement}
                 </span>
               </button>
@@ -202,10 +207,10 @@ function RuleReferenceCard({ rule }: { rule: StudioRule | null }) {
           />
         </div>
         <div className="min-w-0 self-center">
-          <p className="text-[0.76rem] font-medium leading-none tracking-[0em] text-white lg:text-[0.84rem]">
+          <p className="sf-rule-card-title">
             {reference.name}
           </p>
-          <p className="mt-1 text-[0.66rem] leading-[1.3] tracking-[0em] text-white/88 lg:text-[0.72rem]">
+          <p className="sf-rule-card-copy mt-1">
             &ldquo;{reference.quote}&rdquo;
           </p>
         </div>

@@ -10,6 +10,8 @@ type AnimatedWordsProps<T extends ElementType = "p"> = {
   className?: string;
   delay?: number;
   duration?: number;
+  highlightClassName?: string;
+  highlightWords?: string[];
   lineClassName?: string;
   rootMargin?: string;
   stagger?: number;
@@ -23,6 +25,8 @@ export function AnimatedWords<T extends ElementType = "p">({
   className,
   delay = 0,
   duration = 0.82,
+  highlightClassName,
+  highlightWords = [],
   lineClassName,
   rootMargin = "0px 0px -12% 0px",
   stagger = 0.03,
@@ -33,8 +37,8 @@ export function AnimatedWords<T extends ElementType = "p">({
   const { pageReady } = usePageTransition();
   const Component = (as ?? "p") as ElementType;
   const rootRef = useRef<HTMLElement | null>(null);
+  const lineRefs = useRef<HTMLSpanElement[]>([]);
   const wordRefs = useRef<HTMLSpanElement[]>([]);
-  const hasAnimatedRef = useRef(false);
   const lines = text
     .split("\n")
     .map((line) => line.trim())
@@ -43,35 +47,46 @@ export function AnimatedWords<T extends ElementType = "p">({
   const totalWords = wordsByLine.reduce((count, words) => count + words.length, 0);
 
   useLayoutEffect(() => {
+    lineRefs.current = lineRefs.current.slice(0, lines.length);
     wordRefs.current = wordRefs.current.slice(0, totalWords);
 
-    const words = wordRefs.current.filter(Boolean);
     const root = rootRef.current;
+    const lineNodes = lineRefs.current.filter(Boolean);
+    let wordOffset = 0;
+    const lineWordGroups = wordsByLine.map((lineWords) => {
+      const group = wordRefs.current.slice(wordOffset, wordOffset + lineWords.length).filter(Boolean);
+      wordOffset += lineWords.length;
+      return group;
+    });
 
-    if (!root || words.length === 0) {
+    if (!root || lineNodes.length === 0) {
       return;
     }
 
-    let observer: IntersectionObserver | null = null;
-    let timeline: gsap.core.Timeline | null = null;
+    const observers: IntersectionObserver[] = [];
+    const timelines = new Map<number, gsap.core.Timeline>();
+    const animatedLines = new Set<number>();
     let cancelled = false;
 
-    const animateIn = () => {
-      if (cancelled || hasAnimatedRef.current) {
+    const animateLine = (lineIndex: number) => {
+      const lineWords = lineWordGroups[lineIndex];
+
+      if (cancelled || animatedLines.has(lineIndex) || !lineWords || lineWords.length === 0) {
         return;
       }
 
-      hasAnimatedRef.current = true;
-      timeline?.kill();
-      timeline = gsap.timeline({
+      animatedLines.add(lineIndex);
+      timelines.get(lineIndex)?.kill();
+      const timeline = gsap.timeline({
         defaults: {
           duration,
           ease: "expo.out",
           overwrite: "auto",
         },
       });
+      timelines.set(lineIndex, timeline);
       timeline.fromTo(
-        words,
+        lineWords,
         {
           autoAlpha: 0,
           force3D: true,
@@ -81,20 +96,26 @@ export function AnimatedWords<T extends ElementType = "p">({
           autoAlpha: 1,
           force3D: true,
           yPercent: 0,
-          delay,
+          delay: delay + lineIndex * Math.min(stagger * 2, 0.12),
           stagger: {
             each: stagger,
             from: "start",
           },
           onComplete: () => {
-            gsap.set(words, { clearProps: "willChange" });
+            gsap.set(lineWords, { clearProps: "willChange" });
           },
         },
       );
     };
 
     const ctx = gsap.context(() => {
-      gsap.set(words, { willChange: "transform, opacity" });
+      lineWordGroups.forEach((lineWords) => {
+        if (lineWords.length === 0) {
+          return;
+        }
+
+        gsap.set(lineWords, { willChange: "transform, opacity" });
+      });
     }, root);
 
     const init = () => {
@@ -103,58 +124,61 @@ export function AnimatedWords<T extends ElementType = "p">({
       }
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.set(words, { autoAlpha: 1, yPercent: 0 });
+        lineWordGroups.forEach((lineWords) => {
+          if (lineWords.length === 0) {
+            return;
+          }
+
+          gsap.set(lineWords, { autoAlpha: 1, yPercent: 0 });
+        });
         return;
       }
 
-      if (hasAnimatedRef.current) {
-        gsap.set(words, { autoAlpha: 1, yPercent: 0 });
-        return;
-      }
+      lineWordGroups.forEach((lineWords) => {
+        if (lineWords.length === 0) {
+          return;
+        }
 
-      gsap.set(words, {
-        autoAlpha: 0,
-        force3D: true,
-        yPercent: 92,
+        gsap.set(lineWords, {
+          autoAlpha: 0,
+          force3D: true,
+          yPercent: 92,
+        });
       });
 
       if (!pageReady) {
         return;
       }
 
-      if (!triggerOnView) {
-        animateIn();
-        return;
-      }
-
-      const rect = root.getBoundingClientRect();
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-      const initiallyVisible = rect.bottom > 0 && rect.top < viewportHeight * 1.05;
+      const visibilityThreshold = triggerOnView ? threshold : 0;
 
-      if (initiallyVisible) {
-        animateIn();
-        return;
-      }
+      lineNodes.forEach((lineNode, lineIndex) => {
+        const rect = lineNode.getBoundingClientRect();
+        const initiallyVisible = rect.bottom > 0 && rect.top < viewportHeight * 0.96;
 
-      const nextObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) {
-              return;
-            }
+        if (initiallyVisible) {
+          animateLine(lineIndex);
+        }
 
-            nextObserver.unobserve(entry.target);
-            animateIn();
-          });
-        },
-        {
-          rootMargin,
-          threshold,
-        },
-      );
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                animateLine(lineIndex);
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            rootMargin,
+            threshold: visibilityThreshold,
+          },
+        );
 
-      nextObserver.observe(root);
-      observer = nextObserver;
+        observer.observe(lineNode);
+        observers.push(observer);
+      });
     };
 
     const readyPromise =
@@ -166,12 +190,30 @@ export function AnimatedWords<T extends ElementType = "p">({
 
     return () => {
       cancelled = true;
-      gsap.killTweensOf(words);
-      timeline?.kill();
-      observer?.disconnect();
+      lineWordGroups.forEach((lineWords) => {
+        if (lineWords.length === 0) {
+          return;
+        }
+
+        gsap.killTweensOf(lineWords);
+      });
+      timelines.forEach((timeline) => timeline.kill());
+      observers.forEach((observer) => observer.disconnect());
       ctx.revert();
     };
-  }, [delay, duration, pageReady, rootMargin, stagger, text, threshold, totalWords, triggerOnView]);
+  }, [
+    delay,
+    duration,
+    lines.length,
+    pageReady,
+    rootMargin,
+    stagger,
+    text,
+    threshold,
+    totalWords,
+    triggerOnView,
+    wordsByLine,
+  ]);
 
   return (
     <Component
@@ -186,6 +228,11 @@ export function AnimatedWords<T extends ElementType = "p">({
           <span
             key={`${line}-${lineIndex}`}
             aria-hidden="true"
+            ref={(node) => {
+              if (node) {
+                lineRefs.current[lineIndex] = node;
+              }
+            }}
             className={cn("block", lineClassName)}
           >
             {words.map((word, wordIndex) => {
@@ -205,7 +252,10 @@ export function AnimatedWords<T extends ElementType = "p">({
                         wordRefs.current[flatWordIndex] = node;
                       }
                     }}
-                    className="animated-word inline-block"
+                    className={cn(
+                      "animated-word inline-block",
+                      highlightWords.includes(word.replace(/[.,!?;:]+$/g, "")) ? highlightClassName : null,
+                    )}
                   >
                     {word}
                   </span>

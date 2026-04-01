@@ -9,8 +9,8 @@ interface OffMenuWorkFooterProps {
 
 export function OffMenuWorkFooter({ navigationLinks }: OffMenuWorkFooterProps) {
   return (
-    <footer className="flex min-h-[28rem] w-full items-end px-4 py-4 md:px-8">
-      <div className="grid w-full gap-3 text-sm font-medium md:grid-cols-5 md:gap-8">
+    <footer className="flex min-h-[14rem] w-full items-end px-4 py-6 md:min-h-[18rem] md:px-8">
+      <div className="sf-caption-strong grid w-full gap-3 md:grid-cols-5 md:gap-8">
         {navigationLinks.map((link) => {
           if (link.disabled) {
             return <span key={link.label}>{link.label}</span>;

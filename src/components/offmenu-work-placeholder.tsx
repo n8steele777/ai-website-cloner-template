@@ -35,7 +35,7 @@ export function OffMenuWorkPlaceholder({
       <section className="px-6 pb-24 pt-4 md:px-12 lg:px-20">
         <div className="sf-panel mx-auto hidden max-w-sm rounded-[1.5rem] p-6 text-foreground md:block">
           <p className="sf-eyebrow">In progress</p>
-          <p className="mt-4 text-lg font-medium leading-tight">
+          <p className="sf-title-md mt-4">
             Flex is the fully cloned base right now. The remaining work pages can inherit the same
             structure next.
           </p>

@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { OffMenuWorkDetail } from "@/components/offmenu-work-detail";
 import {
-  getWorkProjectBySlug,
-  offMenuCaseStudies,
-  offMenuWorkNavigationLinks,
   offMenuResourceLinks,
-} from "@/lib/offmenu-data";
+  offMenuWorkNavigationLinks,
+} from "@/lib/site-data";
+import { buildCaseStudies, buildWorkProjects, fetchSanityWorks } from "@/lib/sanity-work";
 
 interface WorkPageProps {
   params: Promise<{
@@ -15,14 +14,17 @@ interface WorkPageProps {
 }
 
 export async function generateStaticParams() {
-  return offMenuCaseStudies.map((caseStudy) => ({
-    slug: caseStudy.slug,
+  const works = await fetchSanityWorks();
+
+  return works.map((work) => ({
+    slug: work.slug,
   }));
 }
 
 export async function generateMetadata({ params }: WorkPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getWorkProjectBySlug(slug);
+  const works = await fetchSanityWorks();
+  const project = buildWorkProjects(works).find((entry) => entry.slug === slug);
 
   if (!project) {
     return {};
@@ -36,7 +38,9 @@ export async function generateMetadata({ params }: WorkPageProps): Promise<Metad
 
 export default async function WorkPage({ params }: WorkPageProps) {
   const { slug } = await params;
-  const project = getWorkProjectBySlug(slug);
+  const works = await fetchSanityWorks();
+  const caseStudies = buildCaseStudies(works);
+  const project = buildWorkProjects(works).find((entry) => entry.slug === slug);
 
   if (!project) {
     notFound();
@@ -44,7 +48,7 @@ export default async function WorkPage({ params }: WorkPageProps) {
 
   return (
     <OffMenuWorkDetail
-      caseStudies={offMenuCaseStudies}
+      caseStudies={caseStudies}
       navigationLinks={offMenuWorkNavigationLinks}
       project={project}
       resourceLinks={offMenuResourceLinks}

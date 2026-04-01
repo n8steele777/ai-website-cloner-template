@@ -147,7 +147,7 @@ export function OffMenuWorkHero({
           <AnimatedWords
             as="h1"
             text={title}
-            className="text-3xl font-medium text-white md:text-4xl"
+            className="sf-title-xl max-w-[12ch] text-white"
             delay={transitionMatches ? 0.24 : 0.28}
           />
           {description ? (

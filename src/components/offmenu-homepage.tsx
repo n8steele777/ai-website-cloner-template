@@ -721,7 +721,7 @@ export function OffMenuHomepage({
           </div>
 
           <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
-            <h1 className="pointer-events-auto max-w-[28ch] text-pretty text-center text-sm font-medium leading-none text-foreground md:text-base">
+            <h1 className="sf-caption pointer-events-auto max-w-[28ch] text-pretty text-center leading-none text-foreground md:text-base">
               {heroWords.map((word, index) => (
                 <span
                   key={`${word}-${index}`}
@@ -782,7 +782,7 @@ export function OffMenuHomepage({
                           ref={(element) => {
                             titleItemRefs.current[index] = element;
                           }}
-                          className="inline-block whitespace-nowrap text-center text-4xl font-medium"
+                          className="sf-title-xl inline-block whitespace-nowrap text-center"
                           style={{ transform: "translateY(110%)" }}
                         >
                           {caseStudy.title}

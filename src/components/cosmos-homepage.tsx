@@ -254,22 +254,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         <CosmosHeroWhirl imageUrls={data.heroSpiralImages} filmProgress={filmHandoffProgress} />
 
         <div style={heroHeadlineStyle}>
-          <div className="relative z-10 flex flex-col items-center gap-5">
-            <img
-              src="/logos/Studio%20Finity%20Text%20Logo.png"
-              alt="STUDIO FINITY"
-              className="h-auto w-[min(220px,38vw)] max-w-full md:w-[min(280px,26vw)]"
-            />
-
-            <AnimatedWords
-              as="h1"
-              text={"Your space\nfor inspiration"}
-              className="font-cosmos text-pretty text-center text-[54px] font-[350] leading-none tracking-[-0.04em] text-[var(--sf-text)] md:text-[74px]"
-              lineClassName="leading-none"
-              delay={0.2}
-            />
-
-          </div>
+          <HeroHeadline />
         </div>
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[308px] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.6)_35%,rgba(255,255,255,0.9)_60%,white_84%)]" />
@@ -282,131 +267,192 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         viewportWidth={heroViewportWidth}
       />
 
-      <section className="px-4 py-20 md:px-6 md:py-24">
-        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 md:pt-14">
-          <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
-            <SectionHeading section={data.brandIntro} titleClassName="max-w-[10ch]" />
+      <div className="relative z-20 bg-[var(--sf-bg)]">
+        <section className="sf-home-section">
+          <div className="sf-home-section-inner sf-home-divider">
+            <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
+              <SectionHeading section={data.brandIntro} titleClassName="max-w-[10ch]" />
 
-            <div className="max-w-[43rem]">
-              <p className="text-[1.4rem] leading-[1.12] tracking-[-0.03em] text-[var(--sf-text-soft)] md:text-[1.95rem]">
-                {data.brandIntro.body}
-              </p>
-              <p className="sf-copy-muted mt-6 max-w-[36rem] text-[1rem] leading-[1.5] md:text-[1.08rem]">
-                {data.brandIntro.supportingText}
-              </p>
+              <div className="max-w-[43rem]">
+                <p className="sf-editorial-lead">
+                  {data.brandIntro.body}
+                </p>
+                <p className="sf-body-copy mt-6 max-w-[36rem]">
+                  {data.brandIntro.supportingText}
+                </p>
+              </div>
             </div>
+
+            <BrandIntroShowcase media={data.heroMedia} />
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-4 py-20 md:px-6 md:py-24">
-        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 md:pt-14">
-          <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
-            <SectionHeading section={data.principles} titleClassName="max-w-[9ch]" />
+        <section className="sf-home-section">
+          <div className="sf-home-section-inner sf-home-divider">
+            <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
+              <SectionHeading section={data.principles} titleClassName="max-w-[9ch]" />
 
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.62fr)]">
-              <div className="space-y-1">
-                {data.principles.items.map((principle, index) => {
-                  const isActive = index === activePrincipleIndex;
+              <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.62fr)]">
+                <div className="space-y-1">
+                  {data.principles.items.map((principle, index) => {
+                    const isActive = index === activePrincipleIndex;
 
-                  return (
-                    <div key={`${principle.label}-${principle.title}`} className="border-b border-black/8">
-                      <button
-                        type="button"
-                        className="group/principle flex w-full items-start gap-4 py-4 text-left"
-                        aria-expanded={isActive}
-                        onClick={() => setActivePrincipleIndex(index)}
-                        onFocus={() => setActivePrincipleIndex(index)}
-                        onMouseEnter={() => setActivePrincipleIndex(index)}
-                      >
-                        <span className="mt-0.5 min-w-8 text-[0.85rem] font-medium text-[var(--sf-text-subtle)]">
-                          {principle.label}
-                        </span>
-                        <span
-                          className={cn(
-                            "max-w-[30rem] text-[1.45rem] leading-[1.08] tracking-[-0.035em] transition-colors md:text-[2.1rem]",
-                            isActive ? "text-[var(--sf-text)]" : "text-black/38",
-                          )}
+                    return (
+                      <div key={`${principle.label}-${principle.title}`} className="border-b border-black/8">
+                        <button
+                          type="button"
+                          className="group/principle flex w-full items-start gap-4 py-4 text-left"
+                          aria-expanded={isActive}
+                          onClick={() => setActivePrincipleIndex(index)}
+                          onFocus={() => setActivePrincipleIndex(index)}
+                          onMouseEnter={() => setActivePrincipleIndex(index)}
                         >
-                          {principle.title}
-                        </span>
-                      </button>
+                          <span className="sf-caption mt-0.5 min-w-8">
+                            {principle.label}
+                          </span>
+                          <span
+                            className={cn(
+                              "sf-title-lg max-w-[30rem] transition-colors",
+                              isActive ? "text-[var(--sf-text)]" : "text-black/38",
+                            )}
+                          >
+                            {principle.title}
+                          </span>
+                        </button>
 
-                      {isActive ? (
-                        <div className="pb-4 pl-12 lg:hidden">
-                          <p className="max-w-[28rem] text-[0.98rem] leading-[1.5] text-[var(--sf-text-muted)]">
-                            {principle.supportingText}
-                          </p>
-                        </div>
-                      ) : null}
+                        {isActive ? (
+                          <div className="pb-4 pl-12 lg:hidden">
+                            <p className="sf-body-copy max-w-[28rem]">
+                              {principle.supportingText}
+                            </p>
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="hidden lg:block">
+                  {activePrinciple ? (
+                    <div className="border-l border-black/10 pl-6 pt-1">
+                      <p className="sf-eyebrow">{activePrinciple.label}</p>
+                      <p className="sf-body-copy mt-3 max-w-[22rem]">
+                        {activePrinciple.supportingText}
+                      </p>
                     </div>
-                  );
-                })}
-              </div>
-
-              <div className="hidden lg:block">
-                {activePrinciple ? (
-                  <div className="border-l border-black/10 pl-6 pt-1">
-                    <p className="sf-eyebrow">{activePrinciple.label}</p>
-                    <p className="mt-3 max-w-[22rem] text-[1rem] leading-[1.55] text-[var(--sf-text-muted)]">
-                      {activePrinciple.supportingText}
-                    </p>
-                  </div>
-                ) : null}
+                  ) : null}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-4 py-20 md:px-6 md:py-24">
-        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 md:pt-14">
-          <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
-            <SectionHeading section={data.featuredWork} titleClassName="max-w-[7ch]" />
+        <section className="sf-home-section">
+          <div className="sf-home-section-inner sf-home-divider">
+            <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
+              <SectionHeading section={data.featuredWork} titleClassName="max-w-[7ch]" />
 
-            <div className="grid gap-9 md:grid-cols-2">
-              {data.featuredWork.projects.map((project) => (
-                <FeaturedWorkCard key={project.href} project={project} />
-              ))}
+              <div className="grid gap-9 md:grid-cols-2">
+                {data.featuredWork.projects.map((project) => (
+                  <FeaturedWorkCard key={project.href} project={project} />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-4 py-20 md:px-6 md:py-24">
-        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 md:pt-14">
-          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-            <SectionHeading section={data.capabilities} titleClassName="max-w-[10ch]" />
+        <section className="sf-home-section">
+          <div className="sf-home-section-inner sf-home-divider">
+            <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+              <SectionHeading section={data.capabilities} titleClassName="max-w-[10ch]" />
 
-            <div className="grid gap-4 md:grid-cols-3">
-              {data.capabilities.items.map((item) => (
-                <CapabilityCard key={item.title} item={item} />
-              ))}
+              <div className="grid gap-4 md:grid-cols-3">
+                {data.capabilities.items.map((item) => (
+                  <CapabilityCard key={item.title} item={item} />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-4 pb-24 pt-12 md:px-6 md:pb-32 md:pt-16">
-        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 text-center md:pt-16">
-          {data.contactCta.eyebrow ? (
-            <p className="sf-eyebrow">{data.contactCta.eyebrow}</p>
-          ) : null}
-          <AnimatedWords
-            as="h2"
-            text={data.contactCta.title}
-            className="mx-auto mt-3 max-w-[10ch] text-[3rem] leading-[0.98] tracking-[-0.04em] md:text-[4.75rem]"
-            triggerOnView
-          />
-          <p className="sf-copy-muted mx-auto mt-5 max-w-[30rem] text-[1rem] leading-[1.5] md:text-[1.08rem]">
-            {data.contactCta.supportingText}
-          </p>
-          <div className="mt-8 flex justify-center">
-            <ActionLink action={data.contactCta.button} />
+        <section className="sf-home-cta-section">
+          <div className="sf-home-section-inner border-t border-black/10 pt-10 text-center md:pt-16">
+            {data.contactCta.eyebrow ? (
+              <p className="sf-eyebrow">{data.contactCta.eyebrow}</p>
+            ) : null}
+            <AnimatedWords
+              as="h2"
+              text={data.contactCta.title}
+              className="sf-display-page sf-display-tight mx-auto mt-3 max-w-[10ch]"
+              triggerOnView
+            />
+            <p className="sf-body-copy mx-auto mt-5 max-w-[30rem]">
+              {data.contactCta.supportingText}
+            </p>
+            <div className="mt-8 flex justify-center">
+              <ActionLink action={data.contactCta.button} />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
+  );
+}
+
+function HeroHeadline() {
+  const [showSecondMessage, setShowSecondMessage] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setShowSecondMessage(true);
+    }, 2500);
+
+    return () => window.clearTimeout(timeoutId);
+  }, []);
+
+  return (
+    <div className="relative z-10 flex min-h-[12rem] items-center justify-center px-5 md:min-h-[16rem] md:px-8">
+      <div className="relative w-full max-w-[min(92vw,78rem)]">
+        <div
+          className={cn(
+            "absolute inset-0 flex items-center justify-center will-change-transform transition-[opacity,transform,filter] duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+            showSecondMessage
+              ? "pointer-events-none -translate-y-[4%] scale-[0.985] opacity-0 blur-[4px]"
+              : "translate-y-0 scale-100 opacity-100 blur-0",
+          )}
+        >
+          <AnimatedWords
+            key="hero-sharper-execution"
+            as="h1"
+            text={"Sharper\nexecution."}
+            className="sf-brand-display max-w-[9ch] text-center"
+            lineClassName="leading-[0.88]"
+            delay={0.12}
+          />
+        </div>
+
+        <div
+          className={cn(
+            "flex items-center justify-center will-change-transform transition-[opacity,transform,filter] duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+            showSecondMessage
+              ? "translate-y-0 scale-100 opacity-100 blur-0"
+              : "pointer-events-none translate-y-[4%] scale-[0.985] opacity-0 blur-[4px]",
+          )}
+        >
+          {showSecondMessage ? (
+            <AnimatedWords
+              key="hero-studio-finity-message"
+              as="h1"
+              text={"STUDIO FINITY is a design studio\nshaping how brands look,\nmove, and show up."}
+              className="mx-auto max-w-[18ch] text-center text-[1.55rem] font-medium leading-[1.08] tracking-[-0.03em] text-[var(--sf-text)] md:text-[2.1rem]"
+              lineClassName="leading-[1.08]"
+              delay={0.04}
+              stagger={0.022}
+            />
+          ) : null}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -785,7 +831,7 @@ function CosmosFilmHandoff({
             <span className="sf-copy-muted inline-flex h-4 w-4 items-center justify-center">
               <ArrowRightIcon className="h-4 w-4" />
             </span>
-            <p className="sf-copy-soft text-[1.05rem] tracking-[0em]">{cta}</p>
+            <p className="sf-body-large">{cta}</p>
           </button>
 
           <div
@@ -831,7 +877,7 @@ function SectionHeading({
         as="h2"
         text={section.title}
         className={cn(
-          "font-[family:var(--font-cosmos)] text-[3rem] leading-[0.98] tracking-[-0.04em] text-[#111] md:text-[4.125rem]",
+          "sf-display-page sf-display-tight",
           titleClassName,
         )}
         triggerOnView
@@ -840,10 +886,60 @@ function SectionHeading({
   );
 }
 
+function BrandIntroShowcase({ media }: { media: CosmosMediaItem[] }) {
+  const showcaseMedia = media.slice(0, 5);
+
+  if (showcaseMedia.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="mt-10 md:mt-14">
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <p className="sf-eyebrow">Selected stills</p>
+        <p className="sf-caption">A glimpse into the visual language behind the work</p>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-12 md:grid-rows-[minmax(14rem,26rem)_minmax(12rem,20rem)]">
+        <img
+          src={showcaseMedia[0]?.src}
+          alt={showcaseMedia[0]?.alt ?? "Studio Finity showcase image"}
+          className="h-full w-full rounded-[30px] border border-black/8 bg-white/60 object-cover shadow-[0_30px_80px_rgba(17,17,17,0.08)] md:col-span-5 md:row-span-2"
+        />
+
+        <div className="grid gap-3 md:col-span-7 md:grid-cols-7 md:grid-rows-subgrid md:row-span-2">
+          {showcaseMedia.slice(1, 5).map((item, index) => {
+            const layoutClassName =
+              index === 0
+                ? "md:col-span-4 md:row-span-1"
+                : index === 1
+                  ? "md:col-span-3 md:row-span-1"
+                  : index === 2
+                    ? "md:col-span-3 md:row-span-1"
+                    : "md:col-span-4 md:row-span-1";
+
+            return (
+              <img
+                key={item.src}
+                src={item.src}
+                alt={item.alt}
+                className={cn(
+                  "h-full min-h-[15rem] w-full rounded-[24px] border border-black/8 bg-white/55 object-cover shadow-[0_18px_44px_rgba(17,17,17,0.06)]",
+                  layoutClassName,
+                )}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FeaturedWorkCard({ project }: { project: CosmosFeaturedProject }) {
   return (
     <TransitionLink href={project.href} className="group/work block">
-      <div className="overflow-hidden rounded-[28px] bg-[var(--sf-surface)]">
+      <div className="sf-surface overflow-hidden rounded-[28px]">
         <img
           src={project.image.src}
           alt={project.image.alt}
@@ -852,11 +948,11 @@ function FeaturedWorkCard({ project }: { project: CosmosFeaturedProject }) {
       </div>
 
       <div className="mt-4">
-        <p className="sf-copy-subtle text-[0.8rem] font-medium uppercase">{project.category}</p>
-        <h3 className="mt-2 text-[1.55rem] leading-[1.04] tracking-[-0.035em] text-[var(--sf-text)] md:text-[1.8rem]">
+        <p className="sf-eyebrow">{project.category}</p>
+        <h3 className="sf-title-md mt-2">
           {project.title}
         </h3>
-        <p className="sf-copy-muted mt-2 max-w-[31rem] text-[0.98rem] leading-[1.5]">
+        <p className="sf-body-copy mt-2 max-w-[31rem]">
           {project.summary}
         </p>
       </div>
@@ -866,11 +962,11 @@ function FeaturedWorkCard({ project }: { project: CosmosFeaturedProject }) {
 
 function CapabilityCard({ item }: { item: CosmosCapability }) {
   return (
-    <div className="min-h-[14rem] rounded-[24px] border border-black/8 bg-[rgba(255,255,255,0.55)] p-5 md:p-6">
-      <p className="text-[1.35rem] leading-[1.08] tracking-[-0.03em] text-[var(--sf-text)] md:text-[1.55rem]">
+    <div className="sf-soft-card min-h-[14rem] p-5 md:p-6">
+      <p className="sf-title-md">
         {item.title}
       </p>
-      <p className="sf-copy-muted mt-4 max-w-[20rem] text-[0.98rem] leading-[1.5]">
+      <p className="sf-body-copy mt-4 max-w-[20rem]">
         {item.description}
       </p>
     </div>
@@ -885,7 +981,7 @@ function ActionLink({
   className?: string;
 }) {
   const sharedClassName = cn(
-    "sf-interactive sf-pill-button items-center gap-2 text-[0.92rem] tracking-[0em]",
+    "sf-interactive sf-pill-button items-center gap-2",
     action.variant === "primary"
       ? "sf-pill-button-primary"
       : action.variant === "ghost"

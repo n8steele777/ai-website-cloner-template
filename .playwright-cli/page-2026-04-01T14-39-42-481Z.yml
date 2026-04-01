@@ -1,0 +1,277 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - link "Studio Finity home" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "STUDIO FINITY logo" [ref=e7]
+      - generic [ref=e8]:
+        - link "About" [ref=e9] [cursor=pointer]:
+          - /url: /about
+        - link "Works" [ref=e10] [cursor=pointer]:
+          - /url: /work
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: mailto:hello@studio-finity.com
+    - generic [ref=e14]:
+      - img "STUDIO FINITY" [ref=e15]
+      - heading "Your space for inspiration" [level=1] [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e19]: Your
+          - generic [ref=e21]: space
+        - generic [ref=e22]:
+          - generic [ref=e24]: for
+          - generic [ref=e26]: inspiration
+    - generic [ref=e28]:
+      - generic:
+        - button "Watch our new film (ft. Odessa A'zion)" [ref=e29] [cursor=pointer]:
+          - img [ref=e31]
+          - paragraph [ref=e33]: Watch our new film (ft. Odessa A'zion)
+        - generic "Studio-finity film preview video" [ref=e36] [cursor=pointer]
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - paragraph [ref=e41]: Studio Finity
+        - heading "Brand, digital, and visual work shaped with restraint." [level=2] [ref=e42]:
+          - generic [ref=e43]:
+            - generic [ref=e45]: Brand,
+            - generic [ref=e47]: digital,
+            - generic [ref=e49]: and
+            - generic [ref=e51]: visual
+            - generic [ref=e53]: work
+            - generic [ref=e55]: shaped
+            - generic [ref=e57]: with
+            - generic [ref=e59]: restraint.
+      - generic [ref=e60]:
+        - paragraph [ref=e61]: Studio Finity is a design studio working across brand, digital, and visual storytelling.
+        - paragraph [ref=e62]: We help brands look distinct, feel elevated, and communicate with clarity, whether the audience meets them on a website, in a campaign, or in motion.
+        - generic [ref=e63]:
+          - img "Editorial collage card" [ref=e65]
+          - generic [ref=e66]:
+            - img "Interior detail card" [ref=e68]
+            - img "Portrait collage card" [ref=e70]
+    - generic [ref=e73]:
+      - generic [ref=e74]:
+        - paragraph [ref=e75]: What guides the work
+        - heading "Simple ideas. Precise execution. No extra noise." [level=2] [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e79]: Simple
+            - generic [ref=e81]: ideas.
+            - generic [ref=e83]: Precise
+            - generic [ref=e85]: execution.
+            - generic [ref=e87]: "No"
+            - generic [ref=e89]: extra
+            - generic [ref=e91]: noise.
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - button "01 Simplicity is the standard." [expanded] [ref=e95]:
+            - generic [ref=e96]: "01"
+            - generic [ref=e97]: Simplicity is the standard.
+          - button "02 Focus is a creative advantage." [ref=e99]:
+            - generic [ref=e100]: "02"
+            - generic [ref=e101]: Focus is a creative advantage.
+          - button "03 Taste has to survive execution." [ref=e103]:
+            - generic [ref=e104]: "03"
+            - generic [ref=e105]: Taste has to survive execution.
+          - button "04 The work should move with clarity." [ref=e107]:
+            - generic [ref=e108]: "04"
+            - generic [ref=e109]: The work should move with clarity.
+        - generic [ref=e111]:
+          - paragraph [ref=e112]: "01"
+          - paragraph [ref=e113]: Every layout, frame, and interaction should feel calm enough to trust and sharp enough to remember.
+    - generic [ref=e116]:
+      - generic [ref=e117]:
+        - paragraph [ref=e118]: Selected work
+        - heading "A few recent projects." [level=2] [ref=e119]:
+          - generic [ref=e120]:
+            - generic [ref=e122]: A
+            - generic [ref=e124]: few
+            - generic [ref=e126]: recent
+            - generic [ref=e128]: projects.
+      - generic [ref=e129]:
+        - link "ON project preview Video Creative ON ON by STUDIO FINITY showcases sleek creative direction and visual storytelling for one of the fastest-growing brands in performance footwear and apparel. This campaign highlights ON athlete Ashley Jones, capturing motion, energy, and precision through every frame." [ref=e130] [cursor=pointer]:
+          - /url: /work/on
+          - img "ON project preview" [ref=e132]
+          - generic [ref=e133]:
+            - paragraph [ref=e134]: Video Creative
+            - heading "ON" [level=3] [ref=e135]
+            - paragraph [ref=e136]: ON by STUDIO FINITY showcases sleek creative direction and visual storytelling for one of the fastest-growing brands in performance footwear and apparel. This campaign highlights ON athlete Ashley Jones, capturing motion, energy, and precision through every frame.
+        - link "Baxo project preview Web Creative Brand Baxo Baxo brings AI-driven insights to performance reviews, helping your team grow continuously." [ref=e137] [cursor=pointer]:
+          - /url: /work/baxo
+          - img "Baxo project preview" [ref=e139]
+          - generic [ref=e140]:
+            - paragraph [ref=e141]: Web Creative Brand
+            - heading "Baxo" [level=3] [ref=e142]
+            - paragraph [ref=e143]: Baxo brings AI-driven insights to performance reviews, helping your team grow continuously.
+        - link "Area 15 Ventures project preview Web Creative Brand Area 15 Ventures Area 15 Ventures featured by STUDIO FINITY showcases bold brand-building and strategic growth across food, real estate, and tech industries. Discover creative work that captures the energy behind brands like RE/MAX, Daddy’s Chicken Shack, and Port of Subs." [ref=e144] [cursor=pointer]:
+          - /url: /work/area-15-ventures
+          - img "Area 15 Ventures project preview" [ref=e146]
+          - generic [ref=e147]:
+            - paragraph [ref=e148]: Web Creative Brand
+            - heading "Area 15 Ventures" [level=3] [ref=e149]
+            - paragraph [ref=e150]: Area 15 Ventures featured by STUDIO FINITY showcases bold brand-building and strategic growth across food, real estate, and tech industries. Discover creative work that captures the energy behind brands like RE/MAX, Daddy’s Chicken Shack, and Port of Subs.
+        - link "Milk Tea People project preview Creative Photo Video Milk Tea People Milk Tea People captured by STUDIO FINITY showcases vibrant and delicious milk tea experiences. Explore engaging photos and videos highlighting the brand’s creative beverages and community spirit." [ref=e151] [cursor=pointer]:
+          - /url: /work/milk-tea-people
+          - img "Milk Tea People project preview" [ref=e153]
+          - generic [ref=e154]:
+            - paragraph [ref=e155]: Creative Photo Video
+            - heading "Milk Tea People" [level=3] [ref=e156]
+            - paragraph [ref=e157]: Milk Tea People captured by STUDIO FINITY showcases vibrant and delicious milk tea experiences. Explore engaging photos and videos highlighting the brand’s creative beverages and community spirit.
+    - generic [ref=e160]:
+      - generic [ref=e161]:
+        - paragraph [ref=e162]: Capabilities
+        - heading "Built to carry a brand across every surface that matters." [level=2] [ref=e163]:
+          - generic [ref=e164]:
+            - generic [ref=e166]: Built
+            - generic [ref=e168]: to
+            - generic [ref=e170]: carry
+            - generic [ref=e172]: a
+            - generic [ref=e174]: brand
+            - generic [ref=e176]: across
+            - generic [ref=e178]: every
+            - generic [ref=e180]: surface
+            - generic [ref=e182]: that
+            - generic [ref=e184]: matters.
+      - generic [ref=e185]:
+        - generic [ref=e186]:
+          - paragraph [ref=e187]: Brand
+          - paragraph [ref=e188]: Identity systems, creative direction, and visual worlds that feel distinct without trying too hard.
+        - generic [ref=e189]:
+          - paragraph [ref=e190]: Digital
+          - paragraph [ref=e191]: Web experiences with clean hierarchy, strong pacing, and enough restraint to let the work speak first.
+        - generic [ref=e192]:
+          - paragraph [ref=e193]: Visual storytelling
+          - paragraph [ref=e194]: Campaigns, photography, motion, and film built with the same standard of clarity and finish.
+    - generic [ref=e196]:
+      - paragraph [ref=e197]: Contact
+      - heading "If the work needs taste, clarity, and finish, let's talk." [level=2] [ref=e198]:
+        - generic [ref=e199]:
+          - generic [ref=e201]: If
+          - generic [ref=e203]: the
+          - generic [ref=e205]: work
+          - generic [ref=e207]: needs
+          - generic [ref=e209]: taste,
+          - generic [ref=e211]: clarity,
+          - generic [ref=e213]: and
+          - generic [ref=e215]: finish,
+          - generic [ref=e217]: let's
+          - generic [ref=e219]: talk.
+      - paragraph [ref=e220]: Based in Denver, working wherever the right collaboration leads.
+      - link "Contact" [ref=e222] [cursor=pointer]:
+        - /url: mailto:hello@studio-finity.com
+  - button "Open Next.js Dev Tools" [ref=e228] [cursor=pointer]:
+    - img [ref=e229]
+  - alert [ref=e232]
+  - button "MCP Connected v3.0.2 Output Detail Standard React Components Hide Until Restart Marker Color Clear on copy/send Block page interactions Manage MCP & Webhooks Manage MCP & Webhooks MCP Connection Connected MCP connection allows agents to receive and act on annotations. Learn more Webhooks Auto-Send The webhook URL will receive live annotation changes and annotation data." [ref=e234] [cursor=pointer]:
+    - img [ref=e236]
+    - generic:
+      - generic:
+        - button:
+          - img
+      - generic:
+        - button:
+          - img
+      - generic:
+        - button [disabled]:
+          - img
+      - generic:
+        - button [disabled]:
+          - img
+      - generic:
+        - button [disabled]:
+          - img
+      - generic:
+        - button [disabled]:
+          - img
+      - generic:
+        - button:
+          - img
+        - generic "MCP Connected"
+      - generic:
+        - button:
+          - img
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - link:
+              - /url: https://agentation.com
+              - img
+            - paragraph: v3.0.2
+            - button "Switch to light mode":
+              - generic:
+                - generic:
+                  - img
+          - generic:
+            - generic:
+              - generic:
+                - text: Output Detail
+                - generic:
+                  - img
+              - button "Standard":
+                - generic: Standard
+            - generic:
+              - generic:
+                - text: React Components
+                - generic:
+                  - img
+              - generic:
+                - checkbox [checked]
+            - generic:
+              - generic:
+                - text: Hide Until Restart
+                - generic:
+                  - img
+              - generic:
+                - checkbox
+          - generic:
+            - generic: Marker Color
+            - generic:
+              - button "Indigo"
+              - button "Blue"
+              - button "Cyan"
+              - button "Green"
+              - button "Yellow"
+              - button "Orange"
+              - button "Red"
+          - generic:
+            - generic:
+              - generic:
+                - checkbox "Clear on copy/send"
+                - img
+              - generic: Clear on copy/send
+              - generic:
+                - img
+            - generic:
+              - generic:
+                - checkbox "Block page interactions" [checked]
+                - img
+              - generic: Block page interactions
+          - button "Manage MCP & Webhooks":
+            - generic: Manage MCP & Webhooks
+            - generic:
+              - img
+        - generic:
+          - button "Manage MCP & Webhooks":
+            - img
+            - generic: Manage MCP & Webhooks
+          - generic:
+            - generic:
+              - generic:
+                - text: MCP Connection
+                - generic:
+                  - img
+              - generic "Connected"
+            - paragraph:
+              - text: MCP connection allows agents to receive and act on annotations.
+              - link "Learn more":
+                - /url: https://agentation.dev/mcp
+          - generic:
+            - generic:
+              - generic:
+                - text: Webhooks
+                - generic:
+                  - img
+              - generic:
+                - generic: Auto-Send
+                - generic:
+                  - checkbox "Auto-Send" [checked] [disabled]
+            - paragraph: The webhook URL will receive live annotation changes and annotation data.
+            - textbox "Webhook URL"

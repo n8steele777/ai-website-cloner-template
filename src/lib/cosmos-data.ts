@@ -1,32 +1,17 @@
-import { allWorkProjects } from "@/lib/offmenu-data";
 import type { CosmosHomepageData } from "@/types/cosmos";
 
 const contactHref = "mailto:hello@studio-finity.com";
+export const homepageFeaturedWorkSlugs = [
+  "on",
+  "baxo",
+  "area-15-ventures",
+  "milk-tea-people",
+];
 
-function formatScope(scopeItems: string[]) {
-  return scopeItems.length > 0 ? scopeItems.join(" / ") : "Selected work";
-}
-
-function getFeaturedProject(slug: string) {
-  const project = allWorkProjects.find((entry) => entry.slug === slug);
-
-  if (!project) {
-    throw new Error(`Missing Studio Finity homepage project: ${slug}`);
-  }
-
+export function buildCosmosHomepageData(
+  featuredProjects: CosmosHomepageData["featuredWork"]["projects"],
+): CosmosHomepageData {
   return {
-    category: formatScope(project.scopeItems.slice(0, 3)),
-    href: `/work/${project.slug}`,
-    image: {
-      src: project.heroImageLight,
-      alt: `${project.title} project preview`,
-    },
-    summary: project.summary ?? project.introduction,
-    title: project.title,
-  };
-}
-
-export const cosmosHomepageData: CosmosHomepageData = {
   headerLinks: [
     { label: "About", href: "/about" },
     { label: "Works", href: "/work" },
@@ -170,12 +155,7 @@ export const cosmosHomepageData: CosmosHomepageData = {
   featuredWork: {
     eyebrow: "Selected work",
     title: "A few recent projects.",
-    projects: [
-      getFeaturedProject("on"),
-      getFeaturedProject("baxo"),
-      getFeaturedProject("area-15-ventures"),
-      getFeaturedProject("milk-tea-people"),
-    ],
+    projects: featuredProjects,
   },
   capabilities: {
     eyebrow: "Capabilities",
@@ -204,4 +184,5 @@ export const cosmosHomepageData: CosmosHomepageData = {
     supportingText: "Based in Denver, working wherever the right collaboration leads.",
     button: { label: "Contact", href: contactHref, external: true, variant: "primary" },
   },
-};
+  };
+}

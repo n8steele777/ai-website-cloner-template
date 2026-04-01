@@ -1,21 +1,23 @@
 import type { Metadata } from "next";
 import { OffMenuHomepage } from "@/components/offmenu-homepage";
 import {
-  homepageCaseStudies,
   offMenuHeroWords,
   offMenuResourceLinks,
   offMenuWorkNavigationLinks,
-} from "@/lib/offmenu-data";
+} from "@/lib/site-data";
+import { buildCaseStudies, fetchSanityWorks } from "@/lib/sanity-work";
 
 export const metadata: Metadata = {
   title: "Work | Studio Finity",
   description: "Selected Studio Finity work in the floating-circles work index.",
 };
 
-export default function WorkIndexPage() {
+export default async function WorkIndexPage() {
+  const works = await fetchSanityWorks();
+
   return (
     <OffMenuHomepage
-      caseStudies={homepageCaseStudies}
+      caseStudies={buildCaseStudies(works)}
       heroWords={offMenuHeroWords}
       navigationLinks={offMenuWorkNavigationLinks}
       resourceLinks={offMenuResourceLinks}

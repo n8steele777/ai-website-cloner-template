@@ -1,0 +1,376 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]: O
+          - generic [ref=e8]: H
+        - generic [ref=e9]:
+          - generic [ref=e10]: O
+          - generic [ref=e11]: H
+      - generic [ref=e12]: (Architecture + Interior Design Studio)
+    - img [ref=e13]
+  - generic [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e22]: (PROJECT ENQUIRY)
+        - paragraph [ref=e23]:
+          - generic [ref=e25]: To get started, we ask that you provide some
+          - generic [ref=e27]: initial information about your project to help
+          - generic [ref=e29]: us determine whether our studio is the
+          - generic [ref=e31]: right fit. Our team will review the details and
+          - generic [ref=e33]: be in touch to discuss next steps within 5
+          - generic [ref=e35]: business days.
+      - button "Close" [ref=e37] [cursor=pointer]:
+        - generic [ref=e38]: Close
+    - generic [ref=e39]:
+      - generic:
+        - form "Enquiry Form"
+  - generic [ref=e41]:
+    - banner [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e45]: OH Architecture
+        - button "Close" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: Close
+    - generic [ref=e50]:
+      - link "Home" [ref=e52] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e55]: Home
+      - link "Works" [ref=e57] [cursor=pointer]:
+        - /url: /works
+        - generic [ref=e60]: Works
+      - link "Studio" [ref=e62] [cursor=pointer]:
+        - /url: /studio
+        - generic [ref=e65]: Studio
+      - link "Process" [ref=e67] [cursor=pointer]:
+        - /url: /process
+        - generic [ref=e70]: Process
+      - link "Gallery" [ref=e72] [cursor=pointer]:
+        - /url: /gallery
+        - generic [ref=e75]: Gallery
+    - generic [ref=e76]:
+      - link "instagram" [ref=e78] [cursor=pointer]:
+        - /url: https://www.instagram.com/oh.architecture/
+        - generic [ref=e81]: instagram
+      - generic [ref=e82]:
+        - link "Privacy policy" [ref=e84] [cursor=pointer]:
+          - /url: /privacy-policy
+          - generic [ref=e87]: Privacy policy
+        - link "terms of service" [ref=e89] [cursor=pointer]:
+          - /url: /terms-of-service
+          - generic [ref=e92]: terms of service
+  - generic [ref=e93]:
+    - generic:
+      - button "Get in touch" [ref=e94] [cursor=pointer]:
+        - generic [ref=e96]: Get in touch
+      - button "MENU" [ref=e98] [cursor=pointer]:
+        - generic [ref=e100]: MENU
+    - banner [ref=e101]:
+      - generic [ref=e102]:
+        - link "Return to home" [ref=e104] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e105]: OH Architecture
+        - navigation [ref=e107]:
+          - list [ref=e108]:
+            - listitem [ref=e109]:
+              - link "Works" [ref=e110] [cursor=pointer]:
+                - /url: /works
+                - generic [ref=e112]: Works
+              - generic [ref=e113]: ","
+            - listitem [ref=e114]:
+              - link "Studio" [ref=e115] [cursor=pointer]:
+                - /url: /studio
+                - generic [ref=e117]: Studio
+              - generic [ref=e118]: ","
+            - listitem [ref=e119]:
+              - link "Process" [ref=e120] [cursor=pointer]:
+                - /url: /process
+                - generic [ref=e122]: Process
+              - generic [ref=e123]: ","
+            - listitem [ref=e124]:
+              - link "gallery" [ref=e125] [cursor=pointer]:
+                - /url: /gallery
+                - generic [ref=e127]: gallery
+        - button "Get in touch" [ref=e130] [cursor=pointer]:
+          - generic [ref=e132]: Get in touch
+    - main [ref=e134]:
+      - generic [ref=e136]:
+        - list [ref=e138]:
+          - listitem [ref=e139]:
+            - img "A wide landscape shot of the house at during the day, showing the open-plan living and the pool nestled within the landscape." [ref=e142]
+            - generic [ref=e143]:
+              - generic [ref=e144]: featured project
+              - generic [ref=e145]: Myrtle Pool House
+              - generic [ref=e146]: "2024"
+              - link "View project" [ref=e147] [cursor=pointer]:
+                - /url: /project/myrtle-pool-house
+                - generic [ref=e149]: View project
+        - generic [ref=e152]:
+          - heading "We design homes and spaces guided by your vision, bringing together thoughtful design, collaboration, and creativity to shape homes that simply work for how you live." [level=1] [ref=e153]
+          - heading "The OH Architecture style is defined by strong, solid forms with subtle elegance, natural balance and enduring appeal" [level=1] [ref=e154]:
+            - generic [ref=e156]: The OH Architecture style is defined by
+            - generic [ref=e158]: strong, solid forms with subtle elegance,
+            - generic [ref=e160]: natural balance and enduring appeal
+          - generic [ref=e163]: (SCROLL down)
+      - generic [ref=e164]:
+        - heading "Experience focused design" [level=2] [ref=e166]:
+          - text: Experience
+          - text: focused design
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - paragraph [ref=e173]: We design spaces for people. No matter the scale of the projects, our down-to-earth approach stays the same. We listen first, design second. We take the time to understand how you live, work, and move through your space. Then, we bring your vision to life. Drawing from real experience, we create contemporary, aspirational spaces that feel effortless and truly yours.
+            - paragraph [ref=e174]:
+              - generic [ref=e176]: We work closely with clients right from the start,
+              - generic [ref=e178]: with clear communication and expert guidance
+              - generic [ref=e180]: along the way. We also work closely with builders,
+              - generic [ref=e182]: consultants, and other partners to make sure each
+              - generic [ref=e184]: project runs smoothly and the final build delivers
+              - generic [ref=e186]: well beyond our shared aspirations.
+              - generic [ref=e191]: While our aesthetic is recognisable, each project
+              - generic [ref=e193]: evolves to embody its own shape and character,
+              - generic [ref=e195]: crafted in response to the aspirations of our clients,
+              - generic [ref=e197]: the opportunities of the site, and the creative vision
+              - generic [ref=e199]: of our architectural team.
+            - link "learn more about our studio" [ref=e200] [cursor=pointer]:
+              - /url: /studio
+              - generic [ref=e202]: learn more about our studio
+          - generic [ref=e205]: (Our Studio)
+      - generic [ref=e206]:
+        - generic [ref=e207]:
+          - heading "Featured Works" [level=2] [ref=e208]
+          - generic [ref=e209]: featured
+          - generic [ref=e210]:
+            - generic [ref=e211]: Works
+            - generic [ref=e212]: (06)
+        - list [ref=e214]:
+          - listitem [ref=e215]:
+            - link "( 01 ) Myrtle Pool House 2024 View project →" [ref=e216] [cursor=pointer]:
+              - /url: /project/myrtle-pool-house
+              - generic [ref=e218]:
+                - generic [ref=e219]:
+                  - generic [ref=e220]:
+                    - generic [ref=e221]: (
+                    - generic [ref=e222]: "01"
+                    - generic [ref=e223]: )
+                  - generic [ref=e224]: Myrtle Pool House
+                - generic [ref=e225]:
+                  - generic [ref=e226]: "2024"
+                  - generic [ref=e227]: View project →
+          - listitem [ref=e228]:
+            - link "( 02 ) Haig 2024 View project →" [ref=e229] [cursor=pointer]:
+              - /url: /project/haig
+              - generic [ref=e231]:
+                - generic [ref=e232]:
+                  - generic [ref=e233]:
+                    - generic [ref=e234]: (
+                    - generic [ref=e235]: "02"
+                    - generic [ref=e236]: )
+                  - generic [ref=e237]: Haig
+                - generic [ref=e238]:
+                  - generic [ref=e239]: "2024"
+                  - generic [ref=e240]: View project →
+          - listitem [ref=e241]:
+            - link "( 03 ) Sidney house 2023 View project →" [ref=e242] [cursor=pointer]:
+              - /url: /project/sidney
+              - generic [ref=e244]:
+                - generic [ref=e245]:
+                  - generic [ref=e246]:
+                    - generic [ref=e247]: (
+                    - generic [ref=e248]: "03"
+                    - generic [ref=e249]: )
+                  - generic [ref=e250]: Sidney house
+                - generic [ref=e251]:
+                  - generic [ref=e252]: "2023"
+                  - generic [ref=e253]: View project →
+          - listitem [ref=e254]:
+            - link "( 04 ) Clifton 2025 View project →" [ref=e255] [cursor=pointer]:
+              - /url: /project/clifton
+              - generic [ref=e257]:
+                - generic [ref=e258]:
+                  - generic [ref=e259]:
+                    - generic [ref=e260]: (
+                    - generic [ref=e261]: "04"
+                    - generic [ref=e262]: )
+                  - generic [ref=e263]: Clifton
+                - generic [ref=e264]:
+                  - generic [ref=e265]: "2025"
+                  - generic [ref=e266]: View project →
+          - listitem [ref=e267]:
+            - link "( 05 ) Sweetman Under Construction View project →" [ref=e268] [cursor=pointer]:
+              - /url: /project/sweetman
+              - generic [ref=e270]:
+                - generic [ref=e271]:
+                  - generic [ref=e272]:
+                    - generic [ref=e273]: (
+                    - generic [ref=e274]: "05"
+                    - generic [ref=e275]: )
+                  - generic [ref=e276]: Sweetman
+                - generic [ref=e277]:
+                  - generic [ref=e278]: Under Construction
+                  - generic [ref=e279]: View project →
+          - listitem [ref=e280]:
+            - link "( 06 ) Heal 2023 View project →" [ref=e281] [cursor=pointer]:
+              - /url: /project/heal
+              - generic [ref=e283]:
+                - generic [ref=e284]:
+                  - generic [ref=e285]:
+                    - generic [ref=e286]: (
+                    - generic [ref=e287]: "06"
+                    - generic [ref=e288]: )
+                  - generic [ref=e289]: Heal
+                - generic [ref=e290]:
+                  - generic [ref=e291]: "2023"
+                  - generic [ref=e292]: View project →
+        - link "view all works" [ref=e294] [cursor=pointer]:
+          - /url: /works
+          - generic [ref=e296]: view all works
+      - generic [ref=e298]:
+        - generic [ref=e299]:
+          - generic [ref=e300]: (Our Process)
+          - img "A black and white image of an architect overseeing the architectural site" [ref=e302]
+          - list [ref=e304]:
+            - listitem [ref=e305]:
+              - generic [ref=e307]:
+                - generic [ref=e308]: (01)
+                - generic [ref=e309]: Sketch Design
+            - listitem [ref=e311]:
+              - generic [ref=e313]:
+                - generic [ref=e314]: (02)
+                - generic [ref=e315]: Design Development
+            - listitem [ref=e317]:
+              - generic [ref=e319]:
+                - generic [ref=e320]: (03)
+                - generic [ref=e321]: Development Application
+            - listitem [ref=e323]:
+              - generic [ref=e325]:
+                - generic [ref=e326]: (04)
+                - generic [ref=e327]: Interior Design
+            - listitem [ref=e329]:
+              - generic [ref=e331]:
+                - generic [ref=e332]: (05)
+                - generic [ref=e333]: Building approval plans + documentation
+            - listitem [ref=e335]:
+              - generic [ref=e337]:
+                - generic [ref=e338]: (06)
+                - generic [ref=e339]: Construction plans + documentation
+        - generic [ref=e341]:
+          - paragraph [ref=e342]:
+            - text: Our approach at OH Architecture is designed to make your journey from concept to completion as smooth and enjoyable as possible.
+            - text: With our 6-stages plan, we prioritize clarity, collaboration, and your unique vision. Each stage is crafted to keep you informed, inspired, and involved.
+          - paragraph [ref=e344]:
+            - generic [ref=e346]: Our approach at OH
+            - generic [ref=e348]: Architecture is designed to make
+            - generic [ref=e350]: your journey from concept to
+            - generic [ref=e352]: completion as smooth and
+            - generic [ref=e354]: enjoyable as possible.
+            - generic [ref=e359]: With our 6-stage process, we
+            - generic [ref=e361]: prioritise clarity, collaboration, and
+            - generic [ref=e363]: your unique vision. At every step,
+            - generic [ref=e365]: we'll keep you informed, inspired,
+            - generic [ref=e367]: and involved.
+          - link "Get to know our process" [ref=e368] [cursor=pointer]:
+            - /url: /process
+            - generic [ref=e370]: Get to know our process
+      - list [ref=e374]:
+        - listitem [ref=e375]:
+          - generic [ref=e376]: (hear from our client)
+          - generic [ref=e377]:
+            - generic [ref=e378]:
+              - generic [ref=e380]:
+                - paragraph [ref=e381]: "\"From the initial meeting I was impressed by the genuine enthusiasm and willingness to engage with the ideas in my brief. Johnny Hyde and the OH Architecture team engendered confidence. They cared about the project; throughout the design process they listened and interacted in a positive and professional, but relaxed, way."
+                - paragraph [ref=e382]: ‍
+                - paragraph [ref=e383]: As they explored design ideas, they welcomed my contributions and encouraged feedback. Consequently, I had no doubt that OH Architecture would deliver a design to meet my dreams and also my budget. And in fact, the award-winning outcome eminently attests to their skill and achievement on both counts!"
+              - generic [ref=e384]:
+                - generic [ref=e385]: Carmen
+                - generic [ref=e386]: Homeowner of Sidney
+            - link "Sidney house Alderley, QLD ( 2023 ) Sidney house View project →" [ref=e387] [cursor=pointer]:
+              - /url: /project/sidney
+              - generic [ref=e390]:
+                - generic [ref=e391]: Sidney house
+                - generic [ref=e392]: Alderley, QLD
+              - generic [ref=e393]:
+                - generic [ref=e394]:
+                  - generic [ref=e395]:
+                    - generic [ref=e396]: (
+                    - generic [ref=e397]: "2023"
+                    - generic [ref=e398]: )
+                  - generic [ref=e399]: Sidney house
+                - generic [ref=e400]: View project →
+      - generic [ref=e401]:
+        - generic [ref=e402]:
+          - heading "Ready to design your next inspired space?" [level=2] [ref=e403]
+          - heading "FOCUSED ON QUALITY DRIVEN BY CREATIVITY" [level=2] [ref=e404]:
+            - generic [ref=e406]: FOCUSED ON QUALITY
+            - generic [ref=e409]: DRIVEN BY CREATIVITY
+        - button "Tell us about your project" [ref=e411] [cursor=pointer]:
+          - generic [ref=e413]: Tell us about your project
+    - contentinfo [ref=e415]:
+      - generic [ref=e416]:
+        - generic [ref=e417]:
+          - img "Side frontal facade of a modern, luxury residential home" [ref=e419]
+          - img [ref=e420]
+        - generic [ref=e423]:
+          - generic [ref=e424]: (NAVIGATION)
+          - list [ref=e425]:
+            - listitem [ref=e426]:
+              - link "Home" [ref=e427] [cursor=pointer]:
+                - /url: /
+                - generic [ref=e429]: Home
+            - listitem [ref=e430]:
+              - link "Works" [ref=e431] [cursor=pointer]:
+                - /url: /works
+                - generic [ref=e433]: Works
+            - listitem [ref=e434]:
+              - link "In Progress" [ref=e435] [cursor=pointer]:
+                - /url: /renders
+                - generic [ref=e437]: In Progress
+            - listitem [ref=e438]:
+              - link "Archive" [ref=e439] [cursor=pointer]:
+                - /url: /archive
+                - generic [ref=e441]: Archive
+            - listitem [ref=e442]:
+              - link "Studio" [ref=e443] [cursor=pointer]:
+                - /url: /studio
+                - generic [ref=e445]: Studio
+            - listitem [ref=e446]:
+              - link "Process" [ref=e447] [cursor=pointer]:
+                - /url: /process
+                - generic [ref=e449]: Process
+            - listitem [ref=e450]:
+              - link "Gallery" [ref=e451] [cursor=pointer]:
+                - /url: /gallery
+                - generic [ref=e453]: Gallery
+            - listitem [ref=e454]:
+              - button "Contact Us" [ref=e455] [cursor=pointer]:
+                - generic [ref=e457]: Contact Us
+        - generic [ref=e458]:
+          - generic [ref=e459]:
+            - generic [ref=e460]: (acknowledgement)
+            - paragraph [ref=e461]: We respectfully acknowledge the Turrbal people, the Traditional Owners and Custodians of the Country on which we work. We pay our respects to Elders past and present, and acknowledge their continuing connection to land, sea and community.
+          - generic [ref=e462]:
+            - generic [ref=e463]: (info)
+            - generic [ref=e464]:
+              - generic [ref=e465]: "A: 89 Days Rd, Grange QLD 4051"
+              - generic [ref=e466]: "E: info@oharchitecture.com.au"
+              - generic [ref=e467]: "P: 07 3110 1031"
+              - generic [ref=e468]: "H: Monday to Friday, 8:30am - 5:00pm"
+            - img "A black and white Member Australian Institute of Architects badge" [ref=e469]
+      - generic [ref=e470]:
+        - generic [ref=e471]:
+          - generic [ref=e472]: © 2026 OH Architecture
+          - generic [ref=e473]: 2:32 AM QLD, we are closed
+        - generic [ref=e474]:
+          - link "Privacy Policy" [ref=e476] [cursor=pointer]:
+            - /url: /privacy-policy
+            - generic [ref=e478]: Privacy Policy
+          - link "Terms of Service" [ref=e480] [cursor=pointer]:
+            - /url: /terms-of-service
+            - generic [ref=e482]: Terms of Service
+        - generic [ref=e483]:
+          - link "Instagram" [ref=e485] [cursor=pointer]:
+            - /url: https://www.instagram.com/oh.architecture/
+            - generic [ref=e487]: Instagram
+          - generic [ref=e489]:
+            - text: SITE by
+            - link "MONOLOG" [ref=e490] [cursor=pointer]:
+              - /url: https://bymonolog.com/

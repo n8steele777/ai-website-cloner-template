@@ -1,0 +1,482 @@
+[     147ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[     213ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[     330ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/sessions:0
+[     330ms] [WARNING] [Agentation] Failed to initialize session, using local storage: TypeError: Failed to fetch
+    at createSession (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:13365:28)
+    at PageFeedbackToolbarCSS.useEffect6.initSession (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:15683:51)
+    at PageFeedbackToolbarCSS.useEffect6 (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:15750:13)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:15087:22)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:965:74)
+    at commitHookEffectListMount (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:7255:167)
+    at commitHookPassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:7290:60)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8689:33)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17) @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[     331ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[   10328ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[   20330ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[   30327ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[   39353ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   39380ms] [LOG] [Fast Refresh] done in 32ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   40329ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[   50328ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[   51028ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   51047ms] ReferenceError: AnimatedWords is not defined
+    at StudioFinityAbout (http://localhost:3000/_next/static/chunks/src_0scxlz-._.js?id=%255Bproject%255D%252Fsrc%252Fcomponents%252Fstudio-finity-about.tsx+%255Bapp-client%255D+%2528ecmascript%2529:209:238)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:15037:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:4620:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:6081:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:6691:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:965:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9555:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9449:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9433:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9098:47)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:10263:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:10179:316)
+    at flushSyncWork$1 (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9230:86)
+    at Object.scheduleRefresh (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:299:13)
+    at http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_0rpq4pf._.js:391:33
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_0rpq4pf._.js:384:38)
+    at applyUpdate (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_0rpq4pf._.js:878:31)
+    at http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_0rpq4pf._.js:886:13
+[   51073ms] [LOG] [Fast Refresh] done in 32ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90011ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90024ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90027ms] [ERROR] Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template). @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:3272
+[   90087ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/sessions:0
+[   90087ms] [WARNING] [Agentation] Failed to initialize session, using local storage: TypeError: Failed to fetch
+    at createSession (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:13365:28)
+    at PageFeedbackToolbarCSS.useEffect6.initSession (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:15683:51)
+    at PageFeedbackToolbarCSS.useEffect6 (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:15750:13)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:15087:22)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:965:74)
+    at commitHookEffectListMount (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:7255:167)
+    at commitHookPassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:7290:60)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8689:33)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17) @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90088ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[   90170ms] [LOG] [Fast Refresh] done in 52ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90277ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90302ms] [LOG] [Fast Refresh] done in 126ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90425ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90439ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90596ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/sessions:0
+[   90596ms] [WARNING] [Agentation] Failed to initialize session, using local storage: TypeError: Failed to fetch
+    at createSession (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:13365:28)
+    at PageFeedbackToolbarCSS.useEffect6.initSession (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:15683:51)
+    at PageFeedbackToolbarCSS.useEffect6 (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:15750:13)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:15087:22)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:965:74)
+    at commitHookEffectListMount (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:7255:167)
+    at commitHookPassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:7290:60)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8689:33)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17) @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[   90596ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  100578ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  110578ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  120578ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  130579ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  140579ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  150578ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  157510ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  157514ms] [ERROR] The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useLayoutEffect [0.08, 0.82, 1, true, 0px 0px -12% 0px, 0.022, We shape brands and build visual work with the same level of precision. From identity systems to digital experiences, campaigns, and films, Studio Finity creates work with clear ideas, sharp execution, and a finish that holds weight., 0, 37, false] [0.08, 0.82, 1, true, 0px 0px -12% 0px, 0.022, We shape brands and build visual work with the same level of precision. From identity systems to digital experiences, campaigns, and films, Studio Finity creates work with clear ideas, sharp execution, and a finish that holds weight., 0, 37, false, We,shape,brands,and,build,visual,work,with,the,same,level,of,precision.,From,identity,systems,to,digital,experiences,,campaigns,,and,films,,Studio,Finity,creates,work,with,clear,ideas,,sharp,execution,,and,a,finish,that,holds,weight.] @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:3272
+[  157572ms] [LOG] [Fast Refresh] done in 36ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  160579ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  170578ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  180581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  190579ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  200581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  210581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  220582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  230581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  240580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  250580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  260227ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  260288ms] [LOG] [Fast Refresh] done in 36ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  260580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  270580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  280581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  290580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  300580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  310580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  320580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  330581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  340583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  350583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  360582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  370582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  380582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  390581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  400584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  410583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  420583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  430583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  440581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  450582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  460581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  470582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  480581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  490582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  500580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  510582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  520580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  530582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  540582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  542708ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  542732ms] [LOG] [Fast Refresh] done in 34ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  550581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  560582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  570582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  580581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  590583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  600581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  610582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  620582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  626505ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  626532ms] [LOG] [Fast Refresh] done in 31ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  630582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  640582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  650584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  660581ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  664461ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  664490ms] [LOG] [Fast Refresh] done in 39ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  670586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  680582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  690582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  700582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  710587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  719347ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  719389ms] [LOG] [Fast Refresh] done in 34ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  720582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  730584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  740584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  750584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  760584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  770586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  780583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  790585ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  800583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  802146ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  802175ms] [LOG] [Fast Refresh] done in 31ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  810583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  817692ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  817721ms] [LOG] [Fast Refresh] done in 50ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  820583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  830584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  840584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  850583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  852022ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  852064ms] [LOG] [Fast Refresh] done in 35ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  860584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  870583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  880585ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  890588ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  900583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  910584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  920585ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  930585ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  936538ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  936612ms] [LOG] [Fast Refresh] done in 33ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  940586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  950583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  960584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  970584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  980586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[  990584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1000587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1010584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1020585ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1030585ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1040586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1050586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1060586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1070585ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1080585ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1090587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1100587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1110586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1120587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1130590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1140588ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1150587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1160592ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1170587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1180589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1190587ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1200589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1210588ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1220589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1230590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1240590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1250590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1260591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1270590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1280591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1290589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1300591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1310591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1320589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1330589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1340589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1350589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1360590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1370591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1380589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1390591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1400591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1410590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1420589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1430591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1440590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1450590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1460591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1470590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1480591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1490591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1500592ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1510591ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1520593ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1530592ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1540590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1550590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1560589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1569560ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1570324ms] [LOG] [Fast Refresh] done in 863ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1570642ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1570756ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1570789ms] [LOG] [Fast Refresh] done in 134ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1570978ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1570997ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1571077ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/sessions:0
+[ 1571077ms] [WARNING] [Agentation] Failed to initialize session, using local storage: TypeError: Failed to fetch
+    at createSession (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:13365:28)
+    at PageFeedbackToolbarCSS.useEffect6.initSession (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:15683:51)
+    at PageFeedbackToolbarCSS.useEffect6 (http://localhost:3000/_next/static/chunks/node_modules_agentation_dist_index_mjs_0scvufm._.js:15750:13)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:15087:22)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:965:74)
+    at commitHookEffectListMount (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:7255:167)
+    at commitHookPassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:7290:60)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8689:33)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8693:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8688:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17)
+    at recursivelyTraversePassiveMountEffects (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8676:316)
+    at commitPassiveMountOnFiber (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:8750:17) @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1571077ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1581060ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1586592ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1586634ms] [LOG] [Fast Refresh] done in 113ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1591061ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1601059ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1611063ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1621060ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1631061ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1641060ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1651060ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1661061ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1671062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1681060ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1691061ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1701061ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1711062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1721061ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1731061ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1741062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1747974ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1747996ms] [LOG] [Fast Refresh] done in 124ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1748239ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1748251ms] [LOG] [Fast Refresh] done in 114ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1748353ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1748367ms] [LOG] [Fast Refresh] done in 116ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1748470ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1748482ms] [LOG] [Fast Refresh] done in 114ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1751062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1761061ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1771066ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1781062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1791063ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1801062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1811065ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1821066ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1831066ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1841063ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1851063ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1861062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1861138ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1861203ms] [LOG] [Fast Refresh] done in 165ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1861303ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1861316ms] [LOG] [Fast Refresh] done in 114ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1861437ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1861447ms] [LOG] [Fast Refresh] done in 111ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1861648ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1861726ms] [LOG] [Fast Refresh] done in 179ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1861928ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1861949ms] [LOG] [Fast Refresh] done in 121ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1862060ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1862091ms] [LOG] [Fast Refresh] done in 132ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[ 1871062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0
+[ 1881062ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4747/health:0

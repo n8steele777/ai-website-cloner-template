@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
 import Script from "next/script";
 import { AgentationProvider } from "@/components/agentation-provider";
 import { CaseStudyTransitionProvider } from "@/components/case-study-transition-provider";
 import { PageTransitionProvider } from "@/components/page-transition-provider";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import "./globals.css";
+
+const geistSans = GeistSans;
+const geistMono = GeistMono;
 
 function getSiteUrl() {
   const candidate =
@@ -82,7 +87,11 @@ export default function RootLayout({
   `;
 
   return (
-    <html lang="en" className="h-full font-sans antialiased" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full font-sans antialiased`}
+      suppressHydrationWarning
+    >
       <body className="min-h-full bg-background text-foreground font-sans">
         <Script id="studio-finity-theme-script" strategy="beforeInteractive">
           {themeScript}

@@ -1,0 +1,157 @@
+- main [ref=e3]:
+  - generic [ref=e5]:
+    - link "Studio Finity home" [ref=e6] [cursor=pointer]:
+      - /url: /
+      - text: Studio Finity
+    - button "Menu" [ref=e7]
+  - generic [ref=e10]:
+    - img "STUDIO FINITY" [ref=e11]
+    - heading "Your space for inspiration" [level=1] [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e15]: Your
+        - generic [ref=e17]: space
+      - generic [ref=e18]:
+        - generic [ref=e20]: for
+        - generic [ref=e22]: inspiration
+  - generic [ref=e24]:
+    - generic:
+      - button "Watch our new film (ft. Odessa A'zion)" [ref=e25] [cursor=pointer]:
+        - img [ref=e27]
+        - paragraph [ref=e29]: Watch our new film (ft. Odessa A'zion)
+      - generic "Studio-finity film preview video" [ref=e32] [cursor=pointer]
+  - generic [ref=e33]:
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - paragraph [ref=e38]: Studio Finity
+          - heading "Brand, digital, and visual work shaped with restraint." [level=2] [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e42]: Brand,
+              - generic [ref=e44]: digital,
+              - generic [ref=e46]: and
+              - generic [ref=e48]: visual
+              - generic [ref=e50]: work
+              - generic [ref=e52]: shaped
+              - generic [ref=e54]: with
+              - generic [ref=e56]: restraint.
+        - generic [ref=e57]:
+          - paragraph [ref=e58]: Studio Finity is a design studio working across brand, digital, and visual storytelling.
+          - paragraph [ref=e59]: We help brands look distinct, feel elevated, and communicate with clarity, whether the audience meets them on a website, in a campaign, or in motion.
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - paragraph [ref=e62]: Selected stills
+          - paragraph [ref=e63]: A glimpse into the visual language behind the work
+        - generic [ref=e64]:
+          - img "Editorial collage card" [ref=e65]
+          - generic [ref=e66]:
+            - img "Interior detail card" [ref=e67]
+            - img "Portrait collage card" [ref=e68]
+            - img "Tall editorial card" [ref=e69]
+            - img "Design object card" [ref=e70]
+    - generic [ref=e73]:
+      - generic [ref=e74]:
+        - paragraph [ref=e75]: What guides the work
+        - heading "Simple ideas. Precise execution. No extra noise." [level=2] [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e79]: Simple
+            - generic [ref=e81]: ideas.
+            - generic [ref=e83]: Precise
+            - generic [ref=e85]: execution.
+            - generic [ref=e87]: "No"
+            - generic [ref=e89]: extra
+            - generic [ref=e91]: noise.
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - button "01 Simplicity is the standard." [expanded] [ref=e95]:
+            - generic [ref=e96]: "01"
+            - generic [ref=e97]: Simplicity is the standard.
+          - paragraph [ref=e99]: Every layout, frame, and interaction should feel calm enough to trust and sharp enough to remember.
+        - button "02 Focus is a creative advantage." [ref=e101]:
+          - generic [ref=e102]: "02"
+          - generic [ref=e103]: Focus is a creative advantage.
+        - button "03 Taste has to survive execution." [ref=e105]:
+          - generic [ref=e106]: "03"
+          - generic [ref=e107]: Taste has to survive execution.
+        - button "04 The work should move with clarity." [ref=e109]:
+          - generic [ref=e110]: "04"
+          - generic [ref=e111]: The work should move with clarity.
+    - generic [ref=e114]:
+      - generic [ref=e115]:
+        - paragraph [ref=e116]: Selected work
+        - heading "A few recent projects." [level=2] [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e120]: A
+            - generic [ref=e122]: few
+            - generic [ref=e124]: recent
+            - generic [ref=e126]: projects.
+      - generic [ref=e127]:
+        - link "Ashley Jones Photo Video / Creative ON ON by STUDIO FINITY showcases sleek creative direction and visual storytelling for one of the fastest-growing brands in performance footwear and apparel. This campaign highlights ON athlete Ashley Jones, capturing motion, energy, and precision through every frame." [ref=e128] [cursor=pointer]:
+          - /url: /work/on
+          - img "Ashley Jones Photo" [ref=e130]
+          - generic [ref=e131]:
+            - paragraph [ref=e132]: Video / Creative
+            - heading "ON" [level=3] [ref=e133]
+            - paragraph [ref=e134]: ON by STUDIO FINITY showcases sleek creative direction and visual storytelling for one of the fastest-growing brands in performance footwear and apparel. This campaign highlights ON athlete Ashley Jones, capturing motion, energy, and precision through every frame.
+        - link "Baxo gradient background Web / Creative / Brand Baxo Baxo brings AI-driven insights to performance reviews, helping your team grow continuously." [ref=e135] [cursor=pointer]:
+          - /url: /work/baxo
+          - img "Baxo gradient background" [ref=e137]
+          - generic [ref=e138]:
+            - paragraph [ref=e139]: Web / Creative / Brand
+            - heading "Baxo" [level=3] [ref=e140]
+            - paragraph [ref=e141]: Baxo brings AI-driven insights to performance reviews, helping your team grow continuously.
+        - link "Area 15 Website Web / Creative / Brand Area 15 Ventures Area 15 Ventures featured by STUDIO FINITY showcases bold brand-building and strategic growth across food, real estate, and tech industries. Discover creative work that captures the energy behind brands like RE/MAX, Daddy’s Chicken Shack, and Port of Subs." [ref=e142] [cursor=pointer]:
+          - /url: /work/area-15-ventures
+          - img "Area 15 Website" [ref=e144]
+          - generic [ref=e145]:
+            - paragraph [ref=e146]: Web / Creative / Brand
+            - heading "Area 15 Ventures" [level=3] [ref=e147]
+            - paragraph [ref=e148]: Area 15 Ventures featured by STUDIO FINITY showcases bold brand-building and strategic growth across food, real estate, and tech industries. Discover creative work that captures the energy behind brands like RE/MAX, Daddy’s Chicken Shack, and Port of Subs.
+        - link "Milk Tea People Photo Creative / Photo / Video Milk Tea People Milk Tea People captured by STUDIO FINITY showcases vibrant and delicious milk tea experiences. Explore engaging photos and videos highlighting the brand’s creative beverages and community spirit." [ref=e149] [cursor=pointer]:
+          - /url: /work/milk-tea-people
+          - img "Milk Tea People Photo" [ref=e151]
+          - generic [ref=e152]:
+            - paragraph [ref=e153]: Creative / Photo / Video
+            - heading "Milk Tea People" [level=3] [ref=e154]
+            - paragraph [ref=e155]: Milk Tea People captured by STUDIO FINITY showcases vibrant and delicious milk tea experiences. Explore engaging photos and videos highlighting the brand’s creative beverages and community spirit.
+    - generic [ref=e158]:
+      - generic [ref=e159]:
+        - paragraph [ref=e160]: Capabilities
+        - heading "Built to carry a brand across every surface that matters." [level=2] [ref=e161]:
+          - generic [ref=e162]:
+            - generic [ref=e164]: Built
+            - generic [ref=e166]: to
+            - generic [ref=e168]: carry
+            - generic [ref=e170]: a
+            - generic [ref=e172]: brand
+            - generic [ref=e174]: across
+            - generic [ref=e176]: every
+            - generic [ref=e178]: surface
+            - generic [ref=e180]: that
+            - generic [ref=e182]: matters.
+      - generic [ref=e183]:
+        - generic [ref=e184]:
+          - paragraph [ref=e185]: Brand
+          - paragraph [ref=e186]: Identity systems, creative direction, and visual worlds that feel distinct without trying too hard.
+        - generic [ref=e187]:
+          - paragraph [ref=e188]: Digital
+          - paragraph [ref=e189]: Web experiences with clean hierarchy, strong pacing, and enough restraint to let the work speak first.
+        - generic [ref=e190]:
+          - paragraph [ref=e191]: Visual storytelling
+          - paragraph [ref=e192]: Campaigns, photography, motion, and film built with the same standard of clarity and finish.
+    - generic [ref=e194]:
+      - paragraph [ref=e195]: Contact
+      - heading "If the work needs taste, clarity, and finish, let's talk." [level=2] [ref=e196]:
+        - generic [ref=e197]:
+          - generic [ref=e199]: If
+          - generic [ref=e201]: the
+          - generic [ref=e203]: work
+          - generic [ref=e205]: needs
+          - generic [ref=e207]: taste,
+          - generic [ref=e209]: clarity,
+          - generic [ref=e211]: and
+          - generic [ref=e213]: finish,
+          - generic [ref=e215]: let's
+          - generic [ref=e217]: talk.
+      - paragraph [ref=e218]: Based in Denver, working wherever the right collaboration leads.
+      - link "Contact" [ref=e220] [cursor=pointer]:
+        - /url: mailto:hello@studio-finity.com
