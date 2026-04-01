@@ -522,7 +522,9 @@ function CosmosHeroWhirl({
 
     uniqueSources.forEach((src) => {
       const image = new Image();
-      image.crossOrigin = "anonymous";
+      // These hero images are only drawn to canvas and never read back, so
+      // forcing anonymous CORS is unnecessary and can cause some CDNs to fail
+      // the load in production.
       image.src = src;
       image.onload = markLoaded;
       image.onerror = markLoaded;

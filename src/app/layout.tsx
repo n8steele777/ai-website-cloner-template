@@ -82,8 +82,8 @@ export default function RootLayout({
   `;
 
   return (
-    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className="min-h-full bg-background text-foreground">
+    <html lang="en" className="h-full font-sans antialiased" suppressHydrationWarning>
+      <body className="min-h-full bg-background text-foreground font-sans">
         <Script id="studio-finity-theme-script" strategy="beforeInteractive">
           {themeScript}
         </Script>
