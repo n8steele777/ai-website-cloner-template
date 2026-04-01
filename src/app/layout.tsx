@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
+import Script from "next/script";
+import { AgentationProvider } from "@/components/agentation-provider";
 import { CaseStudyTransitionProvider } from "@/components/case-study-transition-provider";
 import { PageTransitionProvider } from "@/components/page-transition-provider";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import "./globals.css";
 
+function getSiteUrl() {
+  const candidate =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000");
+
+  return candidate.startsWith("http") ? candidate : `https://${candidate}`;
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL(getSiteUrl()),
   title: "Studio Finity",
   description:
     "Studio Finity is a design studio working across brand, digital, and visual storytelling.",
@@ -70,10 +84,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full bg-background text-foreground">
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <Script id="studio-finity-theme-script" strategy="beforeInteractive">
+          {themeScript}
+        </Script>
         <SmoothScrollProvider>
           <CaseStudyTransitionProvider>
-            <PageTransitionProvider>{children}</PageTransitionProvider>
+            <PageTransitionProvider>
+              {children}
+              <AgentationProvider />
+            </PageTransitionProvider>
           </CaseStudyTransitionProvider>
         </SmoothScrollProvider>
       </body>
