@@ -10,8 +10,9 @@ import { TransitionLink } from "@/components/transition-link";
 import { cn } from "@/lib/utils";
 import type {
   CosmosButton,
+  CosmosCapability,
   CosmosFeatureSection,
-  CosmosFooterGroup,
+  CosmosFeaturedProject,
   CosmosHomepageData,
   CosmosMediaItem,
 } from "@/types/cosmos";
@@ -205,6 +206,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
   const [heroScrollProgress, setHeroScrollProgress] = useState(0);
   const [heroViewportHeight, setHeroViewportHeight] = useState(900);
   const [heroViewportWidth, setHeroViewportWidth] = useState(1440);
+  const [activePrincipleIndex, setActivePrincipleIndex] = useState(0);
 
   useEffect(() => {
     const onResize = () => {
@@ -241,6 +243,8 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
   const filmHandoffProgress = clamp(
     (heroScrollProgress * heroViewportHeight) / Math.max(heroViewportHeight * 0.87, 1),
   );
+  const activePrinciple =
+    data.principles.items[activePrincipleIndex] ?? data.principles.items[0] ?? null;
 
   return (
     <main className="min-h-screen bg-[var(--sf-bg)] text-[var(--sf-text)]">
@@ -278,144 +282,130 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         viewportWidth={heroViewportWidth}
       />
 
-      <SectionFrame
-        section={data.searchWorld}
-        className="px-4 py-22 md:px-6 md:py-30"
-        titleClassName="max-w-[10ch]"
-        content={
-          <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-            <div className="max-w-[22rem]">
-              <p className="sf-eyebrow">{data.searchWorld.sideLabel}</p>
-              <p className="sf-copy-soft mt-4 text-[1.35rem] leading-[1.18] tracking-[0em] md:text-[1.7rem]">
-                {data.searchWorld.sideBody}
+      <section className="px-4 py-20 md:px-6 md:py-24">
+        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 md:pt-14">
+          <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
+            <SectionHeading section={data.brandIntro} titleClassName="max-w-[10ch]" />
+
+            <div className="max-w-[43rem]">
+              <p className="text-[1.4rem] leading-[1.12] tracking-[-0.03em] text-[var(--sf-text-soft)] md:text-[1.95rem]">
+                {data.brandIntro.body}
+              </p>
+              <p className="sf-copy-muted mt-6 max-w-[36rem] text-[1rem] leading-[1.5] md:text-[1.08rem]">
+                {data.brandIntro.supportingText}
               </p>
             </div>
-
-            <div className="grid gap-4 sm:grid-cols-[1.3fr_0.9fr]">
-              <MediaTile item={data.searchWorld.gallery[0]} className="aspect-[1.45/1]" />
-              <div className="grid gap-4">
-                <MediaTile item={data.searchWorld.gallery[1]} className="aspect-[0.88/1]" />
-                <MediaTile item={data.searchWorld.gallery[2]} className="aspect-[1.02/1]" />
-              </div>
-            </div>
-          </div>
-        }
-      />
-
-      <SectionFrame
-        section={data.filters}
-        className="px-4 py-22 md:px-6 md:py-30"
-        titleClassName="max-w-[8ch]"
-        content={
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <div className="max-w-[30rem]">
-              <p className="sf-copy-muted text-lg tracking-[0em] md:text-xl">{data.filters.body}</p>
-            </div>
-
-            <div className="grid gap-4">
-              <div className="flex flex-wrap gap-2">
-                {data.filters.chips.map((chip) => (
-                  <span
-                    key={chip.label}
-                    className="sf-panel rounded-full px-4 py-2 text-[0.83rem] tracking-[0em]"
-                  >
-                    {chip.label}
-                  </span>
-                ))}
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-[1.15fr_0.85fr]">
-                <MediaTile item={data.filters.media[0]} className="aspect-[1.34/1]" />
-                <MediaTile item={data.filters.media[1]} className="aspect-[0.92/1]" />
-              </div>
-            </div>
-          </div>
-        }
-      />
-
-      <SectionFrame
-        section={data.attribution}
-        className="px-4 py-22 md:px-6 md:py-30"
-        titleClassName="max-w-[9ch]"
-        content={
-          <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-            <div>
-              <div className="sf-copy-muted space-y-5 text-[0.98rem] leading-[1.35] tracking-[0em] md:text-[1.06rem]">
-                {data.attribution.credits.map((item) => (
-                  <p key={item}>{item}</p>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-[0.82fr_1.18fr] md:items-end">
-              <MediaTile item={data.attribution.media[0]} className="aspect-[0.8/1]" />
-              <div className="space-y-6">
-                <MediaTile item={data.attribution.media[1]} className="aspect-[0.95/1]" />
-                <p className="sf-copy-soft max-w-[28rem] text-[1.15rem] leading-[1.2] tracking-[0em] md:text-[1.5rem]">
-                  {data.attribution.body}
-                </p>
-              </div>
-            </div>
-          </div>
-        }
-      />
-
-      <SectionFrame
-        section={data.teams}
-        className="px-4 py-22 md:px-6 md:py-30"
-        titleClassName="max-w-[11ch]"
-        content={
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <div className="sf-panel grid grid-cols-2 gap-x-6 gap-y-8 rounded-[28px] p-6 md:grid-cols-3">
-              {data.teams.logos.map((logo, index) => (
-                <div
-                  key={`${logo.src}-${index}`}
-                  className="flex h-14 items-center justify-center rounded-[18px] bg-[var(--sf-surface)]"
-                >
-                  <img src={logo.src} alt={logo.alt} className="max-h-7 w-auto max-w-[90%] object-contain" />
-                </div>
-              ))}
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {data.teams.gallery.map((item, index) => (
-                <MediaTile
-                  key={`${item.src}-${index}`}
-                  item={item}
-                  className={index === 0 ? "aspect-[0.9/1]" : index === 1 ? "aspect-[0.9/1]" : "aspect-[1.1/1]"}
-                />
-              ))}
-            </div>
-          </div>
-        }
-      />
-
-      <section className="px-4 pb-20 pt-8 md:px-6 md:pb-28">
-        <div className="mx-auto max-w-[1440px] rounded-[40px] bg-[var(--sf-surface-strong)] px-6 py-14 md:px-10 md:py-18">
-          <AnimatedWords
-            as="h2"
-            text={data.finalCta.title}
-            className="max-w-[8ch] font-[family:var(--font-cosmos)] text-[3.1rem] leading-[0.98] tracking-[-0.04em] md:text-[4.75rem]"
-            triggerOnView
-          />
-
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            {data.finalCta.buttons.map((button) => (
-              <ActionLink key={button.label} action={button} />
-            ))}
           </div>
         </div>
       </section>
 
-      <footer className="px-4 pb-8 md:px-6 md:pb-10">
-        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-5">
-          <div className="grid gap-8 md:grid-cols-2">
-            {data.footerGroups.map((group) => (
-              <FooterGroup key={group.label} group={group} />
-            ))}
+      <section className="px-4 py-20 md:px-6 md:py-24">
+        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 md:pt-14">
+          <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
+            <SectionHeading section={data.principles} titleClassName="max-w-[9ch]" />
+
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.62fr)]">
+              <div className="space-y-1">
+                {data.principles.items.map((principle, index) => {
+                  const isActive = index === activePrincipleIndex;
+
+                  return (
+                    <div key={`${principle.label}-${principle.title}`} className="border-b border-black/8">
+                      <button
+                        type="button"
+                        className="group/principle flex w-full items-start gap-4 py-4 text-left"
+                        aria-expanded={isActive}
+                        onClick={() => setActivePrincipleIndex(index)}
+                        onFocus={() => setActivePrincipleIndex(index)}
+                        onMouseEnter={() => setActivePrincipleIndex(index)}
+                      >
+                        <span className="mt-0.5 min-w-8 text-[0.85rem] font-medium text-[var(--sf-text-subtle)]">
+                          {principle.label}
+                        </span>
+                        <span
+                          className={cn(
+                            "max-w-[30rem] text-[1.45rem] leading-[1.08] tracking-[-0.035em] transition-colors md:text-[2.1rem]",
+                            isActive ? "text-[var(--sf-text)]" : "text-black/38",
+                          )}
+                        >
+                          {principle.title}
+                        </span>
+                      </button>
+
+                      {isActive ? (
+                        <div className="pb-4 pl-12 lg:hidden">
+                          <p className="max-w-[28rem] text-[0.98rem] leading-[1.5] text-[var(--sf-text-muted)]">
+                            {principle.supportingText}
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="hidden lg:block">
+                {activePrinciple ? (
+                  <div className="border-l border-black/10 pl-6 pt-1">
+                    <p className="sf-eyebrow">{activePrinciple.label}</p>
+                    <p className="mt-3 max-w-[22rem] text-[1rem] leading-[1.55] text-[var(--sf-text-muted)]">
+                      {activePrinciple.supportingText}
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            </div>
           </div>
         </div>
-      </footer>
+      </section>
+
+      <section className="px-4 py-20 md:px-6 md:py-24">
+        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 md:pt-14">
+          <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
+            <SectionHeading section={data.featuredWork} titleClassName="max-w-[7ch]" />
+
+            <div className="grid gap-9 md:grid-cols-2">
+              {data.featuredWork.projects.map((project) => (
+                <FeaturedWorkCard key={project.href} project={project} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-20 md:px-6 md:py-24">
+        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 md:pt-14">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+            <SectionHeading section={data.capabilities} titleClassName="max-w-[10ch]" />
+
+            <div className="grid gap-4 md:grid-cols-3">
+              {data.capabilities.items.map((item) => (
+                <CapabilityCard key={item.title} item={item} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 pb-24 pt-12 md:px-6 md:pb-32 md:pt-16">
+        <div className="mx-auto max-w-[1440px] border-t border-black/10 pt-10 text-center md:pt-16">
+          {data.contactCta.eyebrow ? (
+            <p className="sf-eyebrow">{data.contactCta.eyebrow}</p>
+          ) : null}
+          <AnimatedWords
+            as="h2"
+            text={data.contactCta.title}
+            className="mx-auto mt-3 max-w-[10ch] text-[3rem] leading-[0.98] tracking-[-0.04em] md:text-[4.75rem]"
+            triggerOnView
+          />
+          <p className="sf-copy-muted mx-auto mt-5 max-w-[30rem] text-[1rem] leading-[1.5] md:text-[1.08rem]">
+            {data.contactCta.supportingText}
+          </p>
+          <div className="mt-8 flex justify-center">
+            <ActionLink action={data.contactCta.button} />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
@@ -823,57 +813,64 @@ function CosmosFilmHandoff({
   );
 }
 
-function SectionFrame({
+function SectionHeading({
   section,
-  content,
-  className,
   titleClassName,
 }: {
   section: CosmosFeatureSection;
-  content: React.ReactNode;
-  className?: string;
   titleClassName?: string;
 }) {
   return (
-    <section className={className}>
-      <div className="mx-auto max-w-[1440px]">
-        <div className="grid gap-10 border-t border-black/10 pt-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            {section.eyebrow ? (
-              <p className="sf-eyebrow mb-4">{section.eyebrow}</p>
-            ) : null}
-            <AnimatedWords
-              as="h2"
-              text={section.title}
-              className={cn(
-                "font-[family:var(--font-cosmos)] text-[3rem] leading-[0.98] tracking-[-0.04em] text-[#111] md:text-[4.125rem]",
-                titleClassName,
-              )}
-              triggerOnView
-            />
-          </div>
-          <div>{content}</div>
-        </div>
-      </div>
-    </section>
+    <div>
+      {section.eyebrow ? (
+        <p className="sf-eyebrow mb-4">{section.eyebrow}</p>
+      ) : null}
+      <AnimatedWords
+        as="h2"
+        text={section.title}
+        className={cn(
+          "font-[family:var(--font-cosmos)] text-[3rem] leading-[0.98] tracking-[-0.04em] text-[#111] md:text-[4.125rem]",
+          titleClassName,
+        )}
+        triggerOnView
+      />
+    </div>
   );
 }
 
-function MediaTile({ item, className }: { item: CosmosMediaItem; className?: string }) {
+function FeaturedWorkCard({ project }: { project: CosmosFeaturedProject }) {
   return (
-    <div className={cn("sf-panel overflow-hidden rounded-[30px]", className)}>
-      {item.kind === "video" ? (
-        <video
-          src={item.src}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="h-full w-full object-cover"
+    <TransitionLink href={project.href} className="group/work block">
+      <div className="overflow-hidden rounded-[28px] bg-[var(--sf-surface)]">
+        <img
+          src={project.image.src}
+          alt={project.image.alt}
+          className="aspect-[0.9/1] w-full object-cover transition-transform duration-500 ease-out group-hover/work:scale-[1.02]"
         />
-      ) : (
-        <img src={item.src} alt={item.alt} className="h-full w-full object-cover" />
-      )}
+      </div>
+
+      <div className="mt-4">
+        <p className="sf-copy-subtle text-[0.8rem] font-medium uppercase">{project.category}</p>
+        <h3 className="mt-2 text-[1.55rem] leading-[1.04] tracking-[-0.035em] text-[var(--sf-text)] md:text-[1.8rem]">
+          {project.title}
+        </h3>
+        <p className="sf-copy-muted mt-2 max-w-[31rem] text-[0.98rem] leading-[1.5]">
+          {project.summary}
+        </p>
+      </div>
+    </TransitionLink>
+  );
+}
+
+function CapabilityCard({ item }: { item: CosmosCapability }) {
+  return (
+    <div className="min-h-[14rem] rounded-[24px] border border-black/8 bg-[rgba(255,255,255,0.55)] p-5 md:p-6">
+      <p className="text-[1.35rem] leading-[1.08] tracking-[-0.03em] text-[var(--sf-text)] md:text-[1.55rem]">
+        {item.title}
+      </p>
+      <p className="sf-copy-muted mt-4 max-w-[20rem] text-[0.98rem] leading-[1.5]">
+        {item.description}
+      </p>
     </div>
   );
 }
@@ -912,32 +909,5 @@ function ActionLink({
     <TransitionLink href={action.href} className={sharedClassName}>
       {action.label}
     </TransitionLink>
-  );
-}
-
-function FooterGroup({ group }: { group: CosmosFooterGroup }) {
-  return (
-    <div>
-      <p className="sf-eyebrow mb-3">{group.label}</p>
-      <div className="sf-copy-muted flex flex-wrap gap-x-5 gap-y-2 text-[0.95rem] tracking-[0em]">
-        {group.links.map((link) =>
-          link.external || link.href.startsWith("mailto:") ? (
-            <a
-              key={link.label}
-              href={link.href}
-              target={link.href.startsWith("http") ? "_blank" : undefined}
-              rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-              className="sf-inline-link"
-            >
-              {link.label}
-            </a>
-          ) : (
-            <TransitionLink key={link.label} href={link.href} className="sf-inline-link">
-              {link.label}
-            </TransitionLink>
-          ),
-        )}
-      </div>
-    </div>
   );
 }

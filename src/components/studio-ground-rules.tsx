@@ -19,6 +19,25 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
 
   const activeRule = rules.find((rule) => rule.id === activeRuleId) ?? null;
 
+  const updateCardTarget = (clientX: number, clientY: number) => {
+    const container = containerRef.current;
+    const card = cardRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    const bounds = container.getBoundingClientRect();
+    const cardHeight = card?.offsetHeight ?? 0;
+    const offsetX = 20;
+    const offsetY = 18;
+
+    targetPositionRef.current = {
+      x: clientX - bounds.left + offsetX,
+      y: clientY - bounds.top - cardHeight - offsetY,
+    };
+  };
+
   useEffect(() => {
     let frameId = 0;
 
@@ -55,31 +74,11 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
     return () => {
       window.cancelAnimationFrame(frameId);
     };
-  }, [activeRule?.id]);
+  }, [activeRule?.id, activeRule?.reference]);
 
   if (rules.length === 0) {
     return null;
   }
-
-  const updateCardTarget = (clientX: number, clientY: number) => {
-    const container = containerRef.current;
-    const card = cardRef.current;
-
-    if (!container) {
-      return;
-    }
-
-    const bounds = container.getBoundingClientRect();
-    const cardWidth = card?.offsetWidth ?? 0;
-    const cardHeight = card?.offsetHeight ?? 0;
-    const offsetX = 20;
-    const offsetY = 18;
-
-    targetPositionRef.current = {
-      x: clientX - bounds.left + offsetX,
-      y: clientY - bounds.top - cardHeight - offsetY,
-    };
-  };
 
   return (
     <div className="pt-2">
@@ -207,7 +206,7 @@ function RuleReferenceCard({ rule }: { rule: StudioRule | null }) {
             {reference.name}
           </p>
           <p className="mt-1 text-[0.66rem] leading-[1.3] tracking-[0em] text-white/88 lg:text-[0.72rem]">
-            {reference.quote}
+            &ldquo;{reference.quote}&rdquo;
           </p>
         </div>
       </div>

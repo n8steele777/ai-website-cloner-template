@@ -19,6 +19,25 @@ export interface CosmosFeatureSection {
   body?: string;
 }
 
+export interface CosmosPrinciple {
+  label: string;
+  title: string;
+  supportingText: string;
+}
+
+export interface CosmosFeaturedProject {
+  title: string;
+  href: string;
+  category: string;
+  summary: string;
+  image: CosmosMediaItem;
+}
+
+export interface CosmosCapability {
+  title: string;
+  description: string;
+}
+
 export interface CosmosFilterChip {
   label: string;
   value?: string;
@@ -38,26 +57,22 @@ export interface CosmosHomepageData {
   heroMedia: CosmosMediaItem[];
   filmCta: string;
   filmVideo: CosmosMediaItem;
-  searchWorld: CosmosFeatureSection & {
-    sideLabel: string;
-    sideBody: string;
-    gallery: CosmosMediaItem[];
+  brandIntro: CosmosFeatureSection & {
+    supportingText: string;
   };
-  filters: CosmosFeatureSection & {
-    chips: CosmosFilterChip[];
-    media: CosmosMediaItem[];
+  principles: CosmosFeatureSection & {
+    items: CosmosPrinciple[];
   };
-  attribution: CosmosFeatureSection & {
-    credits: string[];
-    media: CosmosMediaItem[];
+  featuredWork: CosmosFeatureSection & {
+    projects: CosmosFeaturedProject[];
   };
-  teams: CosmosFeatureSection & {
-    logos: CosmosMediaItem[];
-    gallery: CosmosMediaItem[];
+  capabilities: CosmosFeatureSection & {
+    items: CosmosCapability[];
   };
-  finalCta: {
+  contactCta: {
+    eyebrow?: string;
     title: string;
-    buttons: CosmosButton[];
+    supportingText: string;
+    button: CosmosButton;
   };
-  footerGroups: CosmosFooterGroup[];
 }

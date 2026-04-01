@@ -1,6 +1,30 @@
+import { allWorkProjects } from "@/lib/offmenu-data";
 import type { CosmosHomepageData } from "@/types/cosmos";
 
 const contactHref = "mailto:hello@studio-finity.com";
+
+function formatScope(scopeItems: string[]) {
+  return scopeItems.length > 0 ? scopeItems.join(" / ") : "Selected work";
+}
+
+function getFeaturedProject(slug: string) {
+  const project = allWorkProjects.find((entry) => entry.slug === slug);
+
+  if (!project) {
+    throw new Error(`Missing Studio Finity homepage project: ${slug}`);
+  }
+
+  return {
+    category: formatScope(project.scopeItems.slice(0, 3)),
+    href: `/work/${project.slug}`,
+    image: {
+      src: project.heroImageLight,
+      alt: `${project.title} project preview`,
+    },
+    summary: project.summary ?? project.introduction,
+    title: project.title,
+  };
+}
 
 export const cosmosHomepageData: CosmosHomepageData = {
   headerLinks: [
@@ -105,165 +129,79 @@ export const cosmosHomepageData: CosmosHomepageData = {
     alt: "Studio-finity film preview video",
     kind: "video",
   },
-  searchWorld: {
-    title: "Every search opens a new world.",
-    sideLabel: "future home",
-    sideBody:
-      "Your collections, your references, your taste. Connected, searchable, yours.",
-    gallery: [
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/f10cbd2c6ea56eac0c3bb67bc4af5f46c85d8b8b-892x720.png?w=1400&q=90&auto=format",
-        alt: "Search result preview",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/cc559a567335ab21050449cb02abc0396098914f-512x948.png?w=1200&q=90&auto=format",
-        alt: "Pinned image detail",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/94edc31a29bbceb45c81e29287fb87b834801830-748x820.png?w=1200&q=90&auto=format",
-        alt: "Search world detail",
-      },
-    ],
-  },
-  filters: {
-    title: "Search the way you think.",
-    body: "By color, by visual similarity, with AI, and without AI.",
-    chips: [
-      { label: "#BC361B" },
-      { label: "By color" },
-      { label: "by visual similarity" },
-      { label: "AI content" },
-      { label: "Show" },
-      { label: "Blur" },
-      { label: "Hide" },
-    ],
-    media: [
-      {
-        src: "https://cdn.sanity.io/files/ca81n2nu/production/a6cc82d75d824ae49ad989e7d18d3d3ec06ab431.mp4",
-        alt: "Studio-finity search interaction video",
-        kind: "video",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/39c94d292621915bf40a76e1c84fca7f62f29906-628x1056.png?w=1200&q=90&auto=format",
-        alt: "Search filters phone view",
-      },
-    ],
-  },
-  attribution: {
-    title: "Know what you're looking at.",
+  brandIntro: {
+    eyebrow: "Studio Finity",
+    title: "Brand, digital, and visual work shaped with restraint.",
     body:
-      "Studio-finity uses AI to research images - surfacing the artist, source, and story.",
-    credits: [
-      "Editorial photography by Guiri",
-      "Photograph from Unformen der Kunst",
-      "Karl Blossfeldt",
-      "The OOAA Arquitectura Studio. Designed by Iker Ochotorena",
-    ],
-    media: [
+      "Studio Finity is a design studio working across brand, digital, and visual storytelling.",
+    supportingText:
+      "We help brands look distinct, feel elevated, and communicate with clarity, whether the audience meets them on a website, in a campaign, or in motion.",
+  },
+  principles: {
+    eyebrow: "What guides the work",
+    title: "Simple ideas. Precise execution. No extra noise.",
+    items: [
       {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/f4c96e1a6cb9852333a5ee6c30bb63f90799b346-1600x2080.png?w=1200&q=90&auto=format",
-        alt: "Attribution editorial frame",
+        label: "01",
+        title: "Simplicity is the standard.",
+        supportingText:
+          "Every layout, frame, and interaction should feel calm enough to trust and sharp enough to remember.",
       },
       {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/d9255cba26dced830cc18620632e3fad27b760bc-1680x2560.png?w=1200&q=90&auto=format",
-        alt: "Attributed object reference",
+        label: "02",
+        title: "Focus is a creative advantage.",
+        supportingText:
+          "We cut what distracts so the core idea lands harder, reads faster, and holds its weight longer.",
+      },
+      {
+        label: "03",
+        title: "Taste has to survive execution.",
+        supportingText:
+          "Concepts matter, but the finish matters too. The work has to feel considered all the way down to spacing, timing, and image choice.",
+      },
+      {
+        label: "04",
+        title: "The work should move with clarity.",
+        supportingText:
+          "Across identity, web, and campaigns, motion and storytelling are there to support the message, never overpower it.",
       },
     ],
   },
-  teams: {
-    title: "Inspiration for the world's top creative teams.",
-    logos: [
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/b8892b9c83e75c405aa91441cfd875a86e137c60-83x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/307beb34748e14fe2c5842bbad7f6edd21f18285-113x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/3925ff5d4cd3607efc9006fe25660c31d663f9db-58x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/f84e9919ca1786bf5edbf67be265f85e299dc441-146x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/57fa0add0e564521a68b3d622e659c7e6c540ede-129x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/f5ca8bb672ea57b6efc258c1603a184fe96dd572-117x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/2716d2c3db51f55a5bbb8aca959ff12f95a64d33-146x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/abe1e74efdcdde8e72a75d32e871253cba8c4cf8-98x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/a2cedb263964c48bf9178b38bfc451956a4dce2a-106x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/603e28e5a3211bd1b75bf72cd07702b7b79f344f-149x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/e4324d82334e6c88e150f5fd632bf7c6e3f58a54-52x60.svg",
-        alt: "Creative team logo",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/037e7d1ba78115c119b08e998077db6c7e76d46d-146x60.svg",
-        alt: "Creative team logo",
-      },
+  featuredWork: {
+    eyebrow: "Selected work",
+    title: "A few recent projects.",
+    projects: [
+      getFeaturedProject("on"),
+      getFeaturedProject("baxo"),
+      getFeaturedProject("area-15-ventures"),
+      getFeaturedProject("milk-tea-people"),
     ],
-    gallery: [
+  },
+  capabilities: {
+    eyebrow: "Capabilities",
+    title: "Built to carry a brand across every surface that matters.",
+    items: [
       {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/260ba59928327fbf2676087b34c19bcd956b38f9-1680x2560.png?w=1200&q=90&auto=format",
-        alt: "Creative team inspiration frame",
+        title: "Brand",
+        description:
+          "Identity systems, creative direction, and visual worlds that feel distinct without trying too hard.",
       },
       {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/75a47a525bb28b1ec5097d51f3574edb5667af0e-1680x2560.png?w=1200&q=90&auto=format",
-        alt: "Creative team reference frame",
+        title: "Digital",
+        description:
+          "Web experiences with clean hierarchy, strong pacing, and enough restraint to let the work speak first.",
       },
       {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/f4c96e1a6cb9852333a5ee6c30bb63f90799b346-1600x2080.png?w=1200&q=90&auto=format",
-        alt: "Creative team editorial frame",
-      },
-      {
-        src: "https://cdn.sanity.io/images/ca81n2nu/production/d9255cba26dced830cc18620632e3fad27b760bc-1680x2560.png?w=1200&q=90&auto=format",
-        alt: "Creative team archive frame",
+        title: "Visual storytelling",
+        description:
+          "Campaigns, photography, motion, and film built with the same standard of clarity and finish.",
       },
     ],
   },
-  finalCta: {
-    title: "Dream with us.",
-    buttons: [
-      { label: "Get in touch", href: contactHref, external: true, variant: "primary" },
-      { label: "View work", href: "/work", variant: "secondary" },
-    ],
+  contactCta: {
+    eyebrow: "Contact",
+    title: "If the work needs taste, clarity, and finish, let's talk.",
+    supportingText: "Based in Denver, working wherever the right collaboration leads.",
+    button: { label: "Contact", href: contactHref, external: true, variant: "primary" },
   },
-  footerGroups: [
-    {
-      label: "Social",
-      links: [
-        { label: "Instagram", href: "https://www.instagram.com/weareoffmenu", external: true },
-        { label: "X", href: "https://x.com/weareoffmenu", external: true },
-        { label: "LinkedIn", href: "https://linkedin.com/company/offmenudesign", external: true },
-      ],
-    },
-    {
-      label: "Pages",
-      links: [
-        { label: "Work", href: "/work" },
-        { label: "About", href: "/about" },
-        { label: "Contact", href: contactHref, external: true },
-      ],
-    },
-  ],
 };
