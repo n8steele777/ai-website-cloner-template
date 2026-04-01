@@ -19,7 +19,7 @@ export default function NotFound() {
         <div>
           <Link
             href="/"
-            className="sf-caption inline-flex min-h-11 items-center justify-center rounded-full border border-primary bg-primary px-6 py-3 text-primary-foreground outline-none transition-[opacity,transform] duration-280 ease-sf-out hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] motion-reduce:active:scale-100"
+            className="sf-interactive sf-pill-button sf-pill-button-primary outline-none transition-[opacity,transform] duration-280 ease-sf-out focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] motion-reduce:active:scale-100"
           >
             Home
           </Link>

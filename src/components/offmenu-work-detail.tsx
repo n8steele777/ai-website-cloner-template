@@ -1,26 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { AnimatedWords } from "@/components/animated-words";
 import { isSanityImageUrl, sanityImageLoader } from "@/lib/sanity-image-loader";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
-import { OffMenuWorkFooter } from "@/components/offmenu-work-footer";
 import { OffMenuWorkHero } from "@/components/offmenu-work-hero";
 import { usePageTransition } from "@/components/page-transition-provider";
-import type { CaseStudy, NavLink, WorkGalleryItem, WorkProjectDetail } from "@/types/offmenu";
+import { mountDataAboutScrollReveals } from "@/lib/gsap-data-about-reveal";
+import type { NavLink, WorkGalleryItem, WorkProjectDetail } from "@/types/offmenu";
 
 interface OffMenuWorkDetailProps {
-  caseStudies: CaseStudy[];
   navigationLinks: NavLink[];
   project: WorkProjectDetail;
   resourceLinks: NavLink[];
 }
 
 export function OffMenuWorkDetail({
-  caseStudies,
   navigationLinks,
   project,
   resourceLinks: _resourceLinks,
@@ -31,97 +27,12 @@ export function OffMenuWorkDetail({
 
   useLayoutEffect(() => {
     const root = introRootRef.current;
-
     if (!root) {
       return;
     }
-
-    let cancelled = false;
-    const cleanups: Array<() => void> = [];
-
-    const readyPromise =
-      "fonts" in document ? document.fonts.ready.catch(() => undefined) : Promise.resolve();
-
-    void readyPromise.then(() => {
-      if (cancelled || !pageReady) {
-        return;
-      }
-
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        root.querySelectorAll<HTMLElement>("[data-about-reveal]").forEach((node) => {
-          gsap.set(node, { clearProps: "all" });
-        });
-        return;
-      }
-
-      const revealNodes = Array.from(root.querySelectorAll<HTMLElement>("[data-about-reveal]"));
-      revealNodes.forEach((node, index) => {
-        let observer: IntersectionObserver | null = null;
-        let hasAnimated = false;
-
-        const animate = () => {
-          if (hasAnimated) {
-            return;
-          }
-
-          hasAnimated = true;
-          gsap.fromTo(
-            node,
-            {
-              autoAlpha: 0,
-              y: 28,
-              filter: "blur(8px)",
-            },
-            {
-              autoAlpha: 1,
-              y: 0,
-              filter: "blur(0px)",
-              duration: 0.9,
-              delay: index * 0.038,
-              ease: "power4.out",
-              clearProps: "opacity,transform,filter,visibility",
-            },
-          );
-        };
-
-        const rect = node.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-        if (rect.bottom > 0 && rect.top < viewportHeight * 0.96) {
-          animate();
-        } else {
-          gsap.set(node, { autoAlpha: 0, y: 28, filter: "blur(8px)" });
-          observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
-                  return;
-                }
-
-                observer?.disconnect();
-                animate();
-              });
-            },
-            { threshold: 0, rootMargin: "0px 0px -12% 0px" },
-          );
-          observer.observe(node);
-        }
-
-        cleanups.push(() => {
-          observer?.disconnect();
-          gsap.killTweensOf(node);
-        });
-      });
-    });
-
-    return () => {
-      cancelled = true;
-      cleanups.forEach((cleanup) => cleanup());
-    };
+    return mountDataAboutScrollReveals(root, pageReady);
   }, [pageReady]);
 
-  const relatedProjects = project.relatedSlugs
-    .map((slug) => caseStudies.find((caseStudy) => caseStudy.slug === slug))
-    .filter((caseStudy): caseStudy is CaseStudy => Boolean(caseStudy));
   const galleryBlocks = buildGalleryBlocks(project.galleryMedia);
 
   return (
@@ -156,54 +67,6 @@ export function OffMenuWorkDetail({
           {galleryBlocks.length > 0 ? <WorkGallery blocks={galleryBlocks} /> : null}
         </div>
 
-        {relatedProjects.length > 0 ? (
-          <section className="p-4 md:p-6 lg:p-8">
-          <AnimatedWords
-            as="h2"
-            text="Want to see more?"
-            className="sf-title-xl mb-8 md:mb-10"
-            lineClassName="leading-[1.04]"
-            triggerOnView
-          />
-
-          <div className="group/row flex flex-col gap-4 md:min-h-128 md:flex-row md:items-stretch md:gap-6 lg:min-h-144">
-            {relatedProjects.map((relatedProject, index) => {
-              const relatedImage = relatedProject.thumbnailLightXl;
-
-              return (
-                <Link
-                  key={relatedProject.slug}
-                  href={relatedProject.href}
-                  className={
-                    index === 0
-                      ? "peer/left flex min-h-0 flex-1 flex-col transition-[flex] duration-880 ease-sf-out md:h-full md:hover:flex-[1.55] md:peer-hover/right:flex-[0.92]"
-                      : "peer/right flex min-h-0 flex-1 flex-col transition-[flex] duration-880 ease-sf-out md:h-full md:hover:flex-[1.55] md:peer-hover/left:flex-[0.92]"
-                  }
-                >
-                  <div className="relative aspect-[1.18/1] w-full min-h-0 shrink-0 overflow-hidden rounded-2xl md:flex-1 md:basis-0 md:aspect-auto">
-                    <Image
-                      src={relatedImage}
-                      alt={relatedProject.title}
-                      blurDataURL={relatedProject.thumbnailLqip}
-                      fill
-                      loader={
-                        isSanityImageUrl(relatedImage) ? sanityImageLoader : undefined
-                      }
-                      placeholder={relatedProject.thumbnailLqip ? "blur" : "empty"}
-                      sizes="(max-width: 767px) 100vw, 50vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <p className="sf-caption-strong mt-3 min-w-0 shrink-0 wrap-break-word text-foreground">
-                    {relatedProject.title}
-                  </p>
-                </Link>
-              );
-            })}
-          </div>
-          </section>
-        ) : null}
-
         <section className="flex flex-col items-center justify-center gap-8 p-8 text-center md:p-10 lg:p-12">
           <AnimatedWords
             as="h2"
@@ -219,8 +82,6 @@ export function OffMenuWorkDetail({
             {project.ctaLabel}
           </a>
         </section>
-
-        <OffMenuWorkFooter navigationLinks={navigationLinks} />
       </StudioFinityHeader>
     </main>
   );

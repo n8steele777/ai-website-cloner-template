@@ -233,6 +233,7 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
       <div
         ref={containerRef}
         data-about-stagger
+        data-ground-rules-list
         className="relative mt-5 max-lg:pb-32"
         onMouseLeave={() => {
           if (!isMobileLayout) {
@@ -260,16 +261,13 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
               <button
                 key={rule.id}
                 type="button"
-                data-about-item
                 data-ground-rule
                 data-rule-id={rule.id}
+                data-rule-active={isActive ? "true" : undefined}
                 className={cn(
-                  "group flex w-full min-w-0 items-center gap-2 text-left transition-[color,opacity] duration-280 ease-sf-out",
-                  "min-h-11 py-2.5 max-lg:touch-manipulation lg:min-h-0 lg:py-0.5",
-                  "md:items-start md:gap-[12px]",
-                  isActive
-                    ? "lg:[&_.sf-section-list]:text-foreground"
-                    : "max-lg:active:opacity-90 lg:[&_.sf-section-list]:text-(--sf-text-muted) lg:hover:[&_.sf-section-list]:text-foreground",
+                  "group min-h-11 w-full min-w-0 py-2.5 text-left transition-opacity duration-280 ease-sf-out lg:transition-none",
+                  "max-lg:touch-manipulation lg:min-h-0 lg:py-0.5",
+                  "max-lg:active:opacity-90",
                 )}
                 onMouseEnter={(event) => {
                   if (isMobileLayout) {
@@ -308,24 +306,33 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
                   setActiveRuleId(rule.id);
                 }}
               >
+                {/*
+                  data-about-item on inner wrapper so GSAP opacity/transform never touches the button
+                  (mobile opacity tap feedback). Desktop row color is globals.css [data-ground-rules-list].
+                */}
                 <span
-                  className={cn(
-                    "sf-section-list sf-ground-rules-row-text shrink-0 tabular-nums",
-                    "min-w-6 max-lg:min-w-7 md:min-w-[50px]",
-                  )}
+                  data-about-item
+                  className="flex w-full min-w-0 items-center gap-2 md:items-start md:gap-[12px]"
                 >
-                  {rule.id}
-                </span>
-                <span className="sf-section-list sf-ground-rules-row-text shrink-0">
-                  /
-                </span>
-                <span
-                  className={cn(
-                    "sf-section-list sf-ground-rules-row-text min-w-0 flex-1",
-                    "max-lg:truncate max-lg:whitespace-nowrap",
-                  )}
-                >
-                  {rule.statement}
+                  <span
+                    className={cn(
+                      "sf-section-list sf-ground-rules-row-text shrink-0 tabular-nums",
+                      "min-w-6 max-lg:min-w-7 md:min-w-[50px]",
+                    )}
+                  >
+                    {rule.id}
+                  </span>
+                  <span className="sf-section-list sf-ground-rules-row-text shrink-0">
+                    /
+                  </span>
+                  <span
+                    className={cn(
+                      "sf-section-list sf-ground-rules-row-text min-w-0 flex-1",
+                      "max-lg:truncate max-lg:whitespace-nowrap",
+                    )}
+                  >
+                    {rule.statement}
+                  </span>
                 </span>
               </button>
             );

@@ -1,11 +1,11 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
 import { AnimatedWords } from "@/components/animated-words";
 import { StudioGroundRules } from "@/components/studio-ground-rules";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { usePageTransition } from "@/components/page-transition-provider";
+import { mountDataAboutScrollReveals } from "@/lib/gsap-data-about-reveal";
 import type { NavLink, StudioAboutContent } from "@/types/offmenu";
 
 interface StudioFinityAboutProps {
@@ -25,155 +25,10 @@ export function StudioFinityAbout({
 
   useLayoutEffect(() => {
     const root = rootRef.current;
-
     if (!root) {
       return;
     }
-
-    let cancelled = false;
-    const cleanups: Array<() => void> = [];
-
-    const readyPromise =
-      "fonts" in document ? document.fonts.ready.catch(() => undefined) : Promise.resolve();
-
-    void readyPromise.then(() => {
-      if (cancelled || !pageReady) {
-        return;
-      }
-
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        root.querySelectorAll<HTMLElement>("[data-about-reveal], [data-about-stagger]").forEach((node) => {
-          gsap.set(node, { clearProps: "all" });
-        });
-        return;
-      }
-
-      const revealNodes = Array.from(root.querySelectorAll<HTMLElement>("[data-about-reveal]"));
-      revealNodes.forEach((node, index) => {
-        let observer: IntersectionObserver | null = null;
-        let hasAnimated = false;
-
-        const animate = () => {
-          if (hasAnimated) {
-            return;
-          }
-
-          hasAnimated = true;
-          gsap.fromTo(
-            node,
-            {
-              autoAlpha: 0,
-              y: 28,
-              filter: "blur(8px)",
-            },
-            {
-              autoAlpha: 1,
-              y: 0,
-              filter: "blur(0px)",
-              duration: 0.9,
-              delay: index * 0.038,
-              ease: "power4.out",
-              clearProps: "opacity,transform,filter,visibility",
-            },
-          );
-        };
-
-        const rect = node.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-        if (rect.bottom > 0 && rect.top < viewportHeight * 0.96) {
-          animate();
-        } else {
-          gsap.set(node, { autoAlpha: 0, y: 28, filter: "blur(8px)" });
-          observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
-                  return;
-                }
-
-                observer?.disconnect();
-                animate();
-              });
-            },
-            { threshold: 0, rootMargin: "0px 0px -12% 0px" },
-          );
-          observer.observe(node);
-        }
-
-        cleanups.push(() => {
-          observer?.disconnect();
-          gsap.killTweensOf(node);
-        });
-      });
-
-      const staggerNodes = Array.from(root.querySelectorAll<HTMLElement>("[data-about-stagger]"));
-      staggerNodes.forEach((group) => {
-        const items = Array.from(group.querySelectorAll<HTMLElement>("[data-about-item]"));
-        const targetOpacities = items.map((item) => Number.parseFloat(window.getComputedStyle(item).opacity) || 1);
-
-        if (items.length === 0) {
-          return;
-        }
-
-        let observer: IntersectionObserver | null = null;
-        let hasAnimated = false;
-
-        const animate = () => {
-          if (hasAnimated) {
-            return;
-          }
-
-          hasAnimated = true;
-          gsap.fromTo(
-            items,
-            {
-              autoAlpha: 0,
-              y: 22,
-            },
-            {
-              autoAlpha: (index) => targetOpacities[index] ?? 1,
-              y: 0,
-              duration: 0.72,
-              ease: "power4.out",
-              stagger: 0.062,
-              clearProps: "opacity,transform,visibility",
-            },
-          );
-        };
-
-        const rect = group.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-        if (rect.bottom > 0 && rect.top < viewportHeight * 0.96) {
-          animate();
-        } else {
-          gsap.set(items, { autoAlpha: 0, y: 22 });
-          observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
-                  return;
-                }
-
-                observer?.disconnect();
-                animate();
-              });
-            },
-            { threshold: 0, rootMargin: "0px 0px -12% 0px" },
-          );
-          observer.observe(group);
-        }
-
-        cleanups.push(() => {
-          observer?.disconnect();
-          gsap.killTweensOf(items);
-        });
-      });
-    });
-
-    return () => {
-      cancelled = true;
-      cleanups.forEach((cleanup) => cleanup());
-    };
+    return mountDataAboutScrollReveals(root, pageReady);
   }, [pageReady]);
 
   return (

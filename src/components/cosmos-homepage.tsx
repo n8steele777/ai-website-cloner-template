@@ -12,6 +12,7 @@ import {
   WorkIndexTileContent,
   WorkIndexTileMedia,
 } from "@/components/work-index-tile";
+import { fontsReadyPromise, GSAP_MOTION } from "@/lib/gsap-motion";
 import { offMenuHeroWords } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import type {
@@ -435,67 +436,106 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
   );
 }
 
-const HERO_INTRO_SWAP_MS = 2650;
+const HERO_INTRO_SWAP_MS = 1900;
+const HERO_INTRO_SWAP_MS_REDUCED = 650;
+
+const HERO_INTRO_LINE_DURATION = 0.85;
+const HERO_INTRO_LINE_DELAY = 0.12;
+const HERO_INTRO_STAGGER_EACH = 0.095;
+
+const HERO_MAIN_LINE_DURATION = 0.72;
+const HERO_MAIN_LINE_DELAY = 0.12;
+/** Per-word stagger (object form is GSAP-recommended for readability). */
+const HERO_MAIN_STAGGER = { each: 0.038 } satisfies gsap.StaggerVars;
 
 /**
  * Opens with the two-line display hook, then matches `/work`: caption, max-w-[28ch],
- * inline word spans for normal wrapping.
+ * word spans for wrapping. GSAP: context + matchMedia, data-attribute targets, font-aware rAF.
  */
 function HeroHeadline() {
   const [showMainCopy, setShowMainCopy] = useState(false);
-  const wordInnerRefs = useRef<Array<HTMLSpanElement | null>>([]);
-  const introLineRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const heroRootRef = useRef<HTMLDivElement | null>(null);
 
   useLayoutEffect(() => {
-    const nodes = introLineRefs.current.filter(Boolean);
-    if (nodes.length === 0) {
+    const root = heroRootRef.current;
+    if (!root) {
       return;
     }
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set(nodes, { y: 0 });
-      return;
-    }
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-    gsap.set(nodes, { y: "115%" });
+      mm.add(GSAP_MOTION.reduce, () => {
+        const nodes = gsap.utils.toArray<HTMLElement>("[data-hero-intro-line]", root);
+        gsap.set(nodes, { y: 0, force3D: true, clearProps: "transform" });
+      });
 
-    let cancelled = false;
-    const run = () => {
-      if (cancelled) {
-        return;
-      }
+      mm.add(GSAP_MOTION.noPreference, () => {
+        const nodes = gsap.utils.toArray<HTMLElement>("[data-hero-intro-line]", root);
+        if (nodes.length === 0) {
+          return;
+        }
 
-      gsap.fromTo(
-        nodes,
-        { y: "115%" },
-        {
-          y: 0,
-          duration: 0.85,
-          delay: 0.12,
-          ease: "power4.out",
-          stagger: 0.095,
-        },
-      );
-    };
+        gsap.set(nodes, { y: "115%", force3D: true });
 
-    const fontsReady =
-      "fonts" in document ? document.fonts.ready.catch(() => undefined) : Promise.resolve();
+        let fontRaceDone = false;
+        const runReveal = () => {
+          gsap.fromTo(
+            nodes,
+            { y: "115%", force3D: true },
+            {
+              y: 0,
+              duration: HERO_INTRO_LINE_DURATION,
+              delay: HERO_INTRO_LINE_DELAY,
+              ease: "power4.out",
+              stagger: { each: HERO_INTRO_STAGGER_EACH },
+              force3D: true,
+              immediateRender: false,
+              overwrite: "auto",
+              clearProps: "transform",
+            },
+          );
+        };
 
-    void fontsReady.then(() => {
-      window.requestAnimationFrame(run);
-    });
+        void fontsReadyPromise().then(() => {
+          if (fontRaceDone) {
+            return;
+          }
+          window.requestAnimationFrame(runReveal);
+        });
+
+        return () => {
+          fontRaceDone = true;
+          gsap.killTweensOf(nodes);
+        };
+      });
+    }, root);
 
     return () => {
-      cancelled = true;
-      gsap.killTweensOf(nodes);
+      ctx.revert();
     };
   }, []);
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const ms = reduced ? 900 : HERO_INTRO_SWAP_MS;
-    const id = window.setTimeout(() => setShowMainCopy(true), ms);
-    return () => window.clearTimeout(id);
+    const mm = gsap.matchMedia();
+
+    mm.add(GSAP_MOTION.reduce, () => {
+      const id = window.setTimeout(() => {
+        setShowMainCopy(true);
+      }, HERO_INTRO_SWAP_MS_REDUCED);
+      return () => window.clearTimeout(id);
+    });
+
+    mm.add(GSAP_MOTION.noPreference, () => {
+      const id = window.setTimeout(() => {
+        setShowMainCopy(true);
+      }, HERO_INTRO_SWAP_MS);
+      return () => window.clearTimeout(id);
+    });
+
+    return () => {
+      mm.revert();
+    };
   }, []);
 
   useLayoutEffect(() => {
@@ -503,54 +543,69 @@ function HeroHeadline() {
       return;
     }
 
-    const nodes = wordInnerRefs.current.filter(Boolean);
-    if (nodes.length === 0) {
+    const root = heroRootRef.current;
+    if (!root) {
       return;
     }
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set(nodes, { y: 0 });
-      return;
-    }
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-    gsap.set(nodes, { y: "115%" });
+      mm.add(GSAP_MOTION.reduce, () => {
+        const nodes = gsap.utils.toArray<HTMLElement>("[data-hero-word-inner]", root);
+        gsap.set(nodes, { y: 0, force3D: true, clearProps: "transform" });
+      });
 
-    let cancelled = false;
-    const run = () => {
-      if (cancelled) {
-        return;
-      }
+      mm.add(GSAP_MOTION.noPreference, () => {
+        const nodes = gsap.utils.toArray<HTMLElement>("[data-hero-word-inner]", root);
+        if (nodes.length === 0) {
+          return;
+        }
 
-      gsap.fromTo(
-        nodes,
-        { y: "115%" },
-        {
-          y: 0,
-          duration: 0.78,
-          delay: 0.22,
-          ease: "power4.out",
-          stagger: 0.04,
-        },
-      );
-    };
+        gsap.set(nodes, { y: "115%", force3D: true });
 
-    const fontsReady =
-      "fonts" in document ? document.fonts.ready.catch(() => undefined) : Promise.resolve();
+        let fontRaceDone = false;
+        const runReveal = () => {
+          gsap.fromTo(
+            nodes,
+            { y: "115%", force3D: true },
+            {
+              y: 0,
+              duration: HERO_MAIN_LINE_DURATION,
+              delay: HERO_MAIN_LINE_DELAY,
+              ease: "power4.out",
+              stagger: HERO_MAIN_STAGGER,
+              force3D: true,
+              immediateRender: false,
+              overwrite: "auto",
+              clearProps: "transform",
+            },
+          );
+        };
 
-    void fontsReady.then(() => {
-      window.requestAnimationFrame(run);
-    });
+        void fontsReadyPromise().then(() => {
+          if (fontRaceDone) {
+            return;
+          }
+          window.requestAnimationFrame(runReveal);
+        });
+
+        return () => {
+          fontRaceDone = true;
+          gsap.killTweensOf(nodes);
+        };
+      });
+    }, root);
 
     return () => {
-      cancelled = true;
-      gsap.killTweensOf(nodes);
+      ctx.revert();
     };
   }, [showMainCopy]);
 
   const introHidden = showMainCopy;
 
   return (
-    <div className="relative z-10 grid w-full place-items-center px-5 md:px-8">
+    <div ref={heroRootRef} className="relative z-10 grid w-full place-items-center px-5 md:px-8">
       <p
         className={cn(
           "col-start-1 row-start-1 flex max-w-[12ch] flex-col items-center text-center will-change-[opacity,transform]",
@@ -569,11 +624,8 @@ function HeroHeadline() {
           style={{ marginBlock: "-0.15em" }}
         >
           <span
-            ref={(element) => {
-              introLineRefs.current[0] = element;
-            }}
-            className="sf-brand-display block leading-[0.88]"
-            style={{ transform: "translateY(115%)" }}
+            data-hero-intro-line
+            className="sf-brand-display block transform-gpu will-change-transform leading-[0.88] motion-reduce:will-change-auto"
           >
             Sharper
           </span>
@@ -583,11 +635,8 @@ function HeroHeadline() {
           style={{ marginBlock: "-0.15em" }}
         >
           <span
-            ref={(element) => {
-              introLineRefs.current[1] = element;
-            }}
-            className="sf-brand-display block leading-[0.88]"
-            style={{ transform: "translateY(115%)" }}
+            data-hero-intro-line
+            className="sf-brand-display block transform-gpu will-change-transform leading-[0.88] motion-reduce:will-change-auto"
           >
             execution.
           </span>
@@ -595,7 +644,7 @@ function HeroHeadline() {
       </p>
 
       {showMainCopy ? (
-        <h1 className="col-start-1 row-start-1 sf-caption pointer-events-auto max-w-[28ch] text-center text-pretty leading-none text-(--sf-text) md:text-base">
+        <h1 className="col-start-1 row-start-1 sf-caption pointer-events-auto max-w-[28ch] text-center text-balance leading-none text-(--sf-text) md:text-base">
           {offMenuHeroWords.map((word, index) => (
             <span
               key={`${word}-${index}`}
@@ -603,11 +652,8 @@ function HeroHeadline() {
               style={{ marginBlock: "-0.15em" }}
             >
               <span
-                ref={(element) => {
-                  wordInnerRefs.current[index] = element;
-                }}
-                className="inline-block"
-                style={{ transform: "translateY(115%)" }}
+                data-hero-word-inner
+                className="inline-block transform-gpu will-change-transform motion-reduce:will-change-auto"
               >
                 {word}
                 {"\u00A0"}

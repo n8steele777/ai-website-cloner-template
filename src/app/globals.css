@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Ignore .cursor/ so Markdown and tooling metadata are not scanned as Tailwind sources. */
+@source not "../../.cursor";
 @plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -139,6 +141,8 @@
   --sf-text-muted: rgba(17, 17, 17, 0.72);
   /* ≥4.5:1 vs --sf-bg for normal text (WCAG AA); 0.56 was ~4.3:1 at 12px */
   --sf-text-subtle: rgba(17, 17, 17, 0.66);
+  /* Ground rules: idle rows only; full `--sf-text` on hover/focus for contrast + readability */
+  --sf-ground-rules-idle: color-mix(in srgb, var(--sf-text) 36%, var(--sf-bg));
   --sf-border: rgba(17, 17, 17, 0.1);
   --sf-border-strong: rgba(17, 17, 17, 0.14);
   --sf-inverse-bg: #111111;
@@ -498,6 +502,22 @@ html.lenis {
   }
 }
 
+/*
+ * Desktop ground rules: `.sf-section-list { color: var(--sf-text) }` is unlayered and wins over
+ * Tailwind `text-(--sf-text-muted)` utilities. Scope muted → full text here (specificity + order).
+ * `data-rule-active` is set when the row is hovered/focused (see StudioGroundRules).
+ */
+@media (min-width: 1024px) {
+  [data-ground-rules-list] button .sf-ground-rules-row-text.sf-section-list {
+    color: var(--sf-ground-rules-idle);
+    transition: color var(--sf-duration-ui) var(--sf-ease-out);
+  }
+
+  [data-ground-rules-list] button[data-rule-active="true"] .sf-ground-rules-row-text.sf-section-list {
+    color: var(--sf-text);
+  }
+}
+
 .sf-rule-card-title {
   color: var(--sf-inverse-text);
   font-size: 0.8rem;
@@ -691,6 +711,14 @@ html.lenis {
     transform: translate3d(0, 0, 0) scale(0.988);
     transition-duration: var(--sf-duration-ui);
     transition-timing-function: var(--sf-ease-out);
+  }
+}
+
+/* Base UI drawer: snap open/close for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="drawer-backdrop"],
+  [data-slot="drawer-popup"] {
+    transition-duration: 0.01ms !important;
   }
 }
 

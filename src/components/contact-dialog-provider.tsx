@@ -9,14 +9,12 @@ import {
   useId,
   useRef,
   useState,
-  useSyncExternalStore,
   type FormEvent,
   type ReactNode,
 } from "react";
-import { createPortal } from "react-dom";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { CheckCircle2Icon, Loader2Icon } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Drawer, DrawerClose, DrawerPopup } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 
 type ContactDialogContextValue = {
@@ -31,11 +29,11 @@ const CONTACT_DRAWER_LOGO = "/logos/Studio%20Finity%20Text%20Logo.png";
 
 /** Scroll viewport: fixed height so validation / API errors only scroll inside — sheet shell does not resize. */
 const FORM_SCROLL_BOX =
-  "h-[clamp(17.5rem,46dvh,26rem)] min-h-[17.5rem] w-full shrink-0 overflow-y-auto overflow-x-hidden overscroll-contain";
+  "h-[clamp(17.5rem,46dvh,26rem)] min-h-[17.5rem] w-full shrink-0 touch-auto overflow-y-auto overflow-x-hidden overscroll-contain touch-pan-y";
 
 /** Footer: fixed block height so two-button vs one-button never changes sheet geometry. */
 const FOOTER_SHELL =
-  "flex h-[9.5rem] shrink-0 flex-col justify-end border-t border-border/40 bg-muted/25 pt-5 sm:h-[6.75rem] sm:pt-6";
+  "flex h-[10.5rem] shrink-0 flex-col justify-end border-t border-border/40 bg-muted/25 pt-6 sm:h-[7.5rem] sm:pt-7";
 
 const singleLineFieldClassName = cn(
   "box-border block h-12 max-h-12 w-full min-w-0 max-w-full shrink-0 break-words rounded-xl border bg-background px-4 py-0 text-[15px] leading-[2.75rem] text-foreground",
@@ -52,17 +50,6 @@ const textareaFieldClassName = cn(
   "focus-visible:border-foreground/25 focus-visible:ring-2 focus-visible:ring-ring/35",
   "disabled:opacity-55",
 );
-
-const easeOut = [0.16, 1, 0.3, 1] as const;
-
-const FOCUSABLE_SELECTOR = [
-  "button:not([disabled])",
-  "a[href]",
-  "input:not([disabled])",
-  "select:not([disabled])",
-  "textarea:not([disabled])",
-  '[tabindex]:not([tabindex="-1"])',
-].join(", ");
 
 export function useContactDialog(): ContactDialogContextValue {
   const ctx = useContext(ContactDialogContext);
@@ -95,17 +82,9 @@ function ContactFormSheet({
   open: boolean;
   onOpenChange: (next: boolean) => void;
 }) {
-  const reduceMotion = useReducedMotion();
   const titleId = useId();
   const descriptionId = useId();
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const successCloseRef = useRef<HTMLElement | null>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
-  const mounted = useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
-  );
+  const successCloseRef = useRef<HTMLButtonElement | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -127,91 +106,28 @@ function ContactFormSheet({
   }, [open]);
 
   useEffect(() => {
-    if (!open) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const el = document.activeElement;
-    previousFocusRef.current = el instanceof HTMLElement ? el : null;
-    return () => {
-      previousFocusRef.current?.focus({ preventScroll: true });
-      previousFocusRef.current = null;
-    };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const root = dialogRef.current;
-    if (!root) return;
-
-    const getFocusables = () =>
-      [...root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)].filter(
-        (node) =>
-          node.getAttribute("aria-hidden") !== "true" &&
-          (node.offsetWidth > 0 || node.offsetHeight > 0 || node === document.activeElement),
-      );
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== "Tab") return;
-      const focusables = getFocusables();
-      if (focusables.length === 0) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      const active = document.activeElement;
-
-      if (e.shiftKey) {
-        if (active === first || (active && !root.contains(active))) {
-          e.preventDefault();
-          last.focus();
-        }
-      } else if (active === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-
-    root.addEventListener("keydown", onKeyDown);
-    return () => root.removeEventListener("keydown", onKeyDown);
-  }, [open, submitOk]);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onOpenChange(false);
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open, onOpenChange]);
-
-  useEffect(() => {
-    if (open && submitOk) {
-      const id = requestAnimationFrame(() => {
+    if (!open || !submitOk) {
+      return;
+    }
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         successCloseRef.current?.focus();
       });
-      return () => cancelAnimationFrame(id);
-    }
+    });
+    return () => cancelAnimationFrame(id);
   }, [open, submitOk]);
 
   useEffect(() => {
-    if (open && !submitOk) {
-      const id = requestAnimationFrame(() => {
+    if (!open || submitOk) {
+      return;
+    }
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         nameInputRef.current?.focus();
       });
-      return () => cancelAnimationFrame(id);
-    }
+    });
+    return () => cancelAnimationFrame(id);
   }, [open, submitOk]);
-
-  function handleOpenChange(next: boolean) {
-    onOpenChange(next);
-  }
 
   function focusFirstInvalidField(
     trimmedName: string,
@@ -364,125 +280,85 @@ function ContactFormSheet({
       ? "Add at least 10 characters."
       : null;
 
-  const tw = reduceMotion ? { type: "tween" as const, duration: 0.01, ease: "linear" as const } : { type: "tween" as const, duration: 0.52, ease: easeOut };
+  return (
+    <Drawer open={open} onOpenChange={onOpenChange} position="bottom" modal>
+      <DrawerPopup
+        showBar
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        className={cn(
+          "bg-background! text-foreground! border-border/40 shadow-(--sf-shadow-sheet-up)",
+          "before:rounded-t-[calc(var(--radius-2xl)-1px)]!",
+          "after:bg-background!",
+        )}
+      >
+        <div className="mx-auto flex w-full min-w-0 max-w-lg flex-col">
+          <div className="relative flex w-full flex-col overflow-hidden">
+            <p id={titleId} className="sr-only">
+              Contact Studio Finity
+            </p>
+            <p id={descriptionId} className="sr-only">
+              Send a message and we will reply by email.
+            </p>
 
-  if (!mounted) {
-    return null;
-  }
+            <div className="mx-auto w-full min-w-0 max-w-lg shrink-0 px-6 pb-0 pt-3 sm:px-8 sm:pt-4">
+              <div className="flex justify-center pb-6 sm:pb-8">
+                <Image
+                  src={CONTACT_DRAWER_LOGO}
+                  alt="Studio Finity"
+                  width={240}
+                  height={42}
+                  className="h-[18px] w-auto max-w-[200px] object-contain sm:h-5"
+                  priority
+                />
+              </div>
+            </div>
 
-  return createPortal(
-    <AnimatePresence mode="sync">
-      {open ? (
-        <>
-          <motion.div
-            key="contact-backdrop"
-            role="presentation"
-            aria-hidden
-            className="fixed inset-0 z-280 cursor-default touch-manipulation bg-black/32 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={reduceMotion ? { duration: 0.01 } : { duration: 0.35, ease: easeOut }}
-            onPointerDown={() => {
-              handleOpenChange(false);
-            }}
-          />
-          <motion.div
-            key="contact-sheet"
-            ref={dialogRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={titleId}
-            aria-describedby={descriptionId}
-            className="fixed inset-x-0 bottom-0 z-281 flex max-h-[min(92dvh,calc(100dvh-env(safe-area-inset-top,0px)-2rem))] justify-center px-0 pt-8 outline-none sm:px-4"
-            initial={reduceMotion ? { opacity: 0 } : { y: "100%" }}
-            animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { y: "100%" }}
-            transition={tw}
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            <div className="flex w-full max-w-lg min-w-0 flex-col">
-              <div
-                className={cn(
-                  "relative flex w-full flex-col overflow-hidden rounded-t-2xl border border-border/40 border-b-0",
-                  "bg-background shadow-(--sf-shadow-sheet-up)",
-                )}
-              >
-                <div
-                  className="flex shrink-0 touch-none justify-center py-3"
-                  aria-hidden
-                >
-                  <div className="h-1 w-12 shrink-0 rounded-full bg-border/90" />
-                </div>
-                <p id={titleId} className="sr-only">
-                  Contact Studio Finity
-                </p>
-                <p id={descriptionId} className="sr-only">
-                  Send a message and we will reply by email.
-                </p>
-
-                <div className="mx-auto w-full min-w-0 max-w-lg shrink-0 px-6 pb-4 pt-0 sm:px-8">
-                  <div className="flex justify-center pb-5 sm:pb-6">
-                    <Image
-                      src={CONTACT_DRAWER_LOGO}
-                      alt="Studio Finity"
-                      width={240}
-                      height={42}
-                      className="h-[18px] w-auto max-w-[200px] object-contain sm:h-5"
-                      priority
-                    />
+            {submitOk ? (
+              <>
+                <div className={cn(FORM_SCROLL_BOX, "px-6 sm:px-8")}>
+                  <div className="flex h-full min-h-0 flex-col items-center justify-center text-center sm:items-start sm:text-left">
+                    <span className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-foreground/6">
+                      <CheckCircle2Icon
+                        className="size-7 text-foreground"
+                        strokeWidth={1.75}
+                        aria-hidden
+                      />
+                    </span>
+                    <p className="sf-eyebrow text-muted-foreground">Sent</p>
+                    <p className="sf-body-copy mt-3 max-w-prose text-pretty text-[15px] leading-relaxed text-foreground">
+                      Thanks — your message is in our inbox. We&apos;ll reply by email soon.
+                    </p>
                   </div>
                 </div>
-
-                {submitOk ? (
-                  <>
-                    <div
-                      className={cn(FORM_SCROLL_BOX, "touch-pan-y px-6 sm:px-8")}
-                    >
-                      <div className="flex h-full min-h-0 flex-col items-center justify-center text-center sm:items-start sm:text-left">
-                        <span className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-foreground/6">
-                          <CheckCircle2Icon
-                            className="size-7 text-foreground"
-                            strokeWidth={1.75}
-                            aria-hidden
-                          />
-                        </span>
-                        <p className="sf-eyebrow text-muted-foreground">Sent</p>
-                        <p className="sf-body-copy mt-3 max-w-prose text-pretty text-[15px] leading-relaxed text-foreground">
-                          Thanks — your message is in our inbox. We&apos;ll reply by email soon.
-                        </p>
-                      </div>
-                    </div>
-                    <div className={FOOTER_SHELL}>
-                      <div className="mx-auto w-full max-w-lg px-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-8 sm:pb-8">
-                        <div className="flex justify-center">
-                          <Button
-                            ref={successCloseRef}
-                            type="button"
-                            size="lg"
-                            variant="default"
-                            className="h-12 w-full min-w-0 rounded-full sm:h-12 sm:max-w-md sm:px-8"
-                            onClick={() => handleOpenChange(false)}
-                          >
-                            Close
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div
-                      className={cn(FORM_SCROLL_BOX, "touch-pan-y px-6 sm:px-8")}
-                    >
-                      <form
-                        className="relative space-y-6 pb-2 sm:space-y-7"
-                        onSubmit={onSubmit}
-                        id="studio-contact-form"
-                        noValidate
-                        data-lpignore="true"
-                        data-1p-ignore=""
+                <div className={FOOTER_SHELL}>
+                  <div className="mx-auto w-full max-w-lg px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-1 sm:px-8 sm:pb-9 sm:pt-2">
+                    <div className="flex justify-center">
+                      <DrawerClose
+                        ref={successCloseRef}
+                        type="button"
+                        className={cn(
+                          buttonVariants({ variant: "default", size: "lg" }),
+                          "h-12 w-full min-w-0 rounded-full sm:h-12 sm:max-w-md sm:px-8",
+                        )}
                       >
+                        Close
+                      </DrawerClose>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className={cn(FORM_SCROLL_BOX, "px-6 sm:px-8")}>
+                  <form
+                    className="relative space-y-8 pb-6 sm:space-y-8 sm:pb-7"
+                    onSubmit={onSubmit}
+                    id="studio-contact-form"
+                    noValidate
+                    data-lpignore="true"
+                    data-1p-ignore=""
+                  >
                         <input
                           id="contact-website"
                           name="website"
@@ -495,149 +371,155 @@ function ContactFormSheet({
                           className="pointer-events-none absolute left-0 top-0 h-px w-px opacity-0"
                         />
 
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-3">
                           <label
                             htmlFor="contact-name"
                             className="sf-caption block text-muted-foreground"
                           >
                             Name
                           </label>
-                          <input
-                            ref={(el) => {
-                              nameInputRef.current = el;
-                            }}
-                            id="contact-name"
-                            name="name"
-                            type="text"
-                            autoComplete="name"
-                            required
-                            maxLength={120}
-                            disabled={isSubmitting}
-                            value={name}
-                            onChange={(e) => {
-                              setName(e.target.value);
-                              setFormError(null);
-                            }}
-                            aria-invalid={nameHasError}
-                            aria-describedby={
-                              nameErrorText ? "contact-name-error" : undefined
-                            }
-                            className={cn(
-                              singleLineFieldClassName,
-                              nameHasError ? "border-destructive" : "border-border/90",
-                            )}
-                          />
-                          <div
-                            className="min-h-5.5"
-                            aria-live="polite"
-                          >
-                            {nameErrorText ? (
-                              <p
-                                id="contact-name-error"
-                                className="sf-caption text-destructive"
-                                role="alert"
-                              >
-                                {nameErrorText}
-                              </p>
-                            ) : null}
+                          <div className="flex flex-col gap-1.5">
+                            <input
+                              ref={(el) => {
+                                nameInputRef.current = el;
+                              }}
+                              id="contact-name"
+                              name="name"
+                              type="text"
+                              autoComplete="name"
+                              required
+                              maxLength={120}
+                              disabled={isSubmitting}
+                              value={name}
+                              onChange={(e) => {
+                                setName(e.target.value);
+                                setFormError(null);
+                              }}
+                              aria-invalid={nameHasError}
+                              aria-describedby={
+                                nameErrorText ? "contact-name-error" : undefined
+                              }
+                              className={cn(
+                                singleLineFieldClassName,
+                                nameHasError ? "border-destructive" : "border-border/90",
+                              )}
+                            />
+                            <div
+                              className="min-h-5.5"
+                              aria-live="polite"
+                            >
+                              {nameErrorText ? (
+                                <p
+                                  id="contact-name-error"
+                                  className="sf-caption text-destructive"
+                                  role="alert"
+                                >
+                                  {nameErrorText}
+                                </p>
+                              ) : null}
+                            </div>
                           </div>
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-3">
                           <label
                             htmlFor="contact-email"
                             className="sf-caption block text-muted-foreground"
                           >
                             Email
                           </label>
-                          <input
-                            ref={(el) => {
-                              emailRef.current = el;
-                            }}
-                            id="contact-email"
-                            name="email"
-                            type="email"
-                            inputMode="email"
-                            autoComplete="email"
-                            required
-                            maxLength={254}
-                            disabled={isSubmitting}
-                            value={email}
-                            onChange={(e) => {
-                              setEmail(e.target.value);
-                              setFormError(null);
-                            }}
-                            aria-invalid={emailHasError}
-                            aria-describedby={
-                              emailErrorText ? "contact-email-error" : undefined
-                            }
-                            className={cn(
-                              singleLineFieldClassName,
-                              emailHasError ? "border-destructive" : "border-border/90",
-                            )}
-                          />
-                          <div
-                            className="min-h-5.5"
-                            aria-live="polite"
-                          >
-                            {emailErrorText ? (
-                              <p
-                                id="contact-email-error"
-                                className="sf-caption text-destructive"
-                                role="alert"
-                              >
-                                {emailErrorText}
-                              </p>
-                            ) : null}
+                          <div className="flex flex-col gap-1.5">
+                            <input
+                              ref={(el) => {
+                                emailRef.current = el;
+                              }}
+                              id="contact-email"
+                              name="email"
+                              type="email"
+                              inputMode="email"
+                              autoComplete="email"
+                              required
+                              maxLength={254}
+                              disabled={isSubmitting}
+                              value={email}
+                              onChange={(e) => {
+                                setEmail(e.target.value);
+                                setFormError(null);
+                              }}
+                              aria-invalid={emailHasError}
+                              aria-describedby={
+                                emailErrorText ? "contact-email-error" : undefined
+                              }
+                              className={cn(
+                                singleLineFieldClassName,
+                                emailHasError ? "border-destructive" : "border-border/90",
+                              )}
+                            />
+                            <div
+                              className="min-h-5.5"
+                              aria-live="polite"
+                            >
+                              {emailErrorText ? (
+                                <p
+                                  id="contact-email-error"
+                                  className="sf-caption text-destructive"
+                                  role="alert"
+                                >
+                                  {emailErrorText}
+                                </p>
+                              ) : null}
+                            </div>
                           </div>
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-3">
                           <label
                             htmlFor="contact-message"
                             className="sf-caption block text-muted-foreground"
                           >
                             Message
                           </label>
-                          <textarea
-                            ref={(el) => {
-                              messageRef.current = el;
-                            }}
-                            id="contact-message"
-                            name="message"
-                            rows={5}
-                            required
-                            maxLength={8000}
-                            disabled={isSubmitting}
-                            value={message}
-                            onChange={(e) => {
-                              setMessage(e.target.value);
-                              setFormError(null);
-                            }}
-                            aria-invalid={messageHasError}
-                            aria-describedby={
-                              messageErrorText ? "contact-message-error" : undefined
-                            }
-                            className={cn(
-                              textareaFieldClassName,
-                              messageHasError
-                                ? "border-destructive"
-                                : "border-border/90",
-                            )}
-                          />
-                          <div
-                            className="min-h-5.5"
-                            aria-live="polite"
-                          >
-                            {messageErrorText ? (
-                              <p
-                                id="contact-message-error"
-                                className="sf-caption text-destructive"
-                                role="alert"
-                              >
-                                {messageErrorText}
-                              </p>
-                            ) : null}
+                          <div className="flex flex-col gap-1.5">
+                            <textarea
+                              ref={(el) => {
+                                messageRef.current = el;
+                              }}
+                              id="contact-message"
+                              name="message"
+                              rows={5}
+                              required
+                              maxLength={8000}
+                              disabled={isSubmitting}
+                              value={message}
+                              onChange={(e) => {
+                                setMessage(e.target.value);
+                                setFormError(null);
+                              }}
+                              aria-invalid={messageHasError}
+                              aria-describedby={
+                                messageErrorText ? "contact-message-error" : undefined
+                              }
+                              className={cn(
+                                textareaFieldClassName,
+                                messageHasError
+                                  ? "border-destructive"
+                                  : "border-border/90",
+                              )}
+                            />
+                            <div
+                              className="min-h-5.5"
+                              aria-live="polite"
+                            >
+                              {messageErrorText ? (
+                                <p
+                                  id="contact-message-error"
+                                  className="sf-caption text-destructive"
+                                  role="alert"
+                                >
+                                  {messageErrorText}
+                                </p>
+                              ) : null}
+                            </div>
                           </div>
                         </div>
 
@@ -656,8 +538,8 @@ function ContactFormSheet({
                     </div>
 
                     <div className={FOOTER_SHELL}>
-                      <div className="mx-auto w-full max-w-lg px-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-8 sm:pb-8">
-                        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:gap-3">
+                      <div className="mx-auto w-full max-w-lg px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-1 sm:px-8 sm:pb-9 sm:pt-2">
+                        <div className="flex flex-col-reverse gap-3.5 sm:flex-row sm:gap-4">
                           <Button
                             type="submit"
                             form="studio-contact-form"
@@ -683,29 +565,25 @@ function ContactFormSheet({
                               "Send message"
                             )}
                           </Button>
-                          <button
+                          <DrawerClose
                             type="button"
                             className={cn(
                               buttonVariants({ variant: "outline", size: "lg" }),
                               "h-12 w-full min-w-0 rounded-full bg-background sm:h-12 sm:flex-1 sm:px-4",
                             )}
                             disabled={isSubmitting}
-                            onClick={() => handleOpenChange(false)}
                           >
                             Cancel
-                          </button>
+                          </DrawerClose>
                         </div>
                       </div>
                     </div>
-                  </>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        </>
-      ) : null}
-    </AnimatePresence>,
-    document.body,
+              </>
+            )}
+          </div>
+        </div>
+      </DrawerPopup>
+    </Drawer>
   );
 }
 

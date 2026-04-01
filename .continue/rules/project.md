@@ -46,30 +46,60 @@ A reusable template for reverse-engineering any website into a clean, modern Nex
 ## Design Context
 
 ### Users
-- Primary audience: founders and brands hiring Studio Finity
-- Main job to be done: quickly understand the studio's taste, capability, and level of execution, then feel confident enough to reach out
-- User context: evaluating creative partners, often comparing multiple studios, so clarity, trust, and visual polish matter immediately
+- Primary audience: founders and brands hiring Studio Finity.
+- Main job to be done: quickly understand the studio's taste, capability, and level of execution, then feel confident enough to reach out.
+- User context: evaluating creative partners, often comparing multiple studios, so clarity, trust, and visual polish matter immediately.
 
 ### Brand Personality
-- 3-word personality: minimal, clean, elevated
-- Emotional goal: confidence first, with a sense of restraint and taste rather than hype
-- Tone: design-literate, precise, and premium without feeling loud or overdesigned
+- 3-word personality: minimal, clean, elevated.
+- Emotional goal: confidence first, with a sense of restraint and taste rather than hype.
+- Tone: design-literate, precise, and premium without feeling loud or overdesigned.
 
 ### Aesthetic Direction
-- Visual direction: simple, minimal, editorial, and refined
-- Reference feel: Notion, Apple, and Cosmos-style restraint
-- Use a near-white base, black accents, quiet neutrals, clear hierarchy, and purposeful motion
-- Typography system:
-  - Headings/display: Open Sauce Sans
-  - Body/UI copy: Open Sauce Sans
-- Avoid clutter, novelty for its own sake, heavy gradients, loud effects, or chaotic layouts
+- Visual direction: simple, minimal, editorial, and refined.
+- Reference feel: Notion-, Apple-, and Cosmos-style restraint (clear hierarchy, quiet surfaces, intentional whitespace).
+- **Theme:** light-first marketing site — near-white base (`#fcfcfd`), near-black text (`#111111`), quiet neutrals via semantic tokens (`--sf-*` in `globals.css`), inverse tokens for occasional dark surfaces.
+- **Typography (as implemented in repo):**
+  - **Body, display, and headings:** Geist Sans (`next/font` + `--font-body` / `--font-display`).
+  - **Mono:** Geist Mono for code-like or technical UI where used.
+  - **Nav / wordmark / uppercase UI:** PP Neue Montreal Variable (local WOFF2, `--font-oh-nav` / `.font-oh-nav`, `.sf-oh-*`).
+  - Display rhythm: tight display line-heights, negative letter-spacing on large type, balanced wrapping — follow existing `.sf-display-*` and `.sf-editorial-*` patterns rather than inventing new scales.
+- **Motion (CSS / global):** slower, calmer transitions sitewide. Hand-written CSS uses **`--sf-ease-out`** (`cubic-bezier(0.16, 1, 0.3, 1)` in `:root`). Tailwind should use **`ease-sf-out`** (in `@theme inline` as **`--ease-sf-out`** — keep identical to `--sf-ease-out`). Prefer duration tokens: **`--sf-duration-fast`**, **`--sf-duration-ui`**, **`--sf-duration-macro`**, **`--sf-duration-reveal`**, **`--sf-duration-card-hover`**. Prefer canonical classes like **`duration-280`**, **`duration-380`**, etc., over `duration-[280ms]`. Lenis (when enabled) uses gentler smoothing (**`lerp` ~0.06**, **`wheelMultiplier` ~0.88**), aligned with `WORK_CANVAS_LERP` / `WORK_CANVAS_WHEEL_MULT` for the work canvas. Avoid flashy or decorative motion.
+- **Anti-patterns:** clutter, novelty for its own sake, heavy gradients, loud effects, chaotic layouts.
 
-### Design Principles
-- Every page should feel calm, deliberate, and premium at first glance
-- Simplicity wins over density; remove anything that does not strengthen clarity or trust
-- Motion should feel smooth, restrained, and supportive, never flashy or distracting
-- Typography and spacing should do most of the branding work
-- Keep the site cohesive across home, work index, work detail, and about so it feels like one system
+### Accessibility & inclusion
+- Respect **`prefers-reduced-motion`:** key UI animations (contact drawer, GSAP `matchMedia` branches, etc.) degrade to instant or minimal motion — extend that pattern to new motion work.
+- Preserve visible **focus** affordances (ring/outline tokens via design system).
+- Prefer semantic HTML and labels in headers, nav, and controls; meaningful **alt** text (decorative marks may use empty `alt` when paired with visible text).
+
+### Design principles
+- Every page should feel calm, deliberate, and premium at first glance.
+- Simplicity wins over density; remove anything that does not strengthen clarity or trust.
+- Motion should feel smooth, restrained, and supportive, never flashy or distracting.
+- Typography and spacing should do most of the branding work; use existing **`--sf-*`** and utility classes before introducing one-off values.
+- Keep the site cohesive across home, work index, work detail, and about so it feels like one system.
+
+### Open questions (confirm when you can)
+- The repo implements **Geist + PP Neue Montreal**. Older docs sometimes mention **Open Sauce Sans** — if that is still the long-term brand font, plan a deliberate swap; otherwise treat Geist/PP as canonical.
+- If you have a **target WCAG level** (e.g. AA) or specific audience needs (dyslexia-friendly settings, mandatory contrast checks), say so and this section can be tightened.
+
+## GSAP & scroll-driven text
+Prefer **GSAP 3** patterns that clean up correctly in React (scopes, `matchMedia`, font timing). Do not leave one-off `window.matchMedia` + `killTweensOf` only — use the shared utilities below for new work.
+
+### Shared utilities
+- **`src/lib/gsap-motion.ts`** — **`GSAP_MOTION.reduce`** / **`GSAP_MOTION.noPreference`** (canonical `prefers-reduced-motion` queries). **`fontsReadyPromise()`** — `document.fonts.ready` with safe catch; call before measurable text reveals, then optionally **`requestAnimationFrame`** before `fromTo` / timelines.
+- **`src/lib/gsap-data-about-reveal.ts`** — **`mountDataAboutScrollReveals(root, pageReady)`** for **`[data-about-reveal]`**, **`[data-about-stagger]`**, **`[data-about-item]`**. Uses **`gsap.context(root)`** + **`gsap.matchMedia()`**, IntersectionObserver when off-screen, **`force3D`**, **`immediateRender: false`**, **`overwrite: "auto"`**, **`stagger: { each }`**, **`clearProps`** on completion. Used from **About** (`studio-finity-about.tsx`, includes Ground Rules under the same `<main>`) and **work detail** intro (`offmenu-work-detail.tsx`).
+
+### Components
+- **`AnimatedWords`** — word- or line-based reveals; **`useMemo`** for parsed lines/words; **`gsap.context`** + **`matchMedia`** for reduced motion; **`fontsReadyPromise`** + rAF before measuring. Used on cosmos home (section headings, CTA), about hero, work hero, work detail CTA, etc.
+- **Cosmos `HeroHeadline`** — separate pattern: **`data-hero-intro-line`** / **`data-hero-word-inner`** under a scoped root ref; same **`GSAP_MOTION`** / **`fontsReadyPromise`** conventions; avoid Tailwind **`translate-y`** on elements that use **`clearProps: "transform"`** after tweens (fight with GSAP end state).
+
+### Checklist for new GSAP text
+1. Scope with **`gsap.context(() => { ... }, scopeElement)`** and **`return () => ctx.revert()`** from **`useLayoutEffect`**.
+2. Branch motion with **`gsap.matchMedia()`** and **`GSAP_MOTION`** (not a one-time `matchMedia.matches` if behavior must track live OS toggles).
+3. Wait **`fontsReadyPromise()`** (and often one rAF) before scroll/layout-sensitive reveals.
+4. Tweens: **`force3D: true`** where useful, **`overwrite: "auto"`**, object-form **`stagger: { each }`** when staggering, **`clearProps`** when dropping inline transform/opacity after finish.
+5. Target DOM via **data attributes** or scoped **`gsap.utils.toArray(sel, root)`** rather than fragile ref arrays when possible.
 
 ## Project Structure
 ```
@@ -79,7 +109,9 @@ src/
     ui/             # shadcn/ui primitives
     icons.tsx       # Extracted SVG icons as React components
   lib/
-    utils.ts        # cn() utility (shadcn)
+    utils.ts                 # cn() utility (shadcn)
+    gsap-motion.ts           # GSAP_MOTION queries, fontsReadyPromise()
+    gsap-data-about-reveal.ts # mountDataAboutScrollReveals() for data-about-* blocks
   types/            # TypeScript interfaces
   hooks/            # Custom React hooks
 public/
