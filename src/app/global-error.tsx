@@ -16,15 +16,11 @@ export default function GlobalError({
 
   return (
     <html lang="en">
-      <body className="min-h-screen bg-[#fafafa] font-sans text-[#0a0a0a] antialiased">
+      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
         <main className="mx-auto flex max-w-lg flex-col gap-6 px-6 py-24">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-neutral-500">
-            Error
-          </p>
-          <h1 className="text-3xl font-semibold tracking-tight text-balance">
-            Something went wrong
-          </h1>
-          <p className="text-base leading-relaxed text-neutral-600">
+          <p className="sf-eyebrow text-muted-foreground">Error</p>
+          <h1 className="sf-title-xl text-balance">Something went wrong</h1>
+          <p className="sf-body-copy max-w-prose">
             Please try again. If the problem continues, return to the site later.
           </p>
           <button
@@ -32,7 +28,7 @@ export default function GlobalError({
             onClick={() => {
               reset();
             }}
-            className="mt-2 inline-flex w-fit items-center justify-center rounded-full border border-[#0a0a0a] bg-[#0a0a0a] px-6 py-3 text-sm font-medium text-white"
+            className="mt-2 inline-flex w-fit items-center justify-center rounded-full border border-primary bg-primary px-6 py-3 text-sm font-medium text-primary-foreground"
           >
             Try again
           </button>

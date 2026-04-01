@@ -9,6 +9,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -16,7 +17,8 @@ import {
 import { flushSync } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
-import { scrollToInstant } from "@/lib/smooth-scroll";
+import { getSmoothScrollInstance, scrollToInstant } from "@/lib/smooth-scroll";
+import { getWorkHeroTargetRect } from "@/lib/work-hero-frame";
 
 interface TransitionRequest {
   element: HTMLElement;
@@ -25,6 +27,8 @@ interface TransitionRequest {
   sourceBounds?: FrozenBounds;
   thumbnail: string;
   thumbnailXl?: string;
+  /** Card / thumbnail corner radius in px (grid tiles). Omit for circle (50%) handoff. */
+  sourceBorderRadiusPx?: number;
   sourceRadius?: string;
 }
 
@@ -39,11 +43,11 @@ interface TransitionState {
   href: string;
   isTransitioning: boolean;
   slug: string | null;
+  sourceBorderRadiusPx: number | null;
   sourceBounds: FrozenBounds | null;
   sourceRadius: string;
   thumbnail: string | null;
   thumbnailXl: string | null;
-  thumbnailXlLoaded: boolean;
 }
 
 interface CaseStudyTransitionContextValue {
@@ -57,17 +61,26 @@ const defaultState: TransitionState = {
   href: "",
   isTransitioning: false,
   slug: null,
+  sourceBorderRadiusPx: null,
   sourceBounds: null,
   sourceRadius: "50%",
   thumbnail: null,
   thumbnailXl: null,
-  thumbnailXlLoaded: false,
 };
 
 const CaseStudyTransitionContext = createContext<CaseStudyTransitionContextValue | null>(null);
 
 function scrollToTopNow() {
   scrollToInstant(0);
+}
+
+function roundPixelRect(bounds: FrozenBounds): FrozenBounds {
+  return {
+    height: Math.round(bounds.height),
+    left: Math.round(bounds.left),
+    top: Math.round(bounds.top),
+    width: Math.round(bounds.width),
+  };
 }
 
 export function CaseStudyTransitionProvider({
@@ -113,6 +126,7 @@ export function CaseStudyTransitionProvider({
     completionResolverRef.current = null;
     startedRef.current = false;
     setState(defaultState);
+    getSmoothScrollInstance()?.start();
   }, []);
 
   const signalHeroReady = useCallback(() => {
@@ -141,135 +155,104 @@ export function CaseStudyTransitionProvider({
     [cleanupTransition, router],
   );
 
-  useEffect(() => {
-    if (!state.isTransitioning || !state.sourceBounds || !overlayRef.current || startedRef.current) {
+  useLayoutEffect(() => {
+    if (!state.isTransitioning || !state.sourceBounds || !overlayRef.current) {
       return;
     }
 
-    startedRef.current = true;
-
     const overlay = overlayRef.current;
-    const sourceBounds = state.sourceBounds;
+    const backdrop = backdropRef.current;
+    gsap.killTweensOf(overlay);
+    if (backdrop) {
+      gsap.killTweensOf(backdrop);
+    }
+
+    const sourceBounds = roundPixelRect(state.sourceBounds);
     const sourceRadius = state.sourceRadius || "50%";
+    const target = getWorkHeroTargetRect();
 
     if (sourceElementRef.current) {
       sourceElementRef.current.style.opacity = "0";
     }
 
+    const tw = target.width;
+    const th = target.height;
+    const isCircle =
+      state.sourceBorderRadiusPx == null &&
+      sourceRadius === "50%" &&
+      Math.abs(sourceBounds.width - sourceBounds.height) <= 1;
+    const fromBorderRadius =
+      state.sourceBorderRadiusPx != null
+        ? state.sourceBorderRadiusPx
+        : isCircle
+          ? sourceBounds.width / 2
+          : target.borderRadius;
+
+    // Animate width/height/position — not scaleX/scaleY. The card thumb is square and the hero is
+    // a wider frame; non-uniform scale distorts object-cover and jumps the crop vs the grid tile.
     gsap.set(overlay, {
+      borderRadius: fromBorderRadius,
+      height: sourceBounds.height,
+      left: sourceBounds.left,
+      overflow: "hidden",
       position: "fixed",
       top: sourceBounds.top,
-      left: sourceBounds.left,
       width: sourceBounds.width,
-      height: sourceBounds.height,
-      borderRadius: sourceRadius,
-      overflow: "hidden",
+      x: 0,
+      y: 0,
+      scaleX: 1,
+      scaleY: 1,
     });
 
-    if (backdropRef.current) {
+    if (backdrop) {
       gsap.fromTo(
-        backdropRef.current,
+        backdrop,
         { opacity: 0 },
         {
           opacity: 0.28,
-          duration: 0.45,
-          ease: "power2.out",
+          duration: 0.56,
+          ease: "power3.out",
         },
       );
     }
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       navigateToWorkPage(state.href);
-      return;
-    }
-
-    const targetWidth = window.innerWidth - 32;
-    const targetHeight = window.innerHeight - 96;
-
-    if (sourceRadius === "50%") {
-      const sourceCenterX = sourceBounds.left + sourceBounds.width / 2;
-      const sourceCenterY = sourceBounds.top + sourceBounds.height / 2;
-      const finalCenterX = 16 + targetWidth / 2;
-      const finalCenterY = 80 + targetHeight / 2;
-
-      const stageOneWidth = sourceBounds.width * 1.03;
-      const stageOneHeight = sourceBounds.height * 0.97;
-      const stageTwoWidth = Math.max(sourceBounds.width * 1.32, window.innerWidth * 0.5);
-      const stageTwoHeight = Math.max(sourceBounds.height * 0.72, window.innerHeight * 0.5);
-      const stageThreeWidth = Math.max(sourceBounds.width * 1.56, window.innerWidth * 0.58);
-      const stageThreeHeight = Math.max(sourceBounds.height * 0.82, window.innerHeight * 0.56);
-
-      const stageOneCenterX = gsap.utils.interpolate(sourceCenterX, finalCenterX, 0.08);
-      const stageOneCenterY = gsap.utils.interpolate(sourceCenterY, finalCenterY, 0.08);
-      const stageTwoCenterX = gsap.utils.interpolate(sourceCenterX, finalCenterX, 0.2);
-      const stageTwoCenterY = gsap.utils.interpolate(sourceCenterY, finalCenterY, 0.24);
-      const stageThreeCenterX = gsap.utils.interpolate(sourceCenterX, finalCenterX, 0.36);
-      const stageThreeCenterY = gsap.utils.interpolate(sourceCenterY, finalCenterY, 0.42);
-
-      const timeline = gsap.timeline({
-        onComplete: () => {
-          navigateToWorkPage(state.href);
-        },
-      });
-
-      timeline.to(overlay, {
-        top: stageOneCenterY - stageOneHeight / 2,
-        left: stageOneCenterX - stageOneWidth / 2,
-        width: stageOneWidth,
-        height: stageOneHeight,
-        borderRadius: `${stageOneWidth / 2}px`,
-        duration: 0.14,
-        ease: "power2.out",
-      });
-
-      timeline.to(overlay, {
-        top: stageTwoCenterY - stageTwoHeight / 2,
-        left: stageTwoCenterX - stageTwoWidth / 2,
-        width: stageTwoWidth,
-        height: stageTwoHeight,
-        borderRadius: "180px",
-        duration: 0.24,
-        ease: "power3.inOut",
-      });
-
-      timeline.to(overlay, {
-        top: stageThreeCenterY - stageThreeHeight / 2,
-        left: stageThreeCenterX - stageThreeWidth / 2,
-        width: stageThreeWidth,
-        height: stageThreeHeight,
-        borderRadius: "108px",
-        duration: 0.32,
-        ease: "power3.inOut",
-      });
-
-      timeline.to(overlay, {
-        top: 80,
-        left: 16,
-        width: targetWidth,
-        height: targetHeight,
-        borderRadius: "24px",
-        duration: 0.42,
-        ease: "power4.inOut",
-      });
-
-      timeline.to({}, { duration: 0.12 });
-
-      return;
+      return () => {
+        gsap.killTweensOf(overlay);
+        if (backdrop) {
+          gsap.killTweensOf(backdrop);
+        }
+      };
     }
 
     gsap.to(overlay, {
-      top: 80,
-      left: 16,
-      width: targetWidth,
-      height: targetHeight,
-      borderRadius: "24px",
-      duration: 0.7,
-      ease: "power2.inOut",
+      borderRadius: target.borderRadius,
+      duration: isCircle ? 1.02 : 0.98,
+      ease: "power3.inOut",
+      height: th,
+      left: target.left,
+      top: target.top,
+      width: tw,
       onComplete: () => {
         navigateToWorkPage(state.href);
       },
     });
-  }, [navigateToWorkPage, state]);
+
+    return () => {
+      gsap.killTweensOf(overlay);
+      if (backdrop) {
+        gsap.killTweensOf(backdrop);
+      }
+    };
+  }, [
+    navigateToWorkPage,
+    state.href,
+    state.isTransitioning,
+    state.sourceBorderRadiusPx,
+    state.sourceBounds,
+    state.sourceRadius,
+  ]);
 
   const contextValue = useMemo<CaseStudyTransitionContextValue>(
     () => ({
@@ -296,20 +279,23 @@ export function CaseStudyTransitionProvider({
           })();
 
         sourceElementRef.current = request.element;
+        startedRef.current = true;
 
         flushSync(() => {
           setState({
             href: request.href,
             isTransitioning: true,
             slug: request.slug,
+            sourceBorderRadiusPx:
+              request.sourceBorderRadiusPx != null ? request.sourceBorderRadiusPx : null,
             sourceBounds: bounds,
             sourceRadius: request.sourceRadius ?? "50%",
             thumbnail: request.thumbnail,
             thumbnailXl: request.thumbnailXl ?? null,
-            thumbnailXlLoaded: false,
           });
         });
 
+        getSmoothScrollInstance()?.stop();
         void sourceElementRef.current.offsetHeight;
         document.documentElement.style.overflow = "hidden";
         document.body.style.overflow = "hidden";
@@ -317,13 +303,6 @@ export function CaseStudyTransitionProvider({
         if (request.thumbnailXl && request.thumbnailXl !== request.thumbnail) {
           const image = new window.Image();
           image.decoding = "async";
-          image.onload = () => {
-            setState((current) =>
-              current.slug === request.slug
-                ? { ...current, thumbnailXlLoaded: true }
-                : current,
-            );
-          };
           image.src = request.thumbnailXl;
         }
       },
@@ -336,34 +315,23 @@ export function CaseStudyTransitionProvider({
     <CaseStudyTransitionContext.Provider value={contextValue}>
       {children}
       {state.isTransitioning && state.thumbnail && state.sourceBounds ? (
-        <div className="pointer-events-none fixed inset-0 z-40">
+        <div className="pointer-events-none fixed inset-0 z-280">
         <div ref={backdropRef} className="absolute inset-0 bg-background opacity-0" />
         <div
           ref={overlayRef}
-          className="relative will-change-[transform,border-radius]"
+          className="relative isolate will-change-transform"
           style={{
-              position: "fixed",
-              top: state.sourceBounds.top,
-              left: state.sourceBounds.left,
-              width: state.sourceBounds.width,
-              height: state.sourceBounds.height,
-              borderRadius: state.sourceRadius,
-              overflow: "hidden",
-            }}
-          >
+            overflow: "hidden",
+            position: "fixed",
+          }}
+        >
             <img
-              src={state.thumbnail}
+              src={state.thumbnailXl ?? state.thumbnail}
               alt=""
-              className="absolute inset-0 h-full w-full object-cover"
+              decoding="async"
+              fetchPriority="high"
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
             />
-            {state.thumbnailXl ? (
-              <img
-                src={state.thumbnailXl}
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
-                style={{ opacity: Number(state.thumbnailXlLoaded) }}
-              />
-            ) : null}
           </div>
         </div>
       ) : null}

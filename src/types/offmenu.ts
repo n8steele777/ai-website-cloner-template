@@ -4,6 +4,8 @@ export interface NavLink {
   current?: boolean;
   disabled?: boolean;
   external?: boolean;
+  /** Opens the site contact form instead of navigating (mailto remains on the link for no-JS fallback where applicable). */
+  opensContactForm?: boolean;
 }
 
 export interface OrbitPosition {
@@ -16,10 +18,14 @@ export interface CaseStudy {
   slug: string;
   title: string;
   href: string;
+  /** One-line preview under the title (SEO description or truncated intro). */
+  summary: string;
   thumbnailLight: string;
   thumbnailDark: string;
   thumbnailLightXl: string;
   thumbnailDarkXl: string;
+  /** Sanity `asset.metadata.lqip` — blur placeholder for thumbnails */
+  thumbnailLqip?: string;
   desktopPosition: OrbitPosition;
   mobilePosition: OrbitPosition;
 }
@@ -30,6 +36,7 @@ export interface WorkGalleryItem {
   alt?: string;
   aspectRatio?: number;
   height?: number;
+  lqip?: string;
   title?: string;
   width?: number;
 }
@@ -45,6 +52,7 @@ export interface WorkProjectDetail {
   title: string;
   heroImageLight: string;
   heroImageDark: string;
+  heroLqip?: string;
   introduction: string;
   summary?: string;
   galleryMedia: WorkGalleryItem[];

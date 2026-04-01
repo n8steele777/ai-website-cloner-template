@@ -131,8 +131,8 @@ export function PageTransitionProvider({
       timeline.to(
         content,
         {
-          duration: 0.42,
-          ease: "power3.out",
+          duration: 0.52,
+          ease: "power4.out",
           filter: "blur(12px)",
           opacity: 0.72,
           y: -12,
@@ -144,14 +144,14 @@ export function PageTransitionProvider({
         {
           autoAlpha: 1,
           backdropFilter: "blur(22px)",
-          duration: 0.46,
-          ease: "power2.out",
+          duration: 0.58,
+          ease: "power3.out",
         },
         0,
       );
       timeline.add(() => {
         router.push(href, { scroll: true });
-      }, 0.28);
+      }, 0.36);
     },
     [canTransitionHref, router],
   );
@@ -205,24 +205,24 @@ export function PageTransitionProvider({
       {
         autoAlpha: 0,
         backdropFilter: "blur(0px)",
-        duration: 0.38,
-        ease: "power2.out",
+        duration: 0.48,
+        ease: "power3.out",
       },
-      0.04,
+      0.05,
     );
     timeline.add(() => {
       setPageReady(true);
-    }, 0.12);
+    }, 0.15);
     timeline.to(
       content,
       {
-        duration: 0.58,
-        ease: "power3.out",
+        duration: 0.72,
+        ease: "power4.out",
         filter: "blur(0px)",
         opacity: 1,
         y: 0,
       },
-      0.12,
+      0.15,
     );
     timeline.set(overlay, { pointerEvents: "none" });
   }, [pathname, resetOverlay]);
@@ -242,12 +242,12 @@ export function PageTransitionProvider({
       <div ref={contentRef}>{children}</div>
       <div
         ref={overlayRef}
-        className="pointer-events-none fixed inset-0 z-[500] opacity-0"
+        className="pointer-events-none fixed inset-0 z-500 opacity-0"
         aria-hidden="true"
       >
         <div
           ref={veilRef}
-          className="absolute inset-0 bg-[rgba(252,252,253,0.94)] backdrop-blur-[22px]"
+          className="absolute inset-0 bg-background/94 backdrop-blur-[22px]"
         />
       </div>
     </PageTransitionContext.Provider>

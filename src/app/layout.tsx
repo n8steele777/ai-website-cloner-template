@@ -3,7 +3,8 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import localFont from "next/font/local";
 import Script from "next/script";
-import { AgentationProvider } from "@/components/agentation-provider";
+import { ReactGrabDev } from "@/components/react-grab-dev";
+import { ContactDialogProvider } from "@/components/contact-dialog-provider";
 import { CaseStudyTransitionProvider } from "@/components/case-study-transition-provider";
 import { PageTransitionProvider } from "@/components/page-transition-provider";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
@@ -109,18 +110,24 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${ohNavFont.variable} h-full font-sans antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <link crossOrigin="anonymous" href="https://cdn.sanity.io" rel="preconnect" />
+        <link href="https://cdn.sanity.io" rel="dns-prefetch" />
+      </head>
       <body className="min-h-full bg-background text-foreground font-sans">
+        <ReactGrabDev />
         <Script id="studio-finity-theme-script" strategy="beforeInteractive">
           {themeScript}
         </Script>
-        <SmoothScrollProvider>
-          <CaseStudyTransitionProvider>
-            <PageTransitionProvider>
-              {children}
-              <AgentationProvider />
-            </PageTransitionProvider>
-          </CaseStudyTransitionProvider>
-        </SmoothScrollProvider>
+        <ContactDialogProvider>
+          <SmoothScrollProvider>
+            <CaseStudyTransitionProvider>
+              <PageTransitionProvider>
+                {children}
+              </PageTransitionProvider>
+            </CaseStudyTransitionProvider>
+          </SmoothScrollProvider>
+        </ContactDialogProvider>
       </body>
     </html>
   );

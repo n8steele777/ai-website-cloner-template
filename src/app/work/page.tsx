@@ -9,7 +9,7 @@ import { buildCaseStudies, fetchSanityWorks } from "@/lib/sanity-work";
 
 export const metadata: Metadata = {
   title: "Work | Studio Finity",
-  description: "Selected Studio Finity work in the floating-circles work index.",
+  description: "Selected Studio Finity projects — an editorial work grid.",
 };
 
 export default async function WorkIndexPage() {

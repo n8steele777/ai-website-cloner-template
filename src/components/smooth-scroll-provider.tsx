@@ -16,11 +16,11 @@ export function SmoothScrollProvider({
     const lenis = new Lenis({
       autoRaf: true,
       gestureOrientation: "vertical",
-      lerp: 0.085,
+      lerp: 0.06,
       smoothWheel: true,
       syncTouch: false,
       touchMultiplier: 1,
-      wheelMultiplier: 0.9,
+      wheelMultiplier: 0.88,
     });
 
     window.__studioFinityLenis = lenis;

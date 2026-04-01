@@ -70,9 +70,9 @@ export function StudioFinityAbout({
               autoAlpha: 1,
               y: 0,
               filter: "blur(0px)",
-              duration: 0.72,
-              delay: index * 0.03,
-              ease: "power3.out",
+              duration: 0.9,
+              delay: index * 0.038,
+              ease: "power4.out",
               clearProps: "opacity,transform,filter,visibility",
             },
           );
@@ -133,9 +133,9 @@ export function StudioFinityAbout({
             {
               autoAlpha: (index) => targetOpacities[index] ?? 1,
               y: 0,
-              duration: 0.58,
-              ease: "power3.out",
-              stagger: 0.05,
+              duration: 0.72,
+              ease: "power4.out",
+              stagger: 0.062,
               clearProps: "opacity,transform,visibility",
             },
           );
@@ -178,72 +178,69 @@ export function StudioFinityAbout({
 
   return (
     <main ref={rootRef} className="offmenu-shell min-h-screen bg-background text-foreground">
-      <StudioFinityHeader
-        activeHref="/about"
-        links={navigationLinks}
-      />
-
-      <section className="sf-page-pad pb-28 pt-36 md:pb-32 md:pt-40">
-        <div className="sf-page-content relative overflow-hidden rounded-[28px] pb-20 pt-16 md:pb-28 md:pt-20 lg:pb-32">
-          <div className="relative pt-24 md:pt-32">
-            <AnimatedWords
-              as="h1"
-              text={content.hero}
-              className="about-hero-display sf-display-tight max-w-[13ch]"
-              lineClassName="leading-[0.84]"
-              delay={0.08}
-              stagger={0.022}
-              highlightWords={["Studio", "Finity"]}
-              highlightClassName="text-black/32"
-            />
+      <StudioFinityHeader activeHref="/about" links={navigationLinks}>
+        <section className="relative min-h-[64dvh] sf-page-pad pb-16 pt-18 md:min-h-[78vh] md:pb-32 md:pt-32">
+          <div className="sf-page-content relative overflow-hidden rounded-[22px] pb-12 pt-11 md:rounded-[28px] md:pb-28 md:pt-20 lg:pb-32">
+            <div className="relative pt-14 md:pt-32">
+              <AnimatedWords
+                as="h1"
+                text={content.hero}
+                className="about-hero-display sf-display-tight max-w-[13ch]"
+                lineClassName="leading-[0.84]"
+                delay={0.08}
+                stagger={0.022}
+                highlightWords={["Studio", "Finity"]}
+                highlightClassName="text-(--sf-text-muted)"
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="sf-page-pad pb-28 pt-16 md:pb-32 md:pt-20">
-        <div className="sf-page-content mx-auto max-w-[1040px]">
-          <StudioGroundRules rules={content.rules} />
-        </div>
-      </section>
+        <section className="sf-page-pad pb-18 pt-12 md:pb-32 md:pt-20">
+          <div className="sf-page-content mx-auto max-w-[1040px]">
+            <StudioGroundRules rules={content.rules} />
+          </div>
+        </section>
 
-      <section className="sf-page-pad pb-32 pt-20 md:pb-36 md:pt-24">
-        <div className="sf-page-content grid gap-18 lg:grid-cols-[1.55fr_0.8fr]">
-          <div>
+        <section className="sf-page-pad pb-22 pt-14 md:pb-36 md:pt-24">
+          <div className="sf-page-content grid gap-12 lg:grid-cols-[1.55fr_0.8fr] lg:gap-18">
+            <div>
+              <p data-about-reveal className="sf-eyebrow">
+                Expertise
+              </p>
+              <div data-about-stagger className="about-expertise-display mt-4 md:mt-5">
+                {content.expertise.map((item) => (
+                  <p key={item} data-about-item>{item}</p>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <p data-about-reveal className="sf-eyebrow">
+                Industries
+              </p>
+              <div data-about-stagger className="sf-body-large mt-4 flex max-w-[20rem] flex-col gap-2.5 text-black/92 md:mt-6">
+                {content.industries.map((item) => (
+                  <p key={item} data-about-item>{item}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="sf-page-pad pb-26 pt-16 md:pb-44 md:pt-28">
+          <div className="sf-page-content mx-auto max-w-[760px]">
             <p data-about-reveal className="sf-eyebrow">
-              Expertise
+              Clients
             </p>
-            <div data-about-stagger className="about-expertise-display mt-5">
-              {content.expertise.map((item) => (
-                <p key={item} data-about-item>{item}</p>
+            <div data-about-stagger className="about-clients-display mt-5 md:mt-6">
+              {content.clients.map((client) => (
+                <p key={client} data-about-item>{client}</p>
               ))}
             </div>
           </div>
-
-          <div>
-            <p data-about-reveal className="sf-eyebrow">
-              Industries
-            </p>
-            <div data-about-stagger className="sf-body-large mt-6 flex max-w-[20rem] flex-col gap-2.5 text-black/92">
-              {content.industries.map((item) => (
-                <p key={item} data-about-item>{item}</p>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="sf-page-pad pb-36 pt-24 md:pb-44 md:pt-28">
-        <div className="sf-page-content mx-auto max-w-[760px]">
-          <p data-about-reveal className="sf-eyebrow">
-            Clients
-          </p>
-          <div data-about-stagger className="about-clients-display mt-6">
-            {content.clients.map((client) => (
-              <p key={client} data-about-item>{client}</p>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </StudioFinityHeader>
     </main>
   );
 }

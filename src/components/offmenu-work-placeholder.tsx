@@ -20,19 +20,16 @@ export function OffMenuWorkPlaceholder({
   void _resourceLinks;
   return (
     <main className="offmenu-shell min-h-screen bg-background text-foreground">
-      <StudioFinityHeader
-        activeHref="/work"
-        links={navigationLinks}
-      />
+      <StudioFinityHeader activeHref="/work" links={navigationLinks}>
+        <OffMenuWorkHero
+          description="The full case study is still being rebuilt, but this route is live so the homepage orbit and work navigation already have a real destination."
+          heroImage={caseStudy.thumbnailLightXl}
+          heroLqip={caseStudy.thumbnailLqip}
+          slug={caseStudy.slug}
+          title={caseStudy.title}
+        />
 
-      <OffMenuWorkHero
-        description="The full case study is still being rebuilt, but this route is live so the homepage orbit and work navigation already have a real destination."
-        heroImage={caseStudy.thumbnailLightXl}
-        slug={caseStudy.slug}
-        title={caseStudy.title}
-      />
-
-      <section className="px-6 pb-24 pt-4 md:px-12 lg:px-20">
+        <section className="px-6 pb-24 pt-4 md:px-12 lg:px-20">
         <div className="sf-panel mx-auto hidden max-w-sm rounded-[1.5rem] p-6 text-foreground md:block">
           <p className="sf-eyebrow">In progress</p>
           <p className="sf-title-md mt-4">
@@ -46,9 +43,10 @@ export function OffMenuWorkPlaceholder({
             Open Flex case study
           </Link>
         </div>
-      </section>
+        </section>
 
-      <OffMenuWorkFooter navigationLinks={navigationLinks} />
+        <OffMenuWorkFooter navigationLinks={navigationLinks} />
+      </StudioFinityHeader>
     </main>
   );
 }

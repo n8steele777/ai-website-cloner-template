@@ -1,19 +1,23 @@
 "use client";
 
-import NextImage from "next/image";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import gsap from "gsap";
 import { AnimatedWords } from "@/components/animated-words";
-import { ArrowRightIcon } from "@/components/icons";
+import { useContactDialog } from "@/components/contact-dialog-provider";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { TransitionLink } from "@/components/transition-link";
+import {
+  WORK_INDEX_GRID_GAP_CLASSNAME,
+  WORK_INDEX_GRID_IMAGE_SIZES,
+  WorkIndexTileContent,
+  WorkIndexTileMedia,
+} from "@/components/work-index-tile";
 import { offMenuHeroWords } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import type {
   CosmosButton,
   CosmosCapability,
   CosmosFeatureSection,
-  CosmosFeaturedProject,
   CosmosHomepageData,
   CosmosMediaItem,
 } from "@/types/cosmos";
@@ -249,27 +253,25 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
 
   return (
     <main className="min-h-screen bg-(--sf-bg) text-(--sf-text)">
-      <StudioFinityHeader links={data.headerLinks} actions={data.headerActions} activeHref="/" />
+      <StudioFinityHeader activeHref="/" links={data.headerLinks}>
+        <section className="sticky top-0 z-0 flex h-dvh flex-col items-center justify-center overflow-hidden bg-(--sf-bg)">
+          <CosmosHeroWhirl imageUrls={data.heroSpiralImages} filmProgress={filmHandoffProgress} />
 
-      <section className="sticky top-0 z-0 -mt-[72px] flex h-dvh flex-col items-center justify-center overflow-hidden bg-(--sf-bg) md:-mt-[105px]">
-        <CosmosHeroWhirl imageUrls={data.heroSpiralImages} filmProgress={filmHandoffProgress} />
+          <div style={heroHeadlineStyle}>
+            <HeroHeadline />
+          </div>
 
-        <div style={heroHeadlineStyle}>
-          <HeroHeadline />
-        </div>
+          <div className="sf-cosmos-sticky-hero-fade pointer-events-none absolute inset-x-0 bottom-0 h-[308px]" />
+        </section>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[308px] bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.6)_35%,rgba(255,255,255,0.9)_60%,white_84%)]" />
-      </section>
+        <CosmosFilmHandoff
+          progress={filmHandoffProgress}
+          video={data.filmVideo}
+          viewportWidth={heroViewportWidth}
+        />
 
-      <CosmosFilmHandoff
-        cta={data.filmCta}
-        progress={filmHandoffProgress}
-        video={data.filmVideo}
-        viewportWidth={heroViewportWidth}
-      />
-
-      <div className="relative z-20 bg-(--sf-bg)">
-        <section className="sf-home-section">
+        <div className="relative z-20 bg-(--sf-bg)">
+          <section className="sf-home-section">
           <div className="sf-home-section-inner sf-home-divider">
             <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
               <SectionHeading section={data.brandIntro} titleClassName="max-w-[10ch]" />
@@ -299,45 +301,51 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                     const isActive = index === activePrincipleIndex;
 
                     return (
-                      <div key={`${principle.label}-${principle.title}`} className="border-b border-black/8">
+                      <div key={`${principle.label}-${principle.title}`} className="border-b border-border">
                         <button
                           type="button"
-                          className="group/principle flex w-full items-start gap-4 py-4 text-left"
+                          className="group/principle flex w-full min-h-12 min-w-0 touch-manipulation items-start gap-4 rounded-sm py-4 text-left outline-none transition-colors duration-280 ease-sf-out focus-visible:ring-2 focus-visible:ring-foreground/15 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:min-h-0"
                           aria-expanded={isActive}
+                          aria-controls={`cosmos-principle-panel-${index}`}
                           onClick={() => setActivePrincipleIndex(index)}
                           onFocus={() => setActivePrincipleIndex(index)}
                           onMouseEnter={() => setActivePrincipleIndex(index)}
                         >
-                          <span className="sf-caption mt-0.5 min-w-8">
+                          <span className="sf-caption mt-0.5 min-w-8 shrink-0">
                             {principle.label}
                           </span>
                           <span
+                            id={`cosmos-principle-title-${index}`}
                             className={cn(
-                              "sf-title-lg max-w-120 transition-colors",
-                              isActive ? "text-(--sf-text)" : "text-black/38",
+                              "sf-title-lg max-w-120 min-w-0 wrap-break-word transition-colors duration-280 ease-sf-out",
+                              isActive ? "text-(--sf-text)" : "text-muted-foreground",
                             )}
                           >
                             {principle.title}
                           </span>
                         </button>
 
-                        {isActive ? (
-                          <div className="pb-4 pl-12 lg:hidden">
-                            <p className="sf-body-copy max-w-md">
-                              {principle.supportingText}
-                            </p>
-                          </div>
-                        ) : null}
+                        <div
+                          id={`cosmos-principle-panel-${index}`}
+                          className="pb-4 pl-12 lg:hidden"
+                          role="region"
+                          aria-labelledby={`cosmos-principle-title-${index}`}
+                          hidden={!isActive}
+                        >
+                          <p className="sf-body-copy max-w-md wrap-break-word">
+                            {principle.supportingText}
+                          </p>
+                        </div>
                       </div>
                     );
                   })}
                 </div>
 
-                <div className="hidden lg:block">
+                <div className="hidden min-w-0 lg:block" aria-live="polite" aria-atomic="true">
                   {activePrinciple ? (
-                    <div className="border-l border-black/10 pl-6 pt-1">
+                    <div className="border-l border-border pl-6 pt-1">
                       <p className="sf-eyebrow">{activePrinciple.label}</p>
-                      <p className="sf-body-copy mt-3 max-w-88">
+                      <p className="sf-body-copy mt-3 max-w-88 wrap-break-word">
                         {activePrinciple.supportingText}
                       </p>
                     </div>
@@ -349,13 +357,34 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         </section>
 
         <section className="sf-home-section">
-          <div className="sf-home-section-inner sf-home-divider">
+          <div
+            className={cn(
+              "sf-home-section-inner sf-home-divider",
+              "max-md:pt-14",
+            )}
+          >
             <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
               <SectionHeading section={data.featuredWork} titleClassName="max-w-[7ch]" />
 
-              <div className="grid gap-9 md:grid-cols-2">
+              <div className={cn("grid grid-cols-3", WORK_INDEX_GRID_GAP_CLASSNAME)}>
                 {data.featuredWork.projects.map((project) => (
-                  <FeaturedWorkCard key={project.href} project={project} />
+                  <TransitionLink
+                    key={project.href}
+                    href={project.href}
+                    aria-label={`Open ${project.title}`}
+                    className="group block touch-manipulation outline-none focus-visible:ring-2 focus-visible:ring-foreground/12 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    <WorkIndexTileContent
+                      imageSrc={project.image.src}
+                      imageAlt={project.image.alt}
+                      density="workGrid"
+                      lqip={project.image.lqip}
+                      title={project.title}
+                      titleAs="h3"
+                      quality={95}
+                      sizes={WORK_INDEX_GRID_IMAGE_SIZES}
+                    />
+                  </TransitionLink>
                 ))}
               </div>
             </div>
@@ -377,31 +406,36 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         </section>
 
         <section className="sf-home-cta-section">
-          <div className="sf-home-section-inner border-t border-black/10 pt-10 text-center md:pt-16">
-            {data.contactCta.eyebrow ? (
-              <p className="sf-eyebrow">{data.contactCta.eyebrow}</p>
-            ) : null}
-            <AnimatedWords
-              as="h2"
-              text={data.contactCta.title}
-              className="sf-display-page sf-display-tight mx-auto mt-3 max-w-[10ch]"
-              lineClassName="leading-[0.84]"
-              triggerOnView
-            />
-            <p className="sf-body-copy mx-auto mt-5 max-w-120">
-              {data.contactCta.supportingText}
-            </p>
-            <div className="mt-8 flex justify-center">
-              <ActionLink action={data.contactCta.button} />
+          <div className="sf-home-section-inner sf-home-divider">
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-end lg:gap-16">
+              <div>
+                {data.contactCta.eyebrow ? (
+                  <p className="sf-eyebrow mb-4">{data.contactCta.eyebrow}</p>
+                ) : null}
+                <AnimatedWords
+                  as="h2"
+                  text={data.contactCta.title}
+                  className="sf-display-page sf-display-tight max-w-88 text-balance lg:max-w-[min(100%,32rem)]"
+                  lineClassName="leading-[0.84]"
+                  triggerOnView
+                />
+              </div>
+              <div className="flex flex-col gap-6 lg:pb-1">
+                <p className="sf-body-copy max-w-xl text-pretty">
+                  {data.contactCta.supportingText}
+                </p>
+                <ActionLink action={data.contactCta.button} className="w-fit" />
+              </div>
             </div>
           </div>
         </section>
-      </div>
+        </div>
+      </StudioFinityHeader>
     </main>
   );
 }
 
-const HERO_INTRO_SWAP_MS = 2300;
+const HERO_INTRO_SWAP_MS = 2650;
 
 /**
  * Opens with the two-line display hook, then matches `/work`: caption, max-w-[28ch],
@@ -436,10 +470,10 @@ function HeroHeadline() {
         { y: "115%" },
         {
           y: 0,
-          duration: 0.68,
-          delay: 0.1,
+          duration: 0.85,
+          delay: 0.12,
           ease: "power4.out",
-          stagger: 0.08,
+          stagger: 0.095,
         },
       );
     };
@@ -492,10 +526,10 @@ function HeroHeadline() {
         { y: "115%" },
         {
           y: 0,
-          duration: 0.62,
-          delay: 0.18,
+          duration: 0.78,
+          delay: 0.22,
           ease: "power4.out",
-          stagger: 0.03,
+          stagger: 0.04,
         },
       );
     };
@@ -520,8 +554,8 @@ function HeroHeadline() {
       <p
         className={cn(
           "col-start-1 row-start-1 flex max-w-[12ch] flex-col items-center text-center will-change-[opacity,transform]",
-          "transition-[opacity,transform] duration-560 motion-reduce:transition-none",
-          "ease-[cubic-bezier(0.22,1,0.28,1)]",
+          "transition-[opacity,transform] duration-700 motion-reduce:transition-none",
+          "ease-sf-out",
         )}
         style={{
           opacity: introHidden ? 0 : 1,
@@ -746,7 +780,7 @@ function CosmosHeroWhirl({
       roundedContext.roundRect(0, 0, width, height, radius);
       roundedContext.clip();
       roundedContext.drawImage(image, 0, 0, width, height);
-      roundedContext.strokeStyle = "rgba(0,0,0,0.12)";
+      roundedContext.strokeStyle = "rgba(17, 17, 17, 0.12)";
       roundedContext.lineWidth = 3;
       roundedContext.stroke();
 
@@ -883,27 +917,24 @@ function CosmosHeroWhirl({
   return (
     <div
       ref={containerRef}
+      aria-hidden
       className="pointer-events-none absolute -left-[10%] h-screen w-[120%]"
       style={{
         opacity: clamp(1 - (filmProgress - 0.25) / 0.15),
         top: "calc(50% - 50vh)",
-        transition: "opacity 220ms linear",
-        WebkitMaskImage: "radial-gradient(45% 45%, transparent 0% 50.5%, #F7F7F8 90%)",
+        transition: "opacity 300ms linear",
+        WebkitMaskImage:
+          "radial-gradient(45% 45%, transparent 0% 50.5%, var(--sf-cosmos-veil) 90%)",
         contain: "layout style",
-        maskImage: "radial-gradient(45% 45%, transparent 0% 50.5%, #F7F7F8 90%)",
+        maskImage:
+          "radial-gradient(45% 45%, transparent 0% 50.5%, var(--sf-cosmos-veil) 90%)",
       }}
     >
       <div
-        className="absolute inset-0 transition-opacity duration-2000 ease-out"
+        className="absolute inset-0 transition-opacity duration-2400 ease-sf-out"
         style={{ opacity: ready ? 1 : 0 }}
       >
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[30%]"
-          style={{
-            background:
-              "linear-gradient(to bottom, transparent 0%, rgba(247,247,248,0.45) 30%, rgba(247,247,248,0.8) 55%, #F7F7F8 80%)",
-          }}
-        />
+        <div className="sf-cosmos-hero-scrim pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[30%]" />
         <div
           ref={fieldRef}
           className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -915,6 +946,7 @@ function CosmosHeroWhirl({
         >
           <canvas
             ref={canvasRef}
+            aria-hidden
             style={{ display: "block", height: "100%", pointerEvents: "none", width: "100%" }}
           />
         </div>
@@ -924,12 +956,10 @@ function CosmosHeroWhirl({
 }
 
 function CosmosFilmHandoff({
-  cta,
   progress,
   video,
   viewportWidth,
 }: {
-  cta: string;
   progress: number;
   video: CosmosMediaItem;
   viewportWidth: number;
@@ -940,49 +970,40 @@ function CosmosFilmHandoff({
   const maxWidth = Math.min(Math.max(viewportWidth - 40, 320), 866.65625);
   const videoWidth = minWidth + (maxWidth - minWidth) * progress;
   const videoHeight = videoWidth * 0.75;
-  const buttonOpacity = clamp(1 - (progress - 0.2) / 0.24);
   const shadowOpacity = mapRange(progress, 0.14, 0.58, 0.08, 0.18);
 
   return (
     <section className="relative">
       <div className="relative h-[130dvh] -translate-y-24">
         <div
-          className="pointer-events-none sticky flex h-dvh flex-col items-center justify-start"
+          className="pointer-events-none sticky flex w-full flex-col"
           style={{
             marginBottom: `-${bottomOffset}px`,
             top: `${topOffset}px`,
+            minHeight: `calc(100dvh - ${topOffset}px)`,
           }}
         >
-          <button
-            type="button"
-            className="sf-interactive pointer-events-auto mb-7 flex cursor-pointer items-center gap-2 rounded-full px-2 py-1"
-            style={{ opacity: buttonOpacity }}
-          >
-            <span className="sf-copy-muted inline-flex h-4 w-4 items-center justify-center">
-              <ArrowRightIcon className="h-4 w-4" />
-            </span>
-            <p className="sf-body-large">{cta}</p>
-          </button>
-
-          <div
-            className="group/film pointer-events-auto cursor-pointer overflow-hidden rounded-xl bg-white/30"
-            style={{
-              boxShadow: `0 28px 80px rgba(0,0,0,${shadowOpacity})`,
-              height: `${videoHeight}px`,
-              width: `${videoWidth}px`,
-            }}
-          >
-            <div className="relative size-full">
-              <video
-                src={video.src}
-                aria-label={video.alt}
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="mx-auto h-full w-auto"
-              />
+          <div className="flex w-full flex-1 items-center justify-center px-2 sm:px-4">
+            <div
+              className="group/film pointer-events-auto cursor-pointer overflow-hidden rounded-xl bg-background/30"
+              style={{
+                boxShadow: `0 28px 80px rgba(17, 17, 17, ${shadowOpacity})`,
+                height: `${videoHeight}px`,
+                width: `${videoWidth}px`,
+              }}
+            >
+              <div className="relative flex size-full items-center justify-center">
+                <video
+                  src={video.src}
+                  aria-label={video.alt}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  className="max-h-full w-auto max-w-full object-contain"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -1018,7 +1039,7 @@ function SectionHeading({
 }
 
 function BrandIntroShowcase({ media }: { media: CosmosMediaItem[] }) {
-  const showcaseMedia = media.slice(0, 5);
+  const showcaseMedia = media.slice(0, 9);
 
   if (showcaseMedia.length === 0) {
     return null;
@@ -1026,77 +1047,27 @@ function BrandIntroShowcase({ media }: { media: CosmosMediaItem[] }) {
 
   return (
     <div className="mt-10 md:mt-14">
-      <div className="mb-4 flex items-center justify-between gap-4">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <p className="sf-eyebrow">Selected stills</p>
-        <p className="sf-caption">A glimpse into the visual language behind the work</p>
-      </div>
-
-      <div className="grid gap-3 md:grid-cols-12 md:grid-rows-[minmax(14rem,26rem)_minmax(12rem,20rem)]">
-        <div className="relative min-h-60 md:col-span-5 md:row-span-2 md:min-h-0">
-          <NextImage
-            src={showcaseMedia[0]!.src}
-            alt={showcaseMedia[0]!.alt ?? "Studio Finity showcase image"}
-            fill
-            className="rounded-[30px] border border-black/8 bg-white/60 object-cover shadow-[0_30px_80px_rgba(17,17,17,0.08)]"
-            sizes="(max-width: 768px) 100vw, 42vw"
-          />
-        </div>
-
-        <div className="grid gap-3 md:col-span-7 md:grid-cols-7 md:grid-rows-subgrid md:row-span-2">
-          {showcaseMedia.slice(1, 5).map((item, index) => {
-            const layoutClassName =
-              index === 0
-                ? "md:col-span-4 md:row-span-1"
-                : index === 1
-                  ? "md:col-span-3 md:row-span-1"
-                  : index === 2
-                    ? "md:col-span-3 md:row-span-1"
-                    : "md:col-span-4 md:row-span-1";
-
-            return (
-              <div
-                key={item.src}
-                className={cn("relative min-h-60 w-full md:min-h-0", layoutClassName)}
-              >
-                <NextImage
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  className="rounded-[24px] border border-black/8 bg-white/55 object-cover shadow-[0_18px_44px_rgba(17,17,17,0.06)]"
-                  sizes="(max-width: 768px) 100vw, 35vw"
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FeaturedWorkCard({ project }: { project: CosmosFeaturedProject }) {
-  return (
-    <TransitionLink href={project.href} className="group/work block">
-      <div className="sf-surface relative aspect-[0.9/1] w-full overflow-hidden rounded-[28px]">
-        <NextImage
-          src={project.image.src}
-          alt={project.image.alt}
-          fill
-          className="object-cover transition-transform duration-500 ease-out group-hover/work:scale-[1.02]"
-          sizes="(max-width: 768px) 100vw, 40vw"
-        />
-      </div>
-
-      <div className="mt-4">
-        <p className="sf-eyebrow">{project.category}</p>
-        <h3 className="sf-title-md mt-2">
-          {project.title}
-        </h3>
-        <p className="sf-body-copy mt-2 max-w-124">
-          {project.summary}
+        <p className="sf-caption max-sm:text-[0.6875rem]">
+          A glimpse into the visual language behind the work
         </p>
       </div>
-    </TransitionLink>
+
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        {showcaseMedia.map((item) => (
+          <div key={item.src} className="group min-w-0">
+            <WorkIndexTileMedia
+              imageSrc={item.src}
+              imageAlt={item.alt ?? "Studio Finity showcase image"}
+              lqip={item.lqip}
+              quality={88}
+              sizes="(max-width: 1023px) 33vw, 28vw"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -1120,6 +1091,7 @@ function ActionLink({
   action: CosmosButton;
   className?: string;
 }) {
+  const { openContact } = useContactDialog();
   const sharedClassName = cn(
     "sf-interactive sf-pill-button items-center gap-2",
     action.variant === "primary"
@@ -1129,6 +1101,14 @@ function ActionLink({
         : "sf-pill-button-secondary",
     className,
   );
+
+  if (action.opensContactForm) {
+    return (
+      <button type="button" className={sharedClassName} onClick={() => openContact()}>
+        {action.label}
+      </button>
+    );
+  }
 
   if (action.external || action.href.startsWith("mailto:")) {
     return (

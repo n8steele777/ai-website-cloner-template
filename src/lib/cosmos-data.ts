@@ -1,6 +1,7 @@
 import type { CosmosHomepageData } from "@/types/cosmos";
+import { studioContactMailtoHref } from "@/lib/studio-contact";
 
-const contactHref = "mailto:hello@studio-finity.com";
+const contactHref = studioContactMailtoHref();
 export const homepageFeaturedWorkSlugs = [
   "on",
   "baxo",
@@ -15,13 +16,17 @@ export function buildCosmosHomepageData(
   headerLinks: [
     { label: "About", href: "/about" },
     { label: "Works", href: "/work" },
-  ],
-  headerActions: [
-    { label: "Contact", href: contactHref, external: true, variant: "primary" },
+    { label: "Contact", href: contactHref, external: true, opensContactForm: true },
   ],
   heroTitle: "Your space for inspiration",
   heroButtons: [
-    { label: "Get in touch", href: contactHref, external: true, variant: "primary" },
+    {
+      label: "Get in touch",
+      href: contactHref,
+      external: true,
+      variant: "primary",
+      opensContactForm: true,
+    },
     { label: "View work", href: "/work", variant: "secondary" },
   ],
   heroSpiralImages: [
@@ -108,7 +113,6 @@ export function buildCosmosHomepageData(
       alt: "Design object card",
     },
   ],
-  filmCta: "Watch our new film (ft. Odessa A'zion)",
   filmVideo: {
     src: "https://cdn.sanity.io/files/ca81n2nu/production/a6cc82d75d824ae49ad989e7d18d3d3ec06ab431.mp4",
     alt: "Studio-finity film preview video",
@@ -182,7 +186,13 @@ export function buildCosmosHomepageData(
     eyebrow: "Contact",
     title: "If the work needs taste, clarity, and finish, let's talk.",
     supportingText: "Based in Denver, working wherever the right collaboration leads.",
-    button: { label: "Contact", href: contactHref, external: true, variant: "primary" },
+    button: {
+      label: "Contact",
+      href: contactHref,
+      external: true,
+      variant: "primary",
+      opensContactForm: true,
+    },
   },
   };
 }

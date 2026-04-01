@@ -27,12 +27,12 @@ export function AnimatedWords<T extends ElementType = "p">({
   byLine = false,
   className,
   delay = 0,
-  duration = 0.82,
+  duration = 1.02,
   highlightClassName,
   highlightWords = [],
   lineClassName,
   rootMargin = "0px 0px -12% 0px",
-  stagger = 0.03,
+  stagger = 0.04,
   text,
   threshold = 0,
   triggerOnView = false,
@@ -94,7 +94,7 @@ export function AnimatedWords<T extends ElementType = "p">({
         lineTimeline = gsap.timeline({
           defaults: {
             duration,
-            ease: "power3.out",
+            ease: "power4.out",
             overwrite: "auto",
           },
           onComplete: () => {
@@ -140,7 +140,7 @@ export function AnimatedWords<T extends ElementType = "p">({
       const timeline = gsap.timeline({
         defaults: {
           duration,
-          ease: "expo.out",
+          ease: "power4.out",
           overwrite: "auto",
         },
       });

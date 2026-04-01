@@ -1,4 +1,5 @@
-import type {NavLink, StudioAboutContent} from "@/types/offmenu";
+import type { NavLink, StudioAboutContent } from "@/types/offmenu";
+import { studioContactMailtoHref } from "@/lib/studio-contact";
 
 export const offMenuHeroWords = [
   "STUDIO",
@@ -18,13 +19,25 @@ export const offMenuHeroWords = [
 ];
 
 export const offMenuNavigationLinks: NavLink[] = [
-  {label: "About", href: "/about"},
-  {label: "Works", href: "/work", current: true},
+  { label: "About", href: "/about" },
+  { label: "Works", href: "/work" },
+  {
+    label: "Contact",
+    href: studioContactMailtoHref(),
+    external: true,
+    opensContactForm: true,
+  },
 ];
 
 export const offMenuWorkNavigationLinks: NavLink[] = [
-  {label: "About", href: "/about"},
-  {label: "Works", href: "/work", current: true},
+  { label: "About", href: "/about" },
+  { label: "Works", href: "/work" },
+  {
+    label: "Contact",
+    href: studioContactMailtoHref(),
+    external: true,
+    opensContactForm: true,
+  },
 ];
 
 export const offMenuResourceLinks: NavLink[] = [

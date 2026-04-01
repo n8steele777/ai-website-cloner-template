@@ -63,6 +63,8 @@ export const workType = defineType({
       title: 'Hero image',
       type: 'image',
       group: 'media',
+      description:
+        'Use the image field (not Files). Prefer WebP or JPEG under ~2500px wide for fast loads; avoid huge PNG screenshots for photos.',
       options: {hotspot: true},
       validation: (rule) => rule.required(),
       fields: [
@@ -83,6 +85,8 @@ export const workType = defineType({
         defineArrayMember({
           type: 'image',
           options: {hotspot: true},
+          description:
+            'Upload images here so the CDN can resize and auto-encode (WebP/AVIF); external URLs won’t get these optimizations.',
           fields: [
             defineField({
               name: 'alt',

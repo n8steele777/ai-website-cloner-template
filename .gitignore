@@ -23,7 +23,8 @@ yarn-error.log*
 
 # IDE
 .idea/
-.vscode/
+.vscode/*
+!.vscode/settings.json
 *.swp
 *.swo
 
@@ -47,3 +48,10 @@ next-env.d.ts
 
 # Local temp files
 temp/
+
+# Playwright CLI agent snapshots (local only)
+.playwright-cli/
+
+# Playwright (axe / e2e)
+playwright-report/
+test-results/

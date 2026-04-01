@@ -3,6 +3,38 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/**
+ * Lets height (and related sizes) interpolate when paired with transitions.
+ * Smooths drawer/content height when it would otherwise jump (Chrome 129+).
+ */
+@layer utilities {
+  .drawer-interpolate-size {
+    interpolate-size: allow-keywords;
+  }
+
+  /** Cosmos hero: page bg scrim over sticky hero (token-driven gradient) */
+  .sf-cosmos-sticky-hero-fade {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--sf-bg) 60%, transparent) 35%,
+      color-mix(in srgb, var(--sf-bg) 90%, transparent) 60%,
+      var(--sf-bg) 84%
+    );
+  }
+
+  /** Inner whirl field: veil tint toward --sf-cosmos-veil */
+  .sf-cosmos-hero-scrim {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--sf-cosmos-veil) 45%, transparent) 30%,
+      color-mix(in srgb, var(--sf-cosmos-veil) 80%, transparent) 55%,
+      var(--sf-cosmos-veil) 80%
+    );
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -47,6 +79,8 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  /* Matches :root --sf-ease-out; use utility `ease-sf-out` in Tailwind classes */
+  --ease-sf-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root {
@@ -71,7 +105,7 @@
   --secondary: rgba(17, 17, 17, 0.08);
   --secondary-foreground: #111111;
   --muted: rgba(17, 17, 17, 0.06);
-  --muted-foreground: rgba(17, 17, 17, 0.5);
+  --muted-foreground: rgba(17, 17, 17, 0.56);
   --accent: rgba(17, 17, 17, 0.08);
   --accent-foreground: #111111;
   --destructive: #bf000f;
@@ -103,13 +137,26 @@
   --sf-text: #111111;
   --sf-text-soft: rgba(17, 17, 17, 0.82);
   --sf-text-muted: rgba(17, 17, 17, 0.72);
-  --sf-text-subtle: rgba(17, 17, 17, 0.56);
+  /* ≥4.5:1 vs --sf-bg for normal text (WCAG AA); 0.56 was ~4.3:1 at 12px */
+  --sf-text-subtle: rgba(17, 17, 17, 0.66);
   --sf-border: rgba(17, 17, 17, 0.1);
   --sf-border-strong: rgba(17, 17, 17, 0.14);
   --sf-inverse-bg: #111111;
   --sf-inverse-text: #ffffff;
   --sf-focus-ring: rgba(17, 17, 17, 0.14);
-  --sf-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Softer deceleration + shared durations (slower, calmer motion sitewide); keep in sync with @theme --ease-sf-out */
+  --sf-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --sf-duration-fast: 260ms;
+  --sf-duration-ui: 320ms;
+  --sf-duration-macro: 420ms;
+  --sf-duration-reveal: 920ms;
+  --sf-duration-card-hover: 1100ms;
+  /* Homepage whirl → content handoff (matches legacy #f7f7f8) */
+  --sf-cosmos-veil: #f7f7f8;
+  --sf-shadow-sheet-up: 0 -12px 48px -16px rgba(17, 17, 17, 0.12);
+  --sf-shadow-media-lg: 0 30px 80px rgba(17, 17, 17, 0.08);
+  --sf-shadow-media-md: 0 18px 44px rgba(17, 17, 17, 0.06);
+  --sf-shadow-rule-card: 0 18px 48px rgba(17, 17, 17, 0.2);
 }
 
 
@@ -117,6 +164,9 @@
   html {
     @apply h-full font-sans;
     overscroll-behavior: none;
+    scrollbar-gutter: stable;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   * {
@@ -129,8 +179,8 @@
     font-weight: var(--sf-weight-body);
     letter-spacing: 0;
     transition:
-      background-color 300ms ease,
-      color 300ms ease;
+      background-color var(--sf-duration-macro) var(--sf-ease-out),
+      color var(--sf-duration-macro) var(--sf-ease-out);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -150,9 +200,6 @@ html.is-safari {
   --font-display: var(--font-geist-sans), Arial, sans-serif;
   --font-brand: var(--font-geist-sans), Arial, sans-serif;
   --font-heading: var(--font-geist-sans), Arial, sans-serif;
-}
-
-html.is-safari body {
   -webkit-font-smoothing: auto;
 }
 
@@ -212,11 +259,11 @@ html.lenis {
   font-family: var(--font-oh-nav);
   border-radius: 999px;
   transition:
-    transform 220ms var(--sf-ease-out),
-    opacity 220ms var(--sf-ease-out),
-    background-color 220ms var(--sf-ease-out),
-    color 220ms var(--sf-ease-out),
-    border-color 220ms var(--sf-ease-out);
+    transform var(--sf-duration-ui) var(--sf-ease-out),
+    opacity var(--sf-duration-ui) var(--sf-ease-out),
+    background-color var(--sf-duration-ui) var(--sf-ease-out),
+    color var(--sf-duration-ui) var(--sf-ease-out),
+    border-color var(--sf-duration-ui) var(--sf-ease-out);
 }
 
 .sf-oh-pill:hover {
@@ -372,10 +419,27 @@ html.lenis {
   line-height: 1.04;
 }
 
+/* Work case study hero — larger than sf-title-xl, always white on photography */
+.work-hero-title {
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 6.2vw, 4.5rem);
+  font-weight: var(--sf-weight-display);
+  letter-spacing: -0.042em;
+  line-height: 1.02;
+}
+
 .about-hero-display {
   font-size: clamp(3.2rem, 9.5vw, 7.9rem);
   letter-spacing: -0.055em;
   line-height: 0.82;
+}
+
+@media (max-width: 767px) {
+  .about-hero-display {
+    font-size: clamp(2.65rem, 8.8vw, 3.85rem);
+    letter-spacing: -0.05em;
+  }
 }
 
 .about-expertise-display {
@@ -420,6 +484,18 @@ html.lenis {
   font-weight: var(--sf-weight-display);
   letter-spacing: -0.04em;
   line-height: 1.08;
+}
+
+/* Mobile ground rules: match industries list body (e.g. "Digital Products") — .sf-body-large + text-black/92 */
+@media (max-width: 1023px) {
+  .sf-ground-rules-row-text {
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+    font-weight: var(--sf-weight-body);
+    letter-spacing: 0;
+    line-height: 1.24;
+    color: rgb(17 17 17 / 0.92);
+  }
 }
 
 .sf-rule-card-title {
@@ -469,8 +545,7 @@ html.lenis {
 
 .sf-home-cta-section {
   padding-inline: 1rem;
-  padding-top: 3rem;
-  padding-bottom: 6rem;
+  padding-block: 5rem 6rem;
 }
 
 .sf-surface {
@@ -486,12 +561,12 @@ html.lenis {
 
 .sf-interactive {
   transition:
-    transform 220ms var(--sf-ease-out),
-    opacity 220ms var(--sf-ease-out),
-    background-color 220ms var(--sf-ease-out),
-    border-color 220ms var(--sf-ease-out),
-    color 220ms var(--sf-ease-out),
-    box-shadow 220ms var(--sf-ease-out);
+    transform var(--sf-duration-ui) var(--sf-ease-out),
+    opacity var(--sf-duration-ui) var(--sf-ease-out),
+    background-color var(--sf-duration-ui) var(--sf-ease-out),
+    border-color var(--sf-duration-ui) var(--sf-ease-out),
+    color var(--sf-duration-ui) var(--sf-ease-out),
+    box-shadow var(--sf-duration-ui) var(--sf-ease-out);
 }
 
 @media (hover: hover) {
@@ -541,7 +616,9 @@ html.lenis {
 
 .sf-inline-link {
   color: var(--sf-text-muted);
-  transition: opacity 180ms var(--sf-ease-out), color 180ms var(--sf-ease-out);
+  transition:
+    opacity var(--sf-duration-fast) var(--sf-ease-out),
+    color var(--sf-duration-fast) var(--sf-ease-out);
 }
 
 .sf-inline-link:hover {
@@ -580,6 +657,55 @@ html.lenis {
 .offmenu-shell {
   position: relative;
   overflow: clip;
+}
+
+/* Work grid cards — radius comes from `rounded-3xl` on the element; shadow follows the same curve.
+   Transform + shadow both live here so hover interpolates smoothly (Tailwind scale utilities often “jump” vs transition). */
+.work-card-elevated {
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: center center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow:
+    0 1px 3px rgba(17, 17, 17, 0.08),
+    0 10px 28px -6px rgba(17, 17, 17, 0.14),
+    0 28px 56px -20px rgba(17, 17, 17, 0.12);
+  transition:
+    box-shadow var(--sf-duration-card-hover) var(--sf-ease-out),
+    transform var(--sf-duration-card-hover) var(--sf-ease-out);
+}
+
+@media (hover: hover) {
+  .group:hover .work-card-elevated {
+    transform: translate3d(0, 0, 0) scale(1.032);
+    box-shadow:
+      0 2px 6px rgba(17, 17, 17, 0.1),
+      0 16px 40px -8px rgba(17, 17, 17, 0.18),
+      0 36px 72px -24px rgba(17, 17, 17, 0.14);
+  }
+}
+
+/* Touch / coarse pointer: subtle press on the card (hover lift is unavailable). */
+@media (hover: none) {
+  .group:active .work-card-elevated {
+    transform: translate3d(0, 0, 0) scale(0.988);
+    transition-duration: var(--sf-duration-ui);
+    transition-timing-function: var(--sf-ease-out);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-card-elevated {
+    transition: none;
+  }
+
+  .group:hover .work-card-elevated {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  .group:active .work-card-elevated {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 .offmenu-orbit {
@@ -627,8 +753,7 @@ html.lenis {
 
   .sf-home-cta-section {
     padding-inline: 1.5rem;
-    padding-top: 4rem;
-    padding-bottom: 8rem;
+    padding-block: 6rem 8rem;
   }
 
   .offmenu-orbit {
@@ -664,8 +789,8 @@ html.lenis {
   border-radius: 999px;
   background: currentColor;
   transition:
-    transform 300ms ease,
-    opacity 300ms ease;
+    transform var(--sf-duration-macro) var(--sf-ease-out),
+    opacity var(--sf-duration-macro) var(--sf-ease-out);
 }
 
 .offmenu-dot[data-active="true"] {
@@ -677,9 +802,9 @@ html.lenis {
   transform: translateY(40px);
   filter: blur(12px);
   transition:
-    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--sf-duration-reveal) var(--sf-ease-out),
+    transform var(--sf-duration-reveal) var(--sf-ease-out),
+    filter var(--sf-duration-reveal) var(--sf-ease-out);
 }
 
 .offmenu-reveal.is-visible {
@@ -704,4 +829,5 @@ html.lenis {
     filter: none;
     transition: none;
   }
+
 }

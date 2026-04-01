@@ -7,10 +7,11 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { AnimatedWords } from "@/components/animated-words";
 import { useCaseStudyTransition } from "@/components/case-study-transition-provider";
-
 interface OffMenuWorkHeroProps {
   description?: string;
   heroImage: string;
+  /** Sanity LQIP — soft blurred layer under the hero while the full image loads */
+  heroLqip?: string;
   slug: string;
   title: string;
 }
@@ -18,6 +19,7 @@ interface OffMenuWorkHeroProps {
 export function OffMenuWorkHero({
   description,
   heroImage,
+  heroLqip,
   slug,
   title,
 }: OffMenuWorkHeroProps) {
@@ -28,9 +30,7 @@ export function OffMenuWorkHero({
   const transitionMatches = state.isTransitioning && state.slug === slug;
   const finalHeroImage = heroImage;
   const transitionHeroImage = transitionMatches
-    ? state.thumbnailXlLoaded && state.thumbnailXl
-      ? state.thumbnailXl
-      : state.thumbnail
+    ? state.thumbnailXl ?? state.thumbnail
     : null;
   const displayImage = transitionHeroImage ?? finalHeroImage;
   const showFinalOverlay = Boolean(transitionHeroImage && transitionHeroImage !== finalHeroImage);
@@ -86,7 +86,12 @@ export function OffMenuWorkHero({
   ]);
 
   useLayoutEffect(() => {
-    if (!gradientRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (!gradientRef.current) {
+      return;
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.set(gradientRef.current, { opacity: 1 });
       return;
     }
 
@@ -94,12 +99,12 @@ export function OffMenuWorkHero({
 
     timeline.fromTo(
       gradientRef.current,
-      { opacity: transitionMatches ? 0 : 1 },
+      { opacity: 0 },
       {
         opacity: 1,
-        duration: transitionMatches ? 0.58 : 0.24,
-        delay: transitionMatches ? 0.2 : 0,
-        ease: "power3.out",
+        duration: transitionMatches ? 0.78 : 0.6,
+        delay: transitionMatches ? 0.62 : 0.46,
+        ease: "power4.out",
       },
     );
 
@@ -110,7 +115,17 @@ export function OffMenuWorkHero({
 
   return (
     <section className="relative min-h-screen">
-      <div className="absolute inset-x-4 bottom-4 top-20 overflow-hidden rounded-[24px]">
+      <div className="absolute inset-x-4 bottom-4 top-17 overflow-hidden rounded-3xl md:inset-x-4 md:bottom-4 md:top-18">
+        {heroLqip ? (
+          <div
+            aria-hidden
+            className="absolute inset-0 scale-110 bg-center bg-cover opacity-100"
+            style={{
+              backgroundImage: `url(${heroLqip})`,
+              filter: "blur(28px)",
+            }}
+          />
+        ) : null}
         <img
           ref={imageRef}
           src={displayImage}
@@ -121,13 +136,13 @@ export function OffMenuWorkHero({
               signalHeroReady();
             }
           }}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover object-center"
         />
         {showFinalOverlay ? (
           <img
             src={finalHeroImage}
             alt={title}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out"
+            className="absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-880 ease-sf-out"
             style={{ opacity: loadedFinalSrc === finalHeroImage ? 1 : 0 }}
             onLoad={() => {
               setLoadedFinalSrc(finalHeroImage);
@@ -140,7 +155,7 @@ export function OffMenuWorkHero({
         ) : null}
         <div
           ref={gradientRef}
-          className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"
+          className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 motion-reduce:opacity-100"
         />
       </div>
 
@@ -149,12 +164,12 @@ export function OffMenuWorkHero({
           <AnimatedWords
             as="h1"
             text={title}
-            className="sf-title-xl max-w-[12ch] text-white"
-            lineClassName="leading-[1.04]"
-            delay={transitionMatches ? 0.24 : 0.28}
+            className="work-hero-title max-w-full text-balance sm:max-w-[min(100%,14ch)]"
+            lineClassName="leading-[1.02]"
+            delay={transitionMatches ? 0.3 : 0.35}
           />
           {description ? (
-            <p className="mt-5 max-w-md text-base leading-relaxed text-white/76 md:text-lg">
+            <p className="mt-5 max-w-md wrap-break-word text-base leading-relaxed text-white/76 md:text-lg">
               {description}
             </p>
           ) : null}

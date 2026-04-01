@@ -4,6 +4,7 @@ export interface CosmosMediaItem {
   src: string;
   alt: string;
   kind?: "image" | "video";
+  lqip?: string;
 }
 
 export interface CosmosButton {
@@ -11,6 +12,7 @@ export interface CosmosButton {
   href: string;
   external?: boolean;
   variant?: "primary" | "secondary" | "ghost";
+  opensContactForm?: boolean;
 }
 
 export interface CosmosFeatureSection {
@@ -50,12 +52,10 @@ export interface CosmosFooterGroup {
 
 export interface CosmosHomepageData {
   headerLinks: NavLink[];
-  headerActions: CosmosButton[];
   heroTitle: string;
   heroButtons: CosmosButton[];
   heroSpiralImages: string[];
   heroMedia: CosmosMediaItem[];
-  filmCta: string;
   filmVideo: CosmosMediaItem;
   brandIntro: CosmosFeatureSection & {
     supportingText: string;

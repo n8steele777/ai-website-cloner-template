@@ -6,6 +6,7 @@ import type {
   StudioAboutContent,
   WorkProjectDetail,
 } from "@/types/offmenu";
+import { studioContactMailtoHref } from "@/lib/studio-contact";
 
 export const offMenuHeroWords = [
   "STUDIO",
@@ -26,12 +27,24 @@ export const offMenuHeroWords = [
 
 export const offMenuNavigationLinks: NavLink[] = [
   { label: "About", href: "/about" },
-  { label: "Works", href: "/work", current: true },
+  { label: "Works", href: "/work" },
+  {
+    label: "Contact",
+    href: studioContactMailtoHref(),
+    external: true,
+    opensContactForm: true,
+  },
 ];
 
 export const offMenuWorkNavigationLinks: NavLink[] = [
   { label: "About", href: "/about" },
-  { label: "Works", href: "/work", current: true },
+  { label: "Works", href: "/work" },
+  {
+    label: "Contact",
+    href: studioContactMailtoHref(),
+    external: true,
+    opensContactForm: true,
+  },
 ];
 
 export const offMenuResourceLinks: NavLink[] = [
@@ -233,6 +246,7 @@ export const offMenuCaseStudies: CaseStudy[] = allWorkProjectsInternal.map((proj
   slug: project.slug,
   title: project.title,
   href: `/work/${project.slug}`,
+  summary: project.summary ?? "",
   thumbnailLight: project.heroImageLight,
   thumbnailDark: project.heroImageDark,
   thumbnailLightXl: project.heroImageLight,

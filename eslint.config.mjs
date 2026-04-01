@@ -15,9 +15,6 @@ const eslintConfig = defineConfig([
     "dist/**",
     "**/dist/**",
     "next-env.d.ts",
-    "nextjs-studio-finity/**",
-    // Raw Framer export/reference files are not part of the app source tree.
-    "framer/**",
   ]),
 ]);
 
