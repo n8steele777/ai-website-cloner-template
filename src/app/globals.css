@@ -110,8 +110,6 @@
   --sf-inverse-text: #ffffff;
   --sf-focus-ring: rgba(17, 17, 17, 0.14);
   --sf-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --sf-oh-mini-progress: 0;
-  --sf-oh-mini-pointer: none;
 }
 
 
@@ -273,12 +271,19 @@ html.lenis {
   letter-spacing: 0;
 }
 
+/*
+  Display rhythm (site-wide):
+  - Big multi-line headlines: tight parent line-height (~0.82) + AnimatedWords
+    `lineClassName="leading-[0.84]"` so stacked lines match.
+  - Display stacks with `gap: …em`: set `font-size` on the flex parent so `em`
+    gaps scale with the type; children `font-size: inherit` and `margin: 0`.
+*/
 .sf-display-tight {
   color: var(--sf-text);
   font-family: var(--font-display);
   font-weight: var(--sf-weight-display);
   letter-spacing: -0.045em;
-  line-height: 0.94;
+  line-height: 0.82;
   text-wrap: balance;
 }
 
@@ -307,7 +312,7 @@ html.lenis {
   font-size: clamp(3.4rem, 9vw, 6rem);
   font-weight: 500;
   letter-spacing: -0.05em;
-  line-height: 0.94;
+  line-height: 0.82;
   text-wrap: balance;
 }
 
@@ -370,37 +375,42 @@ html.lenis {
 .about-hero-display {
   font-size: clamp(3.2rem, 9.5vw, 7.9rem);
   letter-spacing: -0.055em;
-  line-height: 0.86;
+  line-height: 0.82;
 }
 
 .about-expertise-display {
   display: flex;
   flex-direction: column;
-  gap: 0.06em;
+  /* Match display font-size so `em` gap scales with the stack (was ~1px vs huge type). */
+  font-size: clamp(2.85rem, 5.9vw, 5.45rem);
+  gap: 0.05em;
 }
 
 .about-expertise-display > * {
+  margin: 0;
   color: var(--sf-text);
   font-family: var(--font-display);
-  font-size: clamp(2.85rem, 5.9vw, 5.45rem);
+  font-size: inherit;
   font-weight: var(--sf-weight-display);
   letter-spacing: -0.065em;
-  line-height: 0.82;
+  line-height: 0.92;
 }
 
 .about-clients-display {
   display: flex;
   flex-direction: column;
-  gap: 0.08em;
+  font-size: clamp(2.25rem, 4.6vw, 4.2rem);
+  gap: 0.05em;
 }
 
 .about-clients-display > * {
+  margin: 0;
   color: var(--sf-text);
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 4.6vw, 4.2rem);
+  font-size: inherit;
   font-weight: var(--sf-weight-display);
   letter-spacing: -0.06em;
-  line-height: 0.84;
+  line-height: 0.92;
 }
 
 .sf-section-list {

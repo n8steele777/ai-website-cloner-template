@@ -1,14 +1,12 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { TransitionLink } from "@/components/transition-link";
 import { cn } from "@/lib/utils";
 import type { NavLink } from "@/types/offmenu";
 
-const MINI_ACTION_OFFSET = 46;
-const MINI_MENU_OFFSET = 50;
-const MINI_MOBILE_OFFSET = 48;
+const HEADER_LOGO_SRC = "/logos/SF-Logo-Dark.png";
 
 interface HeaderAction {
   label: string;
@@ -21,7 +19,6 @@ interface StudioFinityHeaderProps {
   links: NavLink[];
   activeHref?: string;
   actions?: HeaderAction[];
-  overlay?: boolean;
 }
 
 const defaultActions: HeaderAction[] = [
@@ -32,12 +29,10 @@ export function StudioFinityHeader({
   links,
   activeHref,
   actions = defaultActions,
-  overlay = false,
 }: StudioFinityHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const visibleLinks = useMemo(() => links.filter((link) => !link.disabled), [links]);
-  const toneClass = overlay ? "text-white" : "text-[#080807]";
-  const overlayCloseProgress = menuOpen ? 1 : 0;
+  const menuRevealProgress = menuOpen ? 1 : 0;
 
   useEffect(() => {
     if (!menuOpen) {
@@ -62,145 +57,52 @@ export function StudioFinityHeader({
 
   return (
     <>
-      {overlay ? (
-        <>
-          <header className="absolute inset-x-0 top-0 z-[220] px-[14px] pt-[14px] md:px-[22px] md:pt-6">
-            <div className="relative flex items-start justify-between gap-4">
-              <TransitionLink
-                href="/"
-                aria-label="Studio Finity home"
-                className="sf-nav-wordmark sf-oh-wordmark relative z-10 whitespace-nowrap text-white"
-              >
-                Studio Finity
-              </TransitionLink>
+      <header className="fixed inset-x-0 top-0 z-220 px-[14px] pt-[14px] md:px-[22px] md:pt-6">
+        <div className="relative flex items-start justify-between gap-4">
+          <HeaderLogoLink href="/" className="relative z-10" surface="light" />
 
-              <nav
-                aria-label="Primary"
-                className="absolute left-1/2 top-[18px] hidden -translate-x-1/2 items-center gap-[11px] text-white md:flex"
-              >
-                {visibleLinks.map((link, index) => (
-                  <div key={link.href} className="flex items-center gap-[11px]">
-                    <DesktopNavLink
-                      href={link.href}
-                      active={link.href === activeHref}
-                      external={link.external}
-                      tone="light"
-                    >
-                      {link.label}
-                    </DesktopNavLink>
-                    {index < visibleLinks.length - 1 ? (
-                      <span aria-hidden="true" className="sf-oh-nav-link opacity-90">
-                        ,
-                      </span>
-                    ) : null}
-                  </div>
-                ))}
-              </nav>
-
-              <div className="hidden items-center gap-2 md:flex">
-                {actions.map((action) => (
-                  <HeaderActionLink key={action.label} action={action} surface="dark" />
-                ))}
-              </div>
-
-              <MenuToggleButton
-                expanded={menuOpen}
-                onClick={() => setMenuOpen((current) => !current)}
-                surface="light"
-                className="md:hidden"
-              />
-            </div>
-          </header>
-
-          <div
-            className="pointer-events-none fixed right-[14px] top-[14px] z-[224] flex items-start justify-end md:right-[22px] md:top-6"
-            style={buildMiniControlStyle(menuOpen)}
+          <nav
+            aria-label="Primary"
+            className="absolute left-1/2 top-[18px] hidden -translate-x-1/2 items-center gap-[11px] text-[#080807] md:flex"
           >
-            <div className="hidden items-center gap-2 md:flex">
-              <div style={buildMiniRevealStyle(MINI_ACTION_OFFSET)}>
-                {actions.map((action) => (
-                  <HeaderActionLink key={action.label} action={action} surface="dark" />
-                ))}
+            {visibleLinks.map((link, index) => (
+              <div key={link.href} className="flex items-center gap-[11px]">
+                <DesktopNavLink
+                  href={link.href}
+                  active={link.href === activeHref}
+                  external={link.external}
+                >
+                  {link.label}
+                </DesktopNavLink>
+                {index < visibleLinks.length - 1 ? (
+                  <span aria-hidden="true" className="sf-oh-nav-link opacity-90">
+                    ,
+                  </span>
+                ) : null}
               </div>
-              <div style={buildMiniRevealStyle(MINI_MENU_OFFSET)}>
-                <MenuToggleButton
-                  expanded={menuOpen}
-                  onClick={() => setMenuOpen((current) => !current)}
-                  surface="light"
-                />
-              </div>
-            </div>
+            ))}
+          </nav>
 
-            <div className="md:hidden" style={buildMiniRevealStyle(MINI_MOBILE_OFFSET)}>
-              <MenuToggleButton
-                expanded={menuOpen}
-                onClick={() => setMenuOpen((current) => !current)}
-                surface="light"
-              />
-            </div>
+          <div className="hidden items-center gap-2 md:flex">
+            {actions.map((action) => (
+              <HeaderActionLink key={action.label} action={action} surface="dark" />
+            ))}
           </div>
-        </>
-      ) : (
-        <header className="fixed inset-x-0 top-0 z-[220] px-[14px] pt-[14px] md:px-[22px] md:pt-6">
-          <div className="relative flex items-start justify-between gap-4">
-            <TransitionLink
-              href="/"
-              aria-label="Studio Finity home"
-              className={cn(
-                "sf-nav-wordmark sf-oh-wordmark relative z-10 whitespace-nowrap",
-                toneClass,
-              )}
-            >
-              Studio Finity
-            </TransitionLink>
 
-            <nav
-              aria-label="Primary"
-              className={cn(
-                "absolute left-1/2 top-[18px] hidden -translate-x-1/2 items-center gap-[11px] md:flex",
-                toneClass,
-              )}
-            >
-              {visibleLinks.map((link, index) => (
-                <div key={link.href} className="flex items-center gap-[11px]">
-                  <DesktopNavLink
-                    href={link.href}
-                    active={link.href === activeHref}
-                    external={link.external}
-                    tone="dark"
-                  >
-                    {link.label}
-                  </DesktopNavLink>
-                  {index < visibleLinks.length - 1 ? (
-                    <span aria-hidden="true" className="sf-oh-nav-link opacity-90">
-                      ,
-                    </span>
-                  ) : null}
-                </div>
-              ))}
-            </nav>
-
-            <div className="hidden items-center gap-2 md:flex">
-              {actions.map((action) => (
-                <HeaderActionLink key={action.label} action={action} surface="dark" />
-              ))}
-            </div>
-
-            <MenuToggleButton
-              expanded={menuOpen}
-              onClick={() => setMenuOpen((current) => !current)}
-              surface="light"
-              className="md:hidden"
-            />
-          </div>
-        </header>
-      )}
+          <MenuToggleButton
+            expanded={menuOpen}
+            onClick={() => setMenuOpen((current) => !current)}
+            surface="light"
+            className="md:hidden"
+          />
+        </div>
+      </header>
 
       <div
         id="studio-finity-mobile-nav"
         aria-hidden={!menuOpen}
         className={cn(
-          "fixed inset-0 z-[240] bg-[#080807] px-[14px] pb-[20px] pt-[14px] text-white transition-[opacity,visibility,clip-path] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:px-[22px] md:pt-6",
+          "fixed inset-0 z-240 bg-[#080807] px-[14px] pb-[20px] pt-[14px] text-white transition-[opacity,visibility,clip-path] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:px-[22px] md:pt-6",
           menuOpen ? "visible opacity-100" : "pointer-events-none invisible opacity-0",
         )}
         style={{
@@ -212,21 +114,19 @@ export function StudioFinityHeader({
         <div
           className="flex min-h-full flex-col"
           style={{
-            opacity: overlayCloseProgress,
-            transform: `translateY(${(1 - overlayCloseProgress) * 20}px)`,
+            opacity: menuRevealProgress,
+            transform: `translateY(${(1 - menuRevealProgress) * 20}px)`,
             transition:
               "transform 420ms cubic-bezier(0.22,1,0.36,1), opacity 260ms ease-out",
           }}
         >
           <div className="flex items-start justify-between gap-4">
-            <TransitionLink
+            <HeaderLogoLink
               href="/"
-              aria-label="Studio Finity home"
-              className="sf-nav-wordmark sf-oh-wordmark whitespace-nowrap"
+              className="shrink-0"
+              surface="dark"
               onClick={() => setMenuOpen(false)}
-            >
-              Studio Finity
-            </TransitionLink>
+            />
 
             <button
               type="button"
@@ -237,7 +137,7 @@ export function StudioFinityHeader({
             </button>
           </div>
 
-          <nav aria-label="Overlay primary" className="mt-[4.5rem] flex flex-col gap-5 md:mt-[9rem] md:max-w-[34rem] md:gap-6">
+          <nav aria-label="Overlay primary" className="mt-18 flex flex-col gap-5 md:mt-36 md:max-w-136 md:gap-6">
             {visibleLinks.map((link) => (
               <OverlayNavLink
                 key={link.href}
@@ -268,22 +168,52 @@ export function StudioFinityHeader({
   );
 }
 
+function HeaderLogoLink({
+  href,
+  className,
+  surface,
+  onClick,
+}: {
+  href: string;
+  className?: string;
+  surface: "light" | "dark";
+  onClick?: () => void;
+}) {
+  return (
+    <TransitionLink
+      href={href}
+      aria-label="Studio Finity home"
+      className={cn("block leading-none", className)}
+      onClick={onClick}
+    >
+      <Image
+        src={HEADER_LOGO_SRC}
+        alt=""
+        width={168}
+        height={40}
+        className={cn(
+          "h-[22px] w-auto md:h-7",
+          surface === "dark" ? "brightness-0 invert" : null,
+        )}
+        priority
+      />
+    </TransitionLink>
+  );
+}
+
 function DesktopNavLink({
   href,
   active,
   children,
   external,
-  tone,
 }: {
   href: string;
   active?: boolean;
   children: string;
   external?: boolean;
-  tone: "light" | "dark";
 }) {
   const className = cn(
-    "sf-oh-nav-link uppercase transition-opacity duration-200",
-    tone === "light" ? "text-white" : "text-[#080807]",
+    "sf-oh-nav-link uppercase text-[#080807] transition-opacity duration-200",
     active ? "opacity-100" : "opacity-[0.86] hover:opacity-100",
   );
 
@@ -429,19 +359,4 @@ function MenuToggleButton({
       Menu
     </button>
   );
-}
-
-function buildMiniRevealStyle(offset: number) {
-  return {
-    opacity: "var(--sf-oh-mini-progress, 0)",
-    transform: `translateY(calc((1 - var(--sf-oh-mini-progress, 0)) * ${offset}px))`,
-    transition:
-      "transform 180ms cubic-bezier(0.22,1,0.36,1), opacity 180ms cubic-bezier(0.22,1,0.36,1)",
-  } as const;
-}
-
-function buildMiniControlStyle(menuOpen: boolean): CSSProperties {
-  return {
-    pointerEvents: menuOpen ? "auto" : ("var(--sf-oh-mini-pointer, none)" as CSSProperties["pointerEvents"]),
-  };
 }

@@ -1,16 +1,17 @@
 {
-  "name": "Off Menu",
-  "short_name": "Off Menu",
-  "description": "AI-Native Product Studio",
+  "name": "Studio Finity",
+  "short_name": "Studio Finity",
+  "description": "Studio Finity is a design studio working across brand, digital, and visual storytelling.",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#fafafa",
+  "theme_color": "#fafafa",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "16x16 32x32",
-      "type": "image/x-icon"
+      "src": "/logos/Favi%20Dark.png",
+      "sizes": "200x200",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

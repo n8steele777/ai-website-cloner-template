@@ -1,6 +1,8 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 
+// Native <img>: GSAP hero transition needs ref, naturalWidth/complete, and layered opacity handoff.
+
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { AnimatedWords } from "@/components/animated-words";
@@ -138,7 +140,7 @@ export function OffMenuWorkHero({
         ) : null}
         <div
           ref={gradientRef}
-          className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
+          className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"
         />
       </div>
 
@@ -148,6 +150,7 @@ export function OffMenuWorkHero({
             as="h1"
             text={title}
             className="sf-title-xl max-w-[12ch] text-white"
+            lineClassName="leading-[1.04]"
             delay={transitionMatches ? 0.24 : 0.28}
           />
           {description ? (

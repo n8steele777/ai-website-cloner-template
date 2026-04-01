@@ -1,7 +1,6 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -620,11 +619,7 @@ export function OffMenuHomepage({
 
   return (
     <main className="min-h-screen">
-      <StudioFinityHeader
-        activeHref="/work"
-        links={navigationLinks}
-        overlay
-      />
+      <StudioFinityHeader activeHref="/work" links={navigationLinks} />
 
       <div ref={scrollTrackRef} className="relative" style={{ height: "1000vh" }}>
         <section
@@ -703,14 +698,15 @@ export function OffMenuHomepage({
                         }}
                       >
                         <div className="absolute inset-0">
-                          <img
-                            src={imageSrc}
-                            alt=""
-                            width={600}
-                            height={600}
-                            decoding="async"
-                            className="absolute inset-0 h-full w-full object-cover"
-                          />
+                          <div className="relative size-full">
+                            <Image
+                              src={imageSrc}
+                              alt=""
+                              fill
+                              sizes="(max-width: 768px) 30vw, 180px"
+                              className="object-cover"
+                            />
+                          </div>
                         </div>
                       </Link>
                     );
@@ -770,7 +766,7 @@ export function OffMenuHomepage({
             </div>
 
             <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 px-8 md:bottom-4 md:top-auto md:translate-y-0">
-              <div className="relative flex items-center justify-center py-3 [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)]">
+              <div className="relative flex items-center justify-center py-3 mask-[linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)]">
                 <div className="relative flex w-full justify-center pointer-events-none">
                   {caseStudies.map((caseStudy, index) => (
                     <div

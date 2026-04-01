@@ -7,6 +7,7 @@ import { AgentationProvider } from "@/components/agentation-provider";
 import { CaseStudyTransitionProvider } from "@/components/case-study-transition-provider";
 import { PageTransitionProvider } from "@/components/page-transition-provider";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const geistSans = GeistSans;
@@ -17,18 +18,6 @@ const ohNavFont = localFont({
   variable: "--font-oh-pp",
   weight: "400 700",
 });
-
-function getSiteUrl() {
-  const candidate =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000");
-
-  return candidate.startsWith("http") ? candidate : `https://${candidate}`;
-}
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -48,9 +37,29 @@ export const metadata: Metadata = {
   manifest: "/seo/manifest.webmanifest",
   icons: {
     icon: [
-      { url: "/seo/favicon.ico", sizes: "256x256", type: "image/x-icon" },
-      { url: "/seo/favicon-light.svg" },
+      {
+        url: "/logos/Favi%20Dark.png",
+        type: "image/png",
+        sizes: "200x200",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/logos/Favi%20Light.png",
+        type: "image/png",
+        sizes: "200x200",
+        media: "(prefers-color-scheme: dark)",
+      },
+      {
+        url: "/logos/Favi%20Dark.png",
+        type: "image/png",
+        sizes: "200x200",
+      },
     ],
+    apple: {
+      url: "/logos/Favi%20Dark.png",
+      type: "image/png",
+      sizes: "200x200",
+    },
   },
   openGraph: {
     title: "Studio Finity",
@@ -61,7 +70,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/seo/opengraph.jpg",
+        url: "/logos/SF-Social-Share.png",
         width: 1200,
         height: 630,
         alt: "Studio Finity",
@@ -73,7 +82,7 @@ export const metadata: Metadata = {
     title: "Studio Finity",
     description:
       "Studio Finity is a design studio working across brand, digital, and visual storytelling.",
-    images: ["/seo/opengraph.jpg"],
+    images: ["/logos/SF-Social-Share.png"],
   },
 };
 
@@ -88,27 +97,9 @@ export default function RootLayout({
       var isIOSWebKit = /iPhone|iPad|iPod/i.test(ua) && /AppleWebKit/i.test(ua);
       var isDesktopSafari = /Safari/i.test(ua) && !/Chrome|Chromium|EdgiOS|FxiOS|Android/i.test(ua);
 
-      function updateOhMiniNavProgress() {
-        var viewportHeight = window.innerHeight || 1;
-        var revealStart = viewportHeight * 0.46;
-        var revealEnd = viewportHeight * 0.87;
-        var rawProgress = (window.scrollY - revealStart) / Math.max(revealEnd - revealStart, 1);
-        var revealProgress = Math.min(1, Math.max(0, rawProgress));
-
-        document.documentElement.style.setProperty("--sf-oh-mini-progress", String(revealProgress));
-        document.documentElement.style.setProperty(
-          "--sf-oh-mini-pointer",
-          revealProgress > 0.04 ? "auto" : "none"
-        );
-      }
-
       if (isIOSWebKit || isDesktopSafari) {
         document.documentElement.classList.add("is-safari");
       }
-
-      updateOhMiniNavProgress();
-      window.addEventListener("scroll", updateOhMiniNavProgress, { passive: true });
-      window.addEventListener("resize", updateOhMiniNavProgress);
     })();
   `;
 

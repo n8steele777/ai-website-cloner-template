@@ -2,6 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element */
 
+// Native <img>: fixed overlay “flight” uses seamless src swaps and opacity handoff.
+
 import {
   createContext,
   useCallback,

@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 
 type AnimatedWordsProps<T extends ElementType = "p"> = {
   as?: T;
+  /** Animate each newline-separated line as one unit (smoother for multi-word hero copy). */
+  byLine?: boolean;
   className?: string;
   delay?: number;
   duration?: number;
@@ -22,6 +24,7 @@ type AnimatedWordsProps<T extends ElementType = "p"> = {
 
 export function AnimatedWords<T extends ElementType = "p">({
   as,
+  byLine = false,
   className,
   delay = 0,
   duration = 0.82,
@@ -61,6 +64,63 @@ export function AnimatedWords<T extends ElementType = "p">({
 
     if (!root || lineNodes.length === 0) {
       return;
+    }
+
+    if (byLine) {
+      let cancelled = false;
+      let lineTimeline: gsap.core.Timeline | null = null;
+
+      const initByLine = () => {
+        if (cancelled) {
+          return;
+        }
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          gsap.set(lineNodes, { autoAlpha: 1, yPercent: 0 });
+          return;
+        }
+
+        gsap.set(lineNodes, {
+          autoAlpha: 0,
+          force3D: true,
+          willChange: "transform, opacity",
+          yPercent: 38,
+        });
+
+        if (!pageReady) {
+          return;
+        }
+
+        lineTimeline = gsap.timeline({
+          defaults: {
+            duration,
+            ease: "power3.out",
+            overwrite: "auto",
+          },
+          onComplete: () => {
+            gsap.set(lineNodes, { clearProps: "willChange" });
+          },
+        });
+        lineTimeline.to(lineNodes, {
+          autoAlpha: 1,
+          delay,
+          stagger,
+          yPercent: 0,
+        });
+      };
+
+      const readyPromise =
+        "fonts" in document ? document.fonts.ready.catch(() => undefined) : Promise.resolve();
+
+      void readyPromise.then(() => {
+        window.requestAnimationFrame(initByLine);
+      });
+
+      return () => {
+        cancelled = true;
+        lineTimeline?.kill();
+        gsap.killTweensOf(lineNodes);
+      };
     }
 
     const observers: IntersectionObserver[] = [];
@@ -202,6 +262,7 @@ export function AnimatedWords<T extends ElementType = "p">({
       ctx.revert();
     };
   }, [
+    byLine,
     delay,
     duration,
     lines.length,

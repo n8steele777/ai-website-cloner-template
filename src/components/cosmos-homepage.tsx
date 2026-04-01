@@ -1,12 +1,13 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import NextImage from "next/image";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import gsap from "gsap";
 import { AnimatedWords } from "@/components/animated-words";
 import { ArrowRightIcon } from "@/components/icons";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { TransitionLink } from "@/components/transition-link";
+import { offMenuHeroWords } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import type {
   CosmosButton,
@@ -247,10 +248,10 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
     data.principles.items[activePrincipleIndex] ?? data.principles.items[0] ?? null;
 
   return (
-    <main className="min-h-screen bg-[var(--sf-bg)] text-[var(--sf-text)]">
+    <main className="min-h-screen bg-(--sf-bg) text-(--sf-text)">
       <StudioFinityHeader links={data.headerLinks} actions={data.headerActions} activeHref="/" />
 
-      <section className="sticky top-0 z-0 -mt-[72px] flex h-dvh flex-col items-center justify-center overflow-hidden bg-[var(--sf-bg)] md:-mt-[105px]">
+      <section className="sticky top-0 z-0 -mt-[72px] flex h-dvh flex-col items-center justify-center overflow-hidden bg-(--sf-bg) md:-mt-[105px]">
         <CosmosHeroWhirl imageUrls={data.heroSpiralImages} filmProgress={filmHandoffProgress} />
 
         <div style={heroHeadlineStyle}>
@@ -267,17 +268,17 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         viewportWidth={heroViewportWidth}
       />
 
-      <div className="relative z-20 bg-[var(--sf-bg)]">
+      <div className="relative z-20 bg-(--sf-bg)">
         <section className="sf-home-section">
           <div className="sf-home-section-inner sf-home-divider">
             <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
               <SectionHeading section={data.brandIntro} titleClassName="max-w-[10ch]" />
 
-              <div className="max-w-[43rem]">
+              <div className="max-w-172">
                 <p className="sf-editorial-lead">
                   {data.brandIntro.body}
                 </p>
-                <p className="sf-body-copy mt-6 max-w-[36rem]">
+                <p className="sf-body-copy mt-6 max-w-xl">
                   {data.brandIntro.supportingText}
                 </p>
               </div>
@@ -312,8 +313,8 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                           </span>
                           <span
                             className={cn(
-                              "sf-title-lg max-w-[30rem] transition-colors",
-                              isActive ? "text-[var(--sf-text)]" : "text-black/38",
+                              "sf-title-lg max-w-120 transition-colors",
+                              isActive ? "text-(--sf-text)" : "text-black/38",
                             )}
                           >
                             {principle.title}
@@ -322,7 +323,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
 
                         {isActive ? (
                           <div className="pb-4 pl-12 lg:hidden">
-                            <p className="sf-body-copy max-w-[28rem]">
+                            <p className="sf-body-copy max-w-md">
                               {principle.supportingText}
                             </p>
                           </div>
@@ -336,7 +337,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                   {activePrinciple ? (
                     <div className="border-l border-black/10 pl-6 pt-1">
                       <p className="sf-eyebrow">{activePrinciple.label}</p>
-                      <p className="sf-body-copy mt-3 max-w-[22rem]">
+                      <p className="sf-body-copy mt-3 max-w-88">
                         {activePrinciple.supportingText}
                       </p>
                     </div>
@@ -384,9 +385,10 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
               as="h2"
               text={data.contactCta.title}
               className="sf-display-page sf-display-tight mx-auto mt-3 max-w-[10ch]"
+              lineClassName="leading-[0.84]"
               triggerOnView
             />
-            <p className="sf-body-copy mx-auto mt-5 max-w-[30rem]">
+            <p className="sf-body-copy mx-auto mt-5 max-w-120">
               {data.contactCta.supportingText}
             </p>
             <div className="mt-8 flex justify-center">
@@ -399,59 +401,187 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
   );
 }
 
+const HERO_INTRO_SWAP_MS = 2300;
+
+/**
+ * Opens with the two-line display hook, then matches `/work`: caption, max-w-[28ch],
+ * inline word spans for normal wrapping.
+ */
 function HeroHeadline() {
-  const [showSecondMessage, setShowSecondMessage] = useState(false);
+  const [showMainCopy, setShowMainCopy] = useState(false);
+  const wordInnerRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const introLineRefs = useRef<Array<HTMLSpanElement | null>>([]);
 
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      setShowSecondMessage(true);
-    }, 2500);
+  useLayoutEffect(() => {
+    const nodes = introLineRefs.current.filter(Boolean);
+    if (nodes.length === 0) {
+      return;
+    }
 
-    return () => window.clearTimeout(timeoutId);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.set(nodes, { y: 0 });
+      return;
+    }
+
+    gsap.set(nodes, { y: "115%" });
+
+    let cancelled = false;
+    const run = () => {
+      if (cancelled) {
+        return;
+      }
+
+      gsap.fromTo(
+        nodes,
+        { y: "115%" },
+        {
+          y: 0,
+          duration: 0.68,
+          delay: 0.1,
+          ease: "power4.out",
+          stagger: 0.08,
+        },
+      );
+    };
+
+    const fontsReady =
+      "fonts" in document ? document.fonts.ready.catch(() => undefined) : Promise.resolve();
+
+    void fontsReady.then(() => {
+      window.requestAnimationFrame(run);
+    });
+
+    return () => {
+      cancelled = true;
+      gsap.killTweensOf(nodes);
+    };
   }, []);
 
-  return (
-    <div className="relative z-10 flex min-h-[12rem] items-center justify-center px-5 md:min-h-[16rem] md:px-8">
-      <div className="relative w-full max-w-[min(92vw,78rem)]">
-        <div
-          className={cn(
-            "absolute inset-0 flex items-center justify-center will-change-transform transition-[opacity,transform,filter] duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-            showSecondMessage
-              ? "pointer-events-none -translate-y-[4%] scale-[0.985] opacity-0 blur-[4px]"
-              : "translate-y-0 scale-100 opacity-100 blur-0",
-          )}
-        >
-          <AnimatedWords
-            key="hero-sharper-execution"
-            as="h1"
-            text={"Sharper\nexecution."}
-            className="sf-brand-display max-w-[9ch] text-center"
-            lineClassName="leading-[0.88]"
-            delay={0.12}
-          />
-        </div>
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ms = reduced ? 900 : HERO_INTRO_SWAP_MS;
+    const id = window.setTimeout(() => setShowMainCopy(true), ms);
+    return () => window.clearTimeout(id);
+  }, []);
 
-        <div
-          className={cn(
-            "flex items-center justify-center will-change-transform transition-[opacity,transform,filter] duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-            showSecondMessage
-              ? "translate-y-0 scale-100 opacity-100 blur-0"
-              : "pointer-events-none translate-y-[4%] scale-[0.985] opacity-0 blur-[4px]",
-          )}
+  useLayoutEffect(() => {
+    if (!showMainCopy) {
+      return;
+    }
+
+    const nodes = wordInnerRefs.current.filter(Boolean);
+    if (nodes.length === 0) {
+      return;
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.set(nodes, { y: 0 });
+      return;
+    }
+
+    gsap.set(nodes, { y: "115%" });
+
+    let cancelled = false;
+    const run = () => {
+      if (cancelled) {
+        return;
+      }
+
+      gsap.fromTo(
+        nodes,
+        { y: "115%" },
+        {
+          y: 0,
+          duration: 0.62,
+          delay: 0.18,
+          ease: "power4.out",
+          stagger: 0.03,
+        },
+      );
+    };
+
+    const fontsReady =
+      "fonts" in document ? document.fonts.ready.catch(() => undefined) : Promise.resolve();
+
+    void fontsReady.then(() => {
+      window.requestAnimationFrame(run);
+    });
+
+    return () => {
+      cancelled = true;
+      gsap.killTweensOf(nodes);
+    };
+  }, [showMainCopy]);
+
+  const introHidden = showMainCopy;
+
+  return (
+    <div className="relative z-10 grid w-full place-items-center px-5 md:px-8">
+      <p
+        className={cn(
+          "col-start-1 row-start-1 flex max-w-[12ch] flex-col items-center text-center will-change-[opacity,transform]",
+          "transition-[opacity,transform] duration-560 motion-reduce:transition-none",
+          "ease-[cubic-bezier(0.22,1,0.28,1)]",
+        )}
+        style={{
+          opacity: introHidden ? 0 : 1,
+          pointerEvents: introHidden ? "none" : "auto",
+          transform: introHidden ? "translateY(-0.25rem)" : "translateY(0)",
+        }}
+        aria-hidden={introHidden}
+      >
+        <span
+          className="block overflow-hidden py-[0.15em]"
+          style={{ marginBlock: "-0.15em" }}
         >
-          {showSecondMessage ? (
-            <AnimatedWords
-              key="hero-studio-finity-message"
-              as="h1"
-              text={"STUDIO FINITY is a design studio\nshaping how brands look,\nmove, and show up."}
-              className="mx-auto max-w-[18ch] text-center text-[1.55rem] font-medium leading-[1.08] tracking-[-0.03em] text-[var(--sf-text)] md:text-[2.1rem]"
-              lineClassName="leading-[1.08]"
-              delay={0.04}
-              stagger={0.022}
-            />
-          ) : null}
-        </div>
-      </div>
+          <span
+            ref={(element) => {
+              introLineRefs.current[0] = element;
+            }}
+            className="sf-brand-display block leading-[0.88]"
+            style={{ transform: "translateY(115%)" }}
+          >
+            Sharper
+          </span>
+        </span>
+        <span
+          className="block overflow-hidden py-[0.15em]"
+          style={{ marginBlock: "-0.15em" }}
+        >
+          <span
+            ref={(element) => {
+              introLineRefs.current[1] = element;
+            }}
+            className="sf-brand-display block leading-[0.88]"
+            style={{ transform: "translateY(115%)" }}
+          >
+            execution.
+          </span>
+        </span>
+      </p>
+
+      {showMainCopy ? (
+        <h1 className="col-start-1 row-start-1 sf-caption pointer-events-auto max-w-[28ch] text-center text-pretty leading-none text-(--sf-text) md:text-base">
+          {offMenuHeroWords.map((word, index) => (
+            <span
+              key={`${word}-${index}`}
+              className="inline-block overflow-hidden py-[0.15em]"
+              style={{ marginBlock: "-0.15em" }}
+            >
+              <span
+                ref={(element) => {
+                  wordInnerRefs.current[index] = element;
+                }}
+                className="inline-block"
+                style={{ transform: "translateY(115%)" }}
+              >
+                {word}
+                {"\u00A0"}
+              </span>
+            </span>
+          ))}
+        </h1>
+      ) : null}
     </div>
   );
 }
@@ -567,7 +697,7 @@ function CosmosHeroWhirl({
     };
 
     uniqueSources.forEach((src) => {
-      const image = new Image();
+      const image = new window.Image();
       // These hero images are only drawn to canvas and never read back, so
       // forcing anonymous CORS is unnecessary and can cause some CDNs to fail
       // the load in production.
@@ -764,7 +894,7 @@ function CosmosHeroWhirl({
       }}
     >
       <div
-        className="absolute inset-0 transition-opacity duration-[2000ms] ease-out"
+        className="absolute inset-0 transition-opacity duration-2000 ease-out"
         style={{ opacity: ready ? 1 : 0 }}
       >
         <div
@@ -880,6 +1010,7 @@ function SectionHeading({
           "sf-display-page sf-display-tight",
           titleClassName,
         )}
+        lineClassName="leading-[0.84]"
         triggerOnView
       />
     </div>
@@ -901,11 +1032,15 @@ function BrandIntroShowcase({ media }: { media: CosmosMediaItem[] }) {
       </div>
 
       <div className="grid gap-3 md:grid-cols-12 md:grid-rows-[minmax(14rem,26rem)_minmax(12rem,20rem)]">
-        <img
-          src={showcaseMedia[0]?.src}
-          alt={showcaseMedia[0]?.alt ?? "Studio Finity showcase image"}
-          className="h-full w-full rounded-[30px] border border-black/8 bg-white/60 object-cover shadow-[0_30px_80px_rgba(17,17,17,0.08)] md:col-span-5 md:row-span-2"
-        />
+        <div className="relative min-h-60 md:col-span-5 md:row-span-2 md:min-h-0">
+          <NextImage
+            src={showcaseMedia[0]!.src}
+            alt={showcaseMedia[0]!.alt ?? "Studio Finity showcase image"}
+            fill
+            className="rounded-[30px] border border-black/8 bg-white/60 object-cover shadow-[0_30px_80px_rgba(17,17,17,0.08)]"
+            sizes="(max-width: 768px) 100vw, 42vw"
+          />
+        </div>
 
         <div className="grid gap-3 md:col-span-7 md:grid-cols-7 md:grid-rows-subgrid md:row-span-2">
           {showcaseMedia.slice(1, 5).map((item, index) => {
@@ -919,15 +1054,18 @@ function BrandIntroShowcase({ media }: { media: CosmosMediaItem[] }) {
                     : "md:col-span-4 md:row-span-1";
 
             return (
-              <img
+              <div
                 key={item.src}
-                src={item.src}
-                alt={item.alt}
-                className={cn(
-                  "h-full min-h-[15rem] w-full rounded-[24px] border border-black/8 bg-white/55 object-cover shadow-[0_18px_44px_rgba(17,17,17,0.06)]",
-                  layoutClassName,
-                )}
-              />
+                className={cn("relative min-h-60 w-full md:min-h-0", layoutClassName)}
+              >
+                <NextImage
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  className="rounded-[24px] border border-black/8 bg-white/55 object-cover shadow-[0_18px_44px_rgba(17,17,17,0.06)]"
+                  sizes="(max-width: 768px) 100vw, 35vw"
+                />
+              </div>
             );
           })}
         </div>
@@ -939,11 +1077,13 @@ function BrandIntroShowcase({ media }: { media: CosmosMediaItem[] }) {
 function FeaturedWorkCard({ project }: { project: CosmosFeaturedProject }) {
   return (
     <TransitionLink href={project.href} className="group/work block">
-      <div className="sf-surface overflow-hidden rounded-[28px]">
-        <img
+      <div className="sf-surface relative aspect-[0.9/1] w-full overflow-hidden rounded-[28px]">
+        <NextImage
           src={project.image.src}
           alt={project.image.alt}
-          className="aspect-[0.9/1] w-full object-cover transition-transform duration-500 ease-out group-hover/work:scale-[1.02]"
+          fill
+          className="object-cover transition-transform duration-500 ease-out group-hover/work:scale-[1.02]"
+          sizes="(max-width: 768px) 100vw, 40vw"
         />
       </div>
 
@@ -952,7 +1092,7 @@ function FeaturedWorkCard({ project }: { project: CosmosFeaturedProject }) {
         <h3 className="sf-title-md mt-2">
           {project.title}
         </h3>
-        <p className="sf-body-copy mt-2 max-w-[31rem]">
+        <p className="sf-body-copy mt-2 max-w-124">
           {project.summary}
         </p>
       </div>
@@ -962,7 +1102,7 @@ function FeaturedWorkCard({ project }: { project: CosmosFeaturedProject }) {
 
 function CapabilityCard({ item }: { item: CosmosCapability }) {
   return (
-    <div className="sf-soft-card min-h-[14rem] p-5 md:p-6">
+    <div className="sf-soft-card min-h-56 p-5 md:p-6">
       <p className="sf-title-md">
         {item.title}
       </p>

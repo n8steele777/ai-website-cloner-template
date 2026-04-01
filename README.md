@@ -60,6 +60,12 @@ Point it at a URL, run `/clone-website`, and your AI agent will inspect the site
 - [Node.js](https://nodejs.org/) 24+
 - An AI coding agent (see [Supported Platforms](#supported-platforms))
 
+## Deploying to Vercel
+
+See **[docs/deployment.md](docs/deployment.md)** for environment variables (`NEXT_PUBLIC_SITE_URL`, Sanity keys on Vercel), SEO routes, and `npm run check`.
+
+Copy `.env.example` to `.env.local` and fill in values as needed.
+
 ## Tech Stack
 
 - **Next.js 16** — App Router, React 19, TypeScript strict

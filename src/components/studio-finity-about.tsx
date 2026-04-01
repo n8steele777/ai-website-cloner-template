@@ -190,7 +190,7 @@ export function StudioFinityAbout({
               as="h1"
               text={content.hero}
               className="about-hero-display sf-display-tight max-w-[13ch]"
-              lineClassName="leading-[0.92]"
+              lineClassName="leading-[0.84]"
               delay={0.08}
               stagger={0.022}
               highlightWords={["Studio", "Finity"]}

@@ -30,11 +30,7 @@ export function OffMenuWorkDetail({
 
   return (
     <main className="offmenu-shell bg-background text-foreground">
-      <StudioFinityHeader
-        activeHref="/work"
-        links={navigationLinks}
-        overlay
-      />
+      <StudioFinityHeader activeHref="/work" links={navigationLinks} />
 
       <div className="min-h-screen">
         <OffMenuWorkHero
@@ -61,10 +57,11 @@ export function OffMenuWorkDetail({
             as="h2"
             text="Want to see more?"
             className="sf-title-xl mb-8 md:mb-10"
+            lineClassName="leading-[1.04]"
             triggerOnView
           />
 
-          <div className="group/row flex flex-col gap-4 md:min-h-[32rem] md:flex-row md:gap-6 lg:min-h-[36rem]">
+          <div className="group/row flex flex-col gap-4 md:min-h-128 md:flex-row md:gap-6 lg:min-h-144">
             {relatedProjects.map((relatedProject, index) => {
               const relatedImage = relatedProject.thumbnailLightXl;
 
@@ -86,7 +83,7 @@ export function OffMenuWorkDetail({
                           alt={relatedProject.title}
                           fill
                           sizes="(max-width: 767px) 100vw, 50vw"
-                          className="absolute inset-0 h-full w-full object-cover"
+                          className="object-cover"
                         />
                       </div>
                     </div>
@@ -104,6 +101,7 @@ export function OffMenuWorkDetail({
           as="h2"
           text={project.ctaTitle}
           className="sf-title-xl text-center"
+          lineClassName="leading-[1.04]"
           triggerOnView
         />
         <a
@@ -248,7 +246,7 @@ function WorkGalleryCard({
 
   return (
     <div
-      className={`${cardClassName ?? ""} overflow-hidden rounded-[20px] bg-black/[0.03] md:rounded-[28px]`}
+      className={`${cardClassName ?? ""} overflow-hidden rounded-[20px] bg-black/3 md:rounded-[28px]`}
       style={{ aspectRatio: `${aspectRatio}` }}
     >
       {item.kind === "video" ? (
