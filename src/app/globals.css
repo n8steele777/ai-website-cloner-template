@@ -714,14 +714,6 @@ html.lenis {
   }
 }
 
-/* Base UI drawer: snap open/close for reduced-motion users */
-@media (prefers-reduced-motion: reduce) {
-  [data-slot="drawer-backdrop"],
-  [data-slot="drawer-popup"] {
-    transition-duration: 0.01ms !important;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .work-card-elevated {
     transition: none;

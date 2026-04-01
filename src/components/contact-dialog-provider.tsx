@@ -27,13 +27,13 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const CONTACT_DRAWER_LOGO = "/logos/Studio%20Finity%20Text%20Logo.png";
 
-/** Scroll viewport: fixed height so validation / API errors only scroll inside — sheet shell does not resize. */
-const FORM_SCROLL_BOX =
-  "h-[clamp(17.5rem,46dvh,26rem)] min-h-[17.5rem] w-full shrink-0 touch-auto overflow-y-auto overflow-x-hidden overscroll-contain touch-pan-y";
+/** Middle section: grows under the header; min-h-0 so flex lets this shrink and scroll internally. */
+const CONTACT_SCROLL_SECTION =
+  "min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain scroll-pb-6 touch-auto touch-pan-y";
 
-/** Footer: fixed block height so two-button vs one-button never changes sheet geometry. */
+/** Footer sits below the scroll region (no overlap). */
 const FOOTER_SHELL =
-  "flex h-[10.5rem] shrink-0 flex-col justify-end border-t border-border/40 bg-muted/25 pt-6 sm:h-[7.5rem] sm:pt-7";
+  "shrink-0 border-t border-border/40 bg-background px-6 pt-4 pb-[max(0.75rem,calc(env(safe-area-inset-bottom,0px)+0.5rem))] sm:px-8 sm:pb-5 sm:pt-5";
 
 const singleLineFieldClassName = cn(
   "box-border block h-12 max-h-12 w-full min-w-0 max-w-full shrink-0 break-words rounded-xl border bg-background px-4 py-0 text-[15px] leading-[2.75rem] text-foreground",
@@ -44,7 +44,7 @@ const singleLineFieldClassName = cn(
 );
 
 const textareaFieldClassName = cn(
-  "box-border block min-h-[8.75rem] w-full min-w-0 max-w-full max-h-[min(40vh,20rem)] resize-y break-words rounded-xl border bg-background px-4 py-3 text-[15px] leading-normal text-foreground",
+  "box-border block min-h-[7rem] w-full min-w-0 max-w-full max-h-[min(36vh,18rem)] resize-y break-words rounded-xl border bg-background px-4 py-3 text-[15px] leading-normal text-foreground sm:min-h-[8.75rem] sm:max-h-[min(40vh,20rem)]",
   "placeholder:text-muted-foreground/50",
   "outline-none transition-[border-color,box-shadow] duration-380 ease-sf-out",
   "focus-visible:border-foreground/25 focus-visible:ring-2 focus-visible:ring-ring/35",
@@ -61,16 +61,14 @@ export function useContactDialog(): ContactDialogContextValue {
 
 export function ContactDialogProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [sheetEpoch, setSheetEpoch] = useState(0);
   const openContact = useCallback(() => {
-    setSheetEpoch((e) => e + 1);
     setOpen(true);
   }, []);
 
   return (
     <ContactDialogContext.Provider value={{ openContact }}>
       {children}
-      <ContactFormSheet key={sheetEpoch} open={open} onOpenChange={setOpen} />
+      <ContactFormSheet open={open} onOpenChange={setOpen} />
     </ContactDialogContext.Provider>
   );
 }
@@ -85,6 +83,7 @@ function ContactFormSheet({
   const titleId = useId();
   const descriptionId = useId();
   const successCloseRef = useRef<HTMLButtonElement | null>(null);
+  const wasOpenRef = useRef(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -103,6 +102,20 @@ function ContactFormSheet({
       submitAbortRef.current?.abort();
       submitAbortRef.current = null;
     }
+  }, [open]);
+
+  useEffect(() => {
+    if (open && !wasOpenRef.current) {
+      setName("");
+      setEmail("");
+      setMessage("");
+      setHoneypot("");
+      setSubmitOk(false);
+      setSubmitAttempted(false);
+      setFormError(null);
+      setIsSubmitting(false);
+    }
+    wasOpenRef.current = open;
   }, [open]);
 
   useEffect(() => {
@@ -287,36 +300,35 @@ function ContactFormSheet({
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
         className={cn(
-          "bg-background! text-foreground! border-border/40 shadow-(--sf-shadow-sheet-up)",
+          "bg-background! text-foreground! flex max-h-[min(88dvh,calc(100dvh-2.5rem))] flex-col border-border/40 shadow-(--sf-shadow-sheet-up)",
           "before:rounded-t-[calc(var(--radius-2xl)-1px)]!",
           "after:bg-background!",
         )}
       >
-        <div className="mx-auto flex w-full min-w-0 max-w-lg flex-col">
-          <div className="relative flex w-full flex-col overflow-hidden">
-            <p id={titleId} className="sr-only">
-              Contact Studio Finity
-            </p>
-            <p id={descriptionId} className="sr-only">
-              Send a message and we will reply by email.
-            </p>
+        <div className="mx-auto flex min-h-0 w-full max-w-lg flex-1 flex-col">
+          <p id={titleId} className="sr-only">
+            Contact Studio Finity
+          </p>
+          <p id={descriptionId} className="sr-only">
+            Send a message and we will reply by email.
+          </p>
 
-            <div className="mx-auto w-full min-w-0 max-w-lg shrink-0 px-6 pb-0 pt-3 sm:px-8 sm:pt-4">
-              <div className="flex justify-center pb-6 sm:pb-8">
-                <Image
-                  src={CONTACT_DRAWER_LOGO}
-                  alt="Studio Finity"
-                  width={240}
-                  height={42}
-                  className="h-[18px] w-auto max-w-[200px] object-contain sm:h-5"
-                  priority
-                />
-              </div>
+          <div className="shrink-0 px-6 pb-0 pt-3 sm:px-8 sm:pt-4">
+            <div className="flex justify-center pb-5 sm:pb-6">
+              <Image
+                src={CONTACT_DRAWER_LOGO}
+                alt="Studio Finity"
+                width={240}
+                height={42}
+                className="h-[18px] w-auto max-w-[200px] object-contain sm:h-5"
+                priority
+              />
             </div>
+          </div>
 
-            {submitOk ? (
+          {submitOk ? (
               <>
-                <div className={cn(FORM_SCROLL_BOX, "px-6 sm:px-8")}>
+                <div className={cn(CONTACT_SCROLL_SECTION, "px-6 sm:px-8")}>
                   <div className="flex h-full min-h-0 flex-col items-center justify-center text-center sm:items-start sm:text-left">
                     <span className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-foreground/6">
                       <CheckCircle2Icon
@@ -332,27 +344,25 @@ function ContactFormSheet({
                   </div>
                 </div>
                 <div className={FOOTER_SHELL}>
-                  <div className="mx-auto w-full max-w-lg px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-1 sm:px-8 sm:pb-9 sm:pt-2">
-                    <div className="flex justify-center">
-                      <DrawerClose
-                        ref={successCloseRef}
-                        type="button"
-                        className={cn(
-                          buttonVariants({ variant: "default", size: "lg" }),
-                          "h-12 w-full min-w-0 rounded-full sm:h-12 sm:max-w-md sm:px-8",
-                        )}
-                      >
-                        Close
-                      </DrawerClose>
-                    </div>
+                  <div className="flex justify-center">
+                    <DrawerClose
+                      ref={successCloseRef}
+                      type="button"
+                      className={cn(
+                        buttonVariants({ variant: "default", size: "lg" }),
+                        "h-12 w-full min-w-0 rounded-full sm:h-12 sm:max-w-md sm:px-8",
+                      )}
+                    >
+                      Close
+                    </DrawerClose>
                   </div>
                 </div>
               </>
             ) : (
               <>
-                <div className={cn(FORM_SCROLL_BOX, "px-6 sm:px-8")}>
+                <div className={cn(CONTACT_SCROLL_SECTION, "px-6 sm:px-8")}>
                   <form
-                    className="relative space-y-8 pb-6 sm:space-y-8 sm:pb-7"
+                    className="relative space-y-6 pb-4 sm:space-y-6"
                     onSubmit={onSubmit}
                     id="studio-contact-form"
                     noValidate
@@ -404,20 +414,16 @@ function ContactFormSheet({
                                 nameHasError ? "border-destructive" : "border-border/90",
                               )}
                             />
-                            <div
-                              className="min-h-5.5"
-                              aria-live="polite"
-                            >
-                              {nameErrorText ? (
-                                <p
-                                  id="contact-name-error"
-                                  className="sf-caption text-destructive"
-                                  role="alert"
-                                >
-                                  {nameErrorText}
-                                </p>
-                              ) : null}
-                            </div>
+                            {nameErrorText ? (
+                              <p
+                                id="contact-name-error"
+                                className="sf-caption mt-1.5 text-destructive"
+                                role="alert"
+                                aria-live="polite"
+                              >
+                                {nameErrorText}
+                              </p>
+                            ) : null}
                           </div>
                         </div>
 
@@ -455,20 +461,16 @@ function ContactFormSheet({
                                 emailHasError ? "border-destructive" : "border-border/90",
                               )}
                             />
-                            <div
-                              className="min-h-5.5"
-                              aria-live="polite"
-                            >
-                              {emailErrorText ? (
-                                <p
-                                  id="contact-email-error"
-                                  className="sf-caption text-destructive"
-                                  role="alert"
-                                >
-                                  {emailErrorText}
-                                </p>
-                              ) : null}
-                            </div>
+                            {emailErrorText ? (
+                              <p
+                                id="contact-email-error"
+                                className="sf-caption mt-1.5 text-destructive"
+                                role="alert"
+                                aria-live="polite"
+                              >
+                                {emailErrorText}
+                              </p>
+                            ) : null}
                           </div>
                         </div>
 
@@ -506,40 +508,33 @@ function ContactFormSheet({
                                   : "border-border/90",
                               )}
                             />
-                            <div
-                              className="min-h-5.5"
-                              aria-live="polite"
-                            >
-                              {messageErrorText ? (
-                                <p
-                                  id="contact-message-error"
-                                  className="sf-caption text-destructive"
-                                  role="alert"
-                                >
-                                  {messageErrorText}
-                                </p>
-                              ) : null}
-                            </div>
+                            {messageErrorText ? (
+                              <p
+                                id="contact-message-error"
+                                className="sf-caption mt-1.5 text-destructive"
+                                role="alert"
+                                aria-live="polite"
+                              >
+                                {messageErrorText}
+                              </p>
+                            ) : null}
                           </div>
                         </div>
 
-                        <div className="min-h-15">
-                          {formError ? (
-                            <div
-                              className="rounded-lg border border-destructive/35 bg-destructive/5 px-3 py-2.5"
-                              role="alert"
-                              aria-live="polite"
-                            >
-                              <p className="sf-caption text-destructive">{formError}</p>
-                            </div>
-                          ) : null}
-                        </div>
+                        {formError ? (
+                          <div
+                            className="rounded-lg border border-destructive/35 bg-destructive/5 px-3 py-2.5"
+                            role="alert"
+                            aria-live="polite"
+                          >
+                            <p className="sf-caption text-destructive">{formError}</p>
+                          </div>
+                        ) : null}
                       </form>
                     </div>
 
                     <div className={FOOTER_SHELL}>
-                      <div className="mx-auto w-full max-w-lg px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-1 sm:px-8 sm:pb-9 sm:pt-2">
-                        <div className="flex flex-col-reverse gap-3.5 sm:flex-row sm:gap-4">
+                      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:gap-3">
                           <Button
                             type="submit"
                             form="studio-contact-form"
@@ -575,12 +570,10 @@ function ContactFormSheet({
                           >
                             Cancel
                           </DrawerClose>
-                        </div>
                       </div>
                     </div>
               </>
             )}
-          </div>
         </div>
       </DrawerPopup>
     </Drawer>
