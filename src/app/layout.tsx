@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
+import localFont from "next/font/local";
 import Script from "next/script";
 import { AgentationProvider } from "@/components/agentation-provider";
 import { CaseStudyTransitionProvider } from "@/components/case-study-transition-provider";
@@ -10,6 +11,12 @@ import "./globals.css";
 
 const geistSans = GeistSans;
 const geistMono = GeistMono;
+const ohNavFont = localFont({
+  src: "./fonts/PPNeueMontreal-Variable.woff2",
+  display: "swap",
+  variable: "--font-oh-pp",
+  weight: "400 700",
+});
 
 function getSiteUrl() {
   const candidate =
@@ -80,16 +87,35 @@ export default function RootLayout({
       var ua = navigator.userAgent;
       var isIOSWebKit = /iPhone|iPad|iPod/i.test(ua) && /AppleWebKit/i.test(ua);
       var isDesktopSafari = /Safari/i.test(ua) && !/Chrome|Chromium|EdgiOS|FxiOS|Android/i.test(ua);
+
+      function updateOhMiniNavProgress() {
+        var viewportHeight = window.innerHeight || 1;
+        var revealStart = viewportHeight * 0.46;
+        var revealEnd = viewportHeight * 0.87;
+        var rawProgress = (window.scrollY - revealStart) / Math.max(revealEnd - revealStart, 1);
+        var revealProgress = Math.min(1, Math.max(0, rawProgress));
+
+        document.documentElement.style.setProperty("--sf-oh-mini-progress", String(revealProgress));
+        document.documentElement.style.setProperty(
+          "--sf-oh-mini-pointer",
+          revealProgress > 0.04 ? "auto" : "none"
+        );
+      }
+
       if (isIOSWebKit || isDesktopSafari) {
         document.documentElement.classList.add("is-safari");
       }
+
+      updateOhMiniNavProgress();
+      window.addEventListener("scroll", updateOhMiniNavProgress, { passive: true });
+      window.addEventListener("resize", updateOhMiniNavProgress);
     })();
   `;
 
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full font-sans antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${ohNavFont.variable} h-full font-sans antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full bg-background text-foreground font-sans">

@@ -55,7 +55,7 @@
   --font-display: var(--font-geist-sans), Arial, sans-serif;
   --font-brand: var(--font-geist-sans), Arial, sans-serif;
   --font-heading: var(--font-geist-sans), Arial, sans-serif;
-  --font-oh-nav: var(--font-geist-sans), Arial, sans-serif;
+  --font-oh-nav: var(--font-oh-pp), Arial, sans-serif;
   --sf-weight-body: 450;
   --sf-weight-strong: 500;
   --sf-weight-ui: 500;
@@ -110,6 +110,8 @@
   --sf-inverse-text: #ffffff;
   --sf-focus-ring: rgba(17, 17, 17, 0.14);
   --sf-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --sf-oh-mini-progress: 0;
+  --sf-oh-mini-pointer: none;
 }
 
 
@@ -194,7 +196,7 @@ html.lenis {
 }
 
 .sf-oh-wordmark {
-  font-family: var(--font-brand);
+  font-family: var(--font-oh-nav);
   font-weight: 500;
   letter-spacing: -0.045em;
 }

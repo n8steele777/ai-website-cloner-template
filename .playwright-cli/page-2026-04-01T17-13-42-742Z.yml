@@ -1,0 +1,89 @@
+- main [ref=e3]:
+  - generic [ref=e5]:
+    - link "Studio Finity home" [ref=e6] [cursor=pointer]:
+      - /url: /
+      - text: Studio Finity
+    - navigation "Primary" [ref=e7]:
+      - generic [ref=e8]:
+        - link "About" [ref=e9] [cursor=pointer]:
+          - /url: /about
+        - generic [ref=e10]: ","
+      - link "Works" [ref=e12] [cursor=pointer]:
+        - /url: /work
+    - link "Contact" [ref=e14] [cursor=pointer]:
+      - /url: mailto:hello@studio-finity.com
+      - generic [ref=e15]: Contact
+  - generic:
+    - generic:
+      - generic:
+        - link "Contact":
+          - /url: mailto:hello@studio-finity.com
+          - generic: Contact
+      - generic:
+        - button "Menu"
+  - generic [ref=e18]:
+    - generic [ref=e22]:
+      - link "Open Baxo" [ref=e23] [cursor=pointer]:
+        - /url: /work/baxo
+      - link "Open ON" [ref=e25] [cursor=pointer]:
+        - /url: /work/on
+      - link "Open Final Command" [ref=e27] [cursor=pointer]:
+        - /url: /work/final-command
+      - link "Open Casting Crowns" [ref=e29] [cursor=pointer]:
+        - /url: /work/casting-crowns
+      - link "Open 25&E Advisory" [ref=e31] [cursor=pointer]:
+        - /url: /work/25-e-advisory
+      - link "Open Compassion International" [ref=e33] [cursor=pointer]:
+        - /url: /work/compassion-international
+      - link "Open Area 15 Ventures" [ref=e35] [cursor=pointer]:
+        - /url: /work/area-15-ventures
+      - link "Open Daddy's Chicken Shack" [ref=e37] [cursor=pointer]:
+        - /url: /work/daddys-chicken-shack
+      - link "Open SDG Forever" [ref=e39] [cursor=pointer]:
+        - /url: /work/sdg-forever
+      - link "Open Milk Tea People" [ref=e41] [cursor=pointer]:
+        - /url: /work/milk-tea-people
+      - link "Open CCU Athletics" [ref=e43] [cursor=pointer]:
+        - /url: /work/ccu-athletics
+      - link "Open Fight The New Drug" [ref=e45] [cursor=pointer]:
+        - /url: /work/fight-the-new-drug
+      - link "Open Citizens" [ref=e47] [cursor=pointer]:
+        - /url: /work/citizens
+    - heading "STUDIO FINITY is a design studio shaping how brands look, move, and show up." [level=1] [ref=e49]:
+      - generic [ref=e51]: STUDIO
+      - generic [ref=e53]: FINITY
+      - generic [ref=e55]: is
+      - generic [ref=e57]: a
+      - generic [ref=e59]: design
+      - generic [ref=e61]: studio
+      - generic [ref=e63]: shaping
+      - generic [ref=e65]: how
+      - generic [ref=e67]: brands
+      - generic [ref=e69]: look,
+      - generic [ref=e71]: move,
+      - generic [ref=e73]: and
+      - generic [ref=e75]: show
+      - generic [ref=e77]: up.
+    - generic:
+      - generic:
+        - generic:
+          - button [ref=e78] [cursor=pointer]:
+            - img [ref=e79]
+          - button [ref=e81] [cursor=pointer]:
+            - img [ref=e82]
+      - generic:
+        - generic:
+          - generic:
+            - heading "Baxo" [level=2] [ref=e85]
+            - heading "ON" [level=2] [ref=e87]
+            - heading "Final Command" [level=2] [ref=e89]
+            - heading "Casting Crowns" [level=2] [ref=e91]
+            - heading "25&E Advisory" [level=2] [ref=e93]
+            - heading "Compassion International" [level=2] [ref=e95]
+            - heading "Area 15 Ventures" [level=2] [ref=e97]
+            - heading "Daddy's Chicken Shack" [level=2] [ref=e99]
+            - heading "SDG Forever" [level=2] [ref=e101]
+            - heading "Milk Tea People" [level=2] [ref=e103]
+            - heading "CCU Athletics" [level=2] [ref=e105]
+            - heading "Fight The New Drug" [level=2] [ref=e107]
+            - heading "Citizens" [level=2] [ref=e109]
