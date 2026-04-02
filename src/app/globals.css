@@ -163,6 +163,22 @@
   --sf-shadow-media-lg: 0 30px 80px rgba(17, 17, 17, 0.08);
   --sf-shadow-media-md: 0 18px 44px rgba(17, 17, 17, 0.06);
   --sf-shadow-rule-card: 0 18px 48px rgba(17, 17, 17, 0.2);
+
+  /*
+   * Letter-spacing scale (em, relative to font size):
+   * — Body stays neutral; display gets tighter as size increases; tiny caps stay barely open.
+   */
+  --sf-tracking-body: 0em;
+  --sf-tracking-caps: 0.01em;
+  --sf-tracking-heading: -0.04em;
+  --sf-tracking-editorial: -0.035em;
+  --sf-tracking-title: -0.04em;
+  --sf-tracking-title-xl: -0.042em;
+  --sf-tracking-title-hero: -0.045em;
+  --sf-tracking-display: -0.045em;
+  --sf-tracking-display-brand: -0.05em;
+  --sf-tracking-hero: -0.055em;
+  --sf-tracking-hero-sm: -0.05em;
 }
 
 
@@ -183,7 +199,7 @@
     @apply min-h-full bg-background text-foreground;
     font-family: var(--font-body);
     font-weight: var(--sf-weight-body);
-    letter-spacing: 0;
+    letter-spacing: var(--sf-tracking-body);
     transition:
       background-color var(--sf-duration-macro) var(--sf-ease-out),
       color var(--sf-duration-macro) var(--sf-ease-out);
@@ -192,11 +208,16 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: var(--sf-weight-display);
-    letter-spacing: -0.04em;
+    letter-spacing: var(--sf-tracking-heading);
   }
 
-  p, li, span, label, input, textarea, select, button, a {
-    letter-spacing: 0;
+  /*
+   * Omit `span` — inline/line-break spans must inherit tracking from the parent
+   * (e.g. `h2.sf-display-tight` + AnimatedWords); a span reset would override
+   * inheritance and leave display stacks at body tracking (see expertise vs featured title).
+   */
+  p, li, label, input, textarea, select, button, a {
+    letter-spacing: var(--sf-tracking-body);
   }
 }
 
@@ -249,16 +270,15 @@ html.lenis {
 .sf-oh-wordmark {
   font-family: var(--font-oh-nav);
   font-weight: 500;
-  letter-spacing: -0.045em;
+  letter-spacing: var(--sf-tracking-display);
 }
 
 .sf-oh-nav-link {
   font-family: var(--font-oh-nav);
   font-size: 0.82rem;
-  font-weight: var(--sf-weight-ui);
-  letter-spacing: 0.015em;
+  font-weight: 600;
+  letter-spacing: var(--sf-tracking-body);
   line-height: 1;
-  text-transform: uppercase;
 }
 
 .sf-oh-pill {
@@ -288,7 +308,7 @@ html.lenis {
   color: var(--sf-text-subtle);
   font-size: 0.92rem;
   font-weight: var(--sf-weight-ui);
-  letter-spacing: 0;
+  letter-spacing: var(--sf-tracking-body);
   line-height: 1.3;
 }
 
@@ -296,7 +316,7 @@ html.lenis {
   color: var(--sf-text);
   font-size: 0.98rem;
   font-weight: var(--sf-weight-strong);
-  letter-spacing: 0;
+  letter-spacing: var(--sf-tracking-body);
   line-height: 1.3;
 }
 
@@ -318,18 +338,17 @@ html.lenis {
 
 .sf-eyebrow {
   color: var(--sf-text-subtle);
-  font-size: 0.78rem;
-  font-weight: var(--sf-weight-ui);
-  letter-spacing: 0.02em;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: var(--sf-tracking-body);
   line-height: 1.1;
-  text-transform: uppercase;
 }
 
 .sf-meta-label {
   color: rgba(17, 17, 17, 0.34);
   font-size: 1.05rem;
   font-weight: var(--sf-weight-ui);
-  letter-spacing: 0;
+  letter-spacing: var(--sf-tracking-body);
 }
 
 /*
@@ -343,7 +362,7 @@ html.lenis {
   color: var(--sf-text);
   font-family: var(--font-display);
   font-weight: var(--sf-weight-display);
-  letter-spacing: -0.045em;
+  letter-spacing: var(--sf-tracking-display);
   line-height: 0.82;
   text-wrap: balance;
 }
@@ -363,7 +382,7 @@ html.lenis {
 .sf-display-overlay {
   font-size: clamp(2.65rem, 7vw, 3.9rem);
   font-weight: var(--sf-weight-display);
-  letter-spacing: -0.045em;
+  letter-spacing: var(--sf-tracking-display);
   line-height: 0.94;
 }
 
@@ -372,7 +391,7 @@ html.lenis {
   font-family: var(--font-brand);
   font-size: clamp(3.4rem, 9vw, 6rem);
   font-weight: 500;
-  letter-spacing: -0.05em;
+  letter-spacing: var(--sf-tracking-display-brand);
   line-height: 0.82;
   text-wrap: balance;
 }
@@ -386,7 +405,7 @@ html.lenis {
   color: var(--sf-text-soft);
   font-size: clamp(1.35rem, 2.4vw, 1.95rem);
   font-weight: var(--sf-weight-body);
-  letter-spacing: -0.03em;
+  letter-spacing: var(--sf-tracking-editorial);
   line-height: 1.12;
 }
 
@@ -394,7 +413,7 @@ html.lenis {
   color: var(--sf-text-muted);
   font-size: 1rem;
   font-weight: var(--sf-weight-body);
-  letter-spacing: 0;
+  letter-spacing: var(--sf-tracking-body);
   line-height: 1.52;
 }
 
@@ -402,7 +421,7 @@ html.lenis {
   color: var(--sf-text-soft);
   font-size: clamp(1.05rem, 1.5vw, 1.25rem);
   font-weight: var(--sf-weight-body);
-  letter-spacing: 0;
+  letter-spacing: var(--sf-tracking-body);
   line-height: 1.24;
 }
 
@@ -411,7 +430,7 @@ html.lenis {
   font-family: var(--font-display);
   font-size: clamp(1.35rem, 2vw, 1.8rem);
   font-weight: var(--sf-weight-strong);
-  letter-spacing: -0.03em;
+  letter-spacing: var(--sf-tracking-title);
   line-height: 1.08;
 }
 
@@ -420,7 +439,7 @@ html.lenis {
   font-family: var(--font-display);
   font-size: clamp(1.45rem, 2.45vw, 2.1rem);
   font-weight: var(--sf-weight-strong);
-  letter-spacing: -0.035em;
+  letter-spacing: var(--sf-tracking-title);
   line-height: 1.08;
 }
 
@@ -429,7 +448,7 @@ html.lenis {
   font-family: var(--font-display);
   font-size: clamp(2.15rem, 4.8vw, 3.6rem);
   font-weight: var(--sf-weight-display);
-  letter-spacing: -0.04em;
+  letter-spacing: var(--sf-tracking-title-xl);
   line-height: 1.04;
 }
 
@@ -439,20 +458,20 @@ html.lenis {
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 6.2vw, 4.5rem);
   font-weight: var(--sf-weight-display);
-  letter-spacing: -0.042em;
+  letter-spacing: var(--sf-tracking-title-hero);
   line-height: 1.02;
 }
 
 .about-hero-display {
   font-size: clamp(3.2rem, 9.5vw, 7.9rem);
-  letter-spacing: -0.055em;
+  letter-spacing: var(--sf-tracking-hero);
   line-height: 0.82;
 }
 
 @media (max-width: 767px) {
   .about-hero-display {
     font-size: clamp(2.65rem, 8.8vw, 3.85rem);
-    letter-spacing: -0.05em;
+    letter-spacing: var(--sf-tracking-hero-sm);
   }
 }
 
@@ -494,7 +513,7 @@ html.lenis {
   font-family: var(--font-display);
   font-size: inherit;
   font-weight: var(--sf-weight-display);
-  letter-spacing: -0.065em;
+  letter-spacing: var(--sf-tracking-display);
   line-height: 0.92;
 }
 
@@ -511,7 +530,7 @@ html.lenis {
   font-family: var(--font-display);
   font-size: inherit;
   font-weight: var(--sf-weight-display);
-  letter-spacing: -0.06em;
+  letter-spacing: var(--sf-tracking-display);
   line-height: 0.92;
 }
 
@@ -520,17 +539,17 @@ html.lenis {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 2.5vw, 2rem);
   font-weight: var(--sf-weight-display);
-  letter-spacing: -0.04em;
+  letter-spacing: var(--sf-tracking-title);
   line-height: 1.08;
 }
 
-/* Mobile ground rules: match industries list body (e.g. "Digital Products") — .sf-body-large + text-black/92 */
+/* Mobile ground rules: match industries list body — .sf-body-large + foreground at ~92% opacity */
 @media (max-width: 1023px) {
   .sf-ground-rules-row-text {
     font-family: var(--font-body);
     font-size: clamp(1.05rem, 1.5vw, 1.25rem);
     font-weight: var(--sf-weight-body);
-    letter-spacing: 0;
+    letter-spacing: var(--sf-tracking-body);
     line-height: 1.24;
     color: rgb(17 17 17 / 0.92);
   }
@@ -556,7 +575,7 @@ html.lenis {
   color: var(--sf-inverse-text);
   font-size: 0.8rem;
   font-weight: var(--sf-weight-strong);
-  letter-spacing: 0;
+  letter-spacing: var(--sf-tracking-body);
   line-height: 1.1;
 }
 
@@ -564,7 +583,7 @@ html.lenis {
   color: rgb(255 255 255 / 0.88);
   font-size: 0.68rem;
   font-weight: var(--sf-weight-body);
-  letter-spacing: 0;
+  letter-spacing: var(--sf-tracking-body);
   line-height: 1.35;
 }
 
@@ -580,16 +599,6 @@ html.lenis {
 
 .sf-page-content {
   padding-inline: 1rem;
-}
-
-.sf-home-section {
-  padding-inline: 1rem;
-  padding-block: 5rem;
-}
-
-.sf-home-section-inner {
-  margin-inline: auto;
-  max-width: 1440px;
 }
 
 .sf-home-divider {
@@ -637,10 +646,21 @@ html.lenis {
   border-radius: 999px;
   padding: 0.875rem 1.25rem;
   font-size: 0.92rem;
-  font-weight: var(--sf-weight-ui);
-  letter-spacing: 0;
+  font-weight: 600;
+  letter-spacing: var(--sf-tracking-body);
   line-height: 1;
   white-space: nowrap;
+}
+
+/* Header: between default `Button` (h-8) and full `.sf-pill-button` (48px) for tap targets + balance */
+.sf-pill-button.sf-pill-button-compact {
+  min-height: 2.5rem;
+  height: 2.5rem;
+  min-width: 0;
+  padding-inline: 0.875rem;
+  padding-block: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .sf-pill-button-primary {
@@ -791,11 +811,6 @@ html.lenis {
 
   .sf-page-content {
     padding-inline: 2rem;
-  }
-
-  .sf-home-section {
-    padding-inline: 1.5rem;
-    padding-block: 6rem;
   }
 
   .sf-home-divider {

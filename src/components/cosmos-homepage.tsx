@@ -11,7 +11,6 @@ import {
   WORK_INDEX_GRID_GAP_CLASSNAME,
   WORK_INDEX_GRID_IMAGE_SIZES,
   WorkIndexTileContent,
-  WorkIndexTileMedia,
 } from "@/components/work-index-tile";
 import { fontsReadyPromise, GSAP_MOTION } from "@/lib/gsap-motion";
 import { getWorkIndexCardBorderRadiusPx } from "@/lib/work-hero-frame";
@@ -60,12 +59,12 @@ const HERO_BURST = {
   multiplier: 24,
   rampUp: 700,
 };
-const HERO_WHILR_SIZES: Record<WhirlSizeName, WhirlSizeConfig> = {
+const HERO_WHIRL_SIZES: Record<WhirlSizeName, WhirlSizeConfig> = {
   small: { width: 56, height: 72, area: 9632 },
   medium: { width: 72, height: 96, area: 19111 },
   large: { width: 80, height: 120, area: 18700 },
 };
-const HERO_WHILR_SIZE_CYCLE: WhirlSizeName[] = ["medium", "large", "small"];
+const HERO_WHIRL_SIZE_CYCLE: WhirlSizeName[] = ["medium", "large", "small"];
 
 function clamp(value: number, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
@@ -199,7 +198,7 @@ function buildHeroWhirlImages(imageUrls: string[]): WhirlImageConfig[] {
 
   return Array.from({ length: imageCount }, (_, index) => ({
     id: index,
-    size: HERO_WHILR_SIZE_CYCLE[index % HERO_WHILR_SIZE_CYCLE.length]!,
+    size: HERO_WHIRL_SIZE_CYCLE[index % HERO_WHIRL_SIZE_CYCLE.length]!,
     src: imageUrls[index % imageUrls.length]!,
   }));
 }
@@ -208,11 +207,30 @@ function getHeroHeadlineThreshold(viewportHeight: number) {
   return 265 / (2 * viewportHeight) + 0.02;
 }
 
+/** Shared GSAP line reveal for homepage bands (matches `AnimatedWords` by-line defaults). */
+const HOMEPAGE_LINE_REVEAL = {
+  delay: 0,
+  duration: 1.02,
+  rootMargin: "0px 0px -12% 0px",
+  stagger: 0.04,
+} as const;
+
+function splitIntroSentencesForReveal(intro: string): string[] {
+  const t = intro.trim();
+  if (!t) {
+    return [];
+  }
+  const parts = t
+    .split(/(?<=[.!?])\s+(?=[A-Za-z"(])/u)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return parts.length > 0 ? parts : [t];
+}
+
 export function CosmosHomepage({ data }: CosmosHomepageProps) {
   const [heroScrollProgress, setHeroScrollProgress] = useState(0);
   const [heroViewportHeight, setHeroViewportHeight] = useState(900);
   const [heroViewportWidth, setHeroViewportWidth] = useState(1440);
-  const [activePrincipleIndex, setActivePrincipleIndex] = useState(0);
   const featuredThumbRefs = useRef<Array<HTMLDivElement | null>>([]);
   const featuredOpeningRef = useRef(false);
   const { prefetchCaseStudy, startCaseStudyTransition, state: caseStudyTransitionState } =
@@ -249,7 +267,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
     };
   }, []);
 
-  const heroHeadlineThreshold = Math.max(0.01, getHeroHeadlineThreshold(heroViewportHeight) - 0.07);
+  const heroHeadlineThreshold = Math.max(0.01, getHeroHeadlineThreshold(heroViewportHeight));
   const heroHeadlineOpacity = mapRange(heroScrollProgress, 0, heroHeadlineThreshold, 1, 0);
   const heroHeadlineScale = mapRange(heroScrollProgress, 0, heroHeadlineThreshold, 1, 0.85);
   const heroHeadlineStyle: CSSProperties = {
@@ -260,9 +278,18 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
   const filmHandoffProgress = clamp(
     (heroScrollProgress * heroViewportHeight) / Math.max(heroViewportHeight * 0.87, 1),
   );
-  const activePrinciple =
-    data.principles.items[activePrincipleIndex] ?? data.principles.items[0] ?? null;
   const featuredProjects = data.featuredWork.projects;
+
+  const introSentenceLines = useMemo(
+    () => splitIntroSentencesForReveal(data.studioAbout.intro),
+    [data.studioAbout.intro],
+  );
+  const introLineRevealText = useMemo(
+    () => introSentenceLines.join("\n"),
+    [introSentenceLines],
+  );
+  const locationLineRevealDelay =
+    introSentenceLines.length * HOMEPAGE_LINE_REVEAL.stagger + 0.12;
 
   function openFeaturedWork(index: number) {
     const project = featuredProjects[index];
@@ -280,11 +307,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
     const bounds = thumb.getBoundingClientRect();
     const cornerPx = getWorkIndexCardBorderRadiusPx();
 
-    featuredOpeningRef.current = true;
-    gsap.set(thumb, { opacity: 0 });
-    void thumb.offsetHeight;
-
-    startCaseStudyTransition({
+    const didStart = startCaseStudyTransition({
       element: thumb,
       slug: project.slug,
       href: project.href,
@@ -299,6 +322,12 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
       sourceBorderRadiusPx: cornerPx,
       sourceRadius: `${cornerPx}px`,
     });
+
+    if (!didStart) {
+      return;
+    }
+
+    featuredOpeningRef.current = true;
   }
 
   return (
@@ -321,100 +350,113 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
         />
 
         <div className="relative z-20 bg-(--sf-bg)">
-          <section className="sf-home-section">
-          <div className="sf-home-section-inner sf-home-divider">
-            <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
-              <SectionHeading section={data.brandIntro} titleClassName="max-w-[10ch]" />
-
-              <div className="max-w-172">
-                <p className="sf-editorial-lead">
-                  {data.brandIntro.body}
-                </p>
-                <p className="sf-body-copy mt-6 max-w-xl">
-                  {data.brandIntro.supportingText}
-                </p>
-              </div>
-            </div>
-
-            <BrandIntroShowcase media={data.heroMedia} />
-          </div>
-        </section>
-
-        <section className="sf-home-section">
-          <div className="sf-home-section-inner sf-home-divider">
-            <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
-              <SectionHeading section={data.principles} titleClassName="max-w-[9ch]" />
-
-              <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.62fr)]">
-                <div className="space-y-1">
-                  {data.principles.items.map((principle, index) => {
-                    const isActive = index === activePrincipleIndex;
-
-                    return (
-                      <div key={`${principle.label}-${principle.title}`} className="border-b border-border">
-                        <button
-                          type="button"
-                          className="group/principle flex w-full min-h-12 min-w-0 touch-manipulation items-start gap-4 rounded-sm py-4 text-left outline-none transition-colors duration-280 ease-sf-out focus-visible:ring-2 focus-visible:ring-foreground/15 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:min-h-0"
-                          aria-expanded={isActive}
-                          aria-controls={`cosmos-principle-panel-${index}`}
-                          onClick={() => setActivePrincipleIndex(index)}
-                          onFocus={() => setActivePrincipleIndex(index)}
-                          onMouseEnter={() => setActivePrincipleIndex(index)}
-                        >
-                          <span className="sf-caption mt-0.5 min-w-8 shrink-0">
-                            {principle.label}
-                          </span>
-                          <span
-                            id={`cosmos-principle-title-${index}`}
-                            className={cn(
-                              "sf-title-lg max-w-120 min-w-0 wrap-break-word transition-colors duration-280 ease-sf-out",
-                              isActive ? "text-(--sf-text)" : "text-muted-foreground",
-                            )}
-                          >
-                            {principle.title}
-                          </span>
-                        </button>
-
-                        <div
-                          id={`cosmos-principle-panel-${index}`}
-                          className="pb-4 pl-12 lg:hidden"
-                          role="region"
-                          aria-labelledby={`cosmos-principle-title-${index}`}
-                          hidden={!isActive}
-                        >
-                          <p className="sf-body-copy max-w-md wrap-break-word">
-                            {principle.supportingText}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div className="hidden min-w-0 lg:block" aria-live="polite" aria-atomic="true">
-                  {activePrinciple ? (
-                    <div className="border-l border-border pl-6 pt-1">
-                      <p className="sf-eyebrow">{activePrinciple.label}</p>
-                      <p className="sf-body-copy mt-3 max-w-88 wrap-break-word">
-                        {activePrinciple.supportingText}
-                      </p>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="sf-home-section">
-          <div
+          <section
             className={cn(
-              "sf-home-section-inner sf-home-divider",
-              "max-md:pt-14",
+              "sf-page-pad",
+              "py-28 md:py-36 lg:py-44",
+            )}
+            aria-label="Studio Finity"
+          >
+            <div className="sf-page-content max-md:px-0">
+              <div className="mx-auto flex w-full max-w-6xl flex-col items-center text-center">
+                <AnimatedWords
+                  as="div"
+                  text={introLineRevealText}
+                  className="sf-body-copy text-balance text-(--sf-text)/88"
+                  lineClassName="leading-[1.45]"
+                  delay={HOMEPAGE_LINE_REVEAL.delay}
+                  duration={HOMEPAGE_LINE_REVEAL.duration}
+                  revealGroupOnView
+                  rootMargin={HOMEPAGE_LINE_REVEAL.rootMargin}
+                  stagger={HOMEPAGE_LINE_REVEAL.stagger}
+                  triggerOnView
+                />
+                <AnimatedWords
+                  as="p"
+                  text={data.studioAbout.location}
+                  className="sf-body-copy mt-6 text-balance text-muted-foreground md:mt-8"
+                  lineClassName="leading-[1.45]"
+                  delay={locationLineRevealDelay}
+                  duration={HOMEPAGE_LINE_REVEAL.duration}
+                  revealGroupOnView
+                  rootMargin={HOMEPAGE_LINE_REVEAL.rootMargin}
+                  stagger={HOMEPAGE_LINE_REVEAL.stagger}
+                  triggerOnView
+                />
+                <Link
+                  href={data.studioAbout.aboutHref}
+                  className="sf-caption mt-10 inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-background px-6 py-3 font-semibold outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80 md:mt-12"
+                >
+                  About
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          <section
+            className={cn(
+              "sf-page-pad",
+              "py-28 md:py-36 lg:py-44",
+            )}
+            aria-label="Expertise and industries"
+          >
+            <div className="sf-page-content max-md:px-0">
+              <div className="grid gap-16 lg:grid-cols-[1.55fr_0.8fr] lg:gap-20">
+                <div>
+                  <p className="sf-eyebrow">
+                    {data.expertiseIndustries.expertiseEyebrow}
+                  </p>
+                  <AnimatedWords
+                    as="div"
+                    text={data.expertiseIndustries.expertise.join("\n")}
+                    className="about-expertise-display mt-4 md:mt-5"
+                    delay={HOMEPAGE_LINE_REVEAL.delay}
+                    duration={HOMEPAGE_LINE_REVEAL.duration}
+                    lineClassName="leading-[0.92]"
+                    revealGroupOnView
+                    rootMargin={HOMEPAGE_LINE_REVEAL.rootMargin}
+                    stagger={HOMEPAGE_LINE_REVEAL.stagger}
+                    triggerOnView
+                  />
+                </div>
+                <div>
+                  <p className="sf-eyebrow">
+                    {data.expertiseIndustries.industriesEyebrow}
+                  </p>
+                  <AnimatedWords
+                    as="div"
+                    text={data.expertiseIndustries.industries.join("\n")}
+                    className="sf-body-large mt-4 flex max-w-88 flex-col gap-2.5 text-(--sf-text)/92 md:mt-6"
+                    delay={HOMEPAGE_LINE_REVEAL.delay}
+                    duration={HOMEPAGE_LINE_REVEAL.duration}
+                    lineClassName="leading-snug"
+                    revealGroupOnView
+                    rootMargin={HOMEPAGE_LINE_REVEAL.rootMargin}
+                    stagger={HOMEPAGE_LINE_REVEAL.stagger}
+                    triggerOnView
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section
+            className={cn(
+              "sf-page-pad",
+              "py-28 md:py-36 lg:py-44",
             )}
           >
-            <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
-              <SectionHeading section={data.featuredWork} titleClassName="max-w-[7ch]" />
+            <div className="sf-page-content max-md:px-0">
+              <div className="grid gap-14 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16">
+              <div className="flex flex-col items-start">
+                <SectionHeading section={data.featuredWork} titleClassName="max-w-[7ch]" />
+                <Link
+                  href="/work"
+                  className="sf-caption mt-10 inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-background px-6 py-3 font-semibold outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80 md:mt-12"
+                >
+                  View all
+                </Link>
+              </div>
 
               <div className={cn("grid grid-cols-3", WORK_INDEX_GRID_GAP_CLASSNAME)}>
                 {featuredProjects.map((project, index) => {
@@ -459,8 +501,8 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                 })}
               </div>
             </div>
-          </div>
-        </section>
+            </div>
+          </section>
         </div>
 
         <StudioFinityFullPageFooter />
@@ -677,7 +719,7 @@ function HeroHeadline() {
       </p>
 
       {showMainCopy ? (
-        <h1 className="col-start-1 row-start-1 sf-caption pointer-events-auto max-w-[28ch] text-center text-balance leading-none text-(--sf-text) md:text-base">
+        <h1 className="col-start-1 row-start-1 pointer-events-auto min-w-0 max-w-[28ch] wrap-break-word text-center text-pretty font-display text-base font-semibold leading-none tracking-(--sf-tracking-title) text-foreground sm:text-lg md:text-xl">
           {offMenuHeroWords.map((word, index) => (
             <span
               key={`${word}-${index}`}
@@ -950,7 +992,7 @@ function CosmosHeroWhirl({
           return;
         }
 
-        const baseSize = getSizeFromArea(image, HERO_WHILR_SIZES[item.size]);
+        const baseSize = getSizeFromArea(image, HERO_WHIRL_SIZES[item.size]);
         const attenuationDistance = Math.sqrt(x * x + y * y);
         const attenuation = Math.min(attenuationDistance / pathRadius, 1) ** 0.35;
         const cached = getRoundedCanvas(image, baseSize.width, baseSize.height, 20);
@@ -1003,10 +1045,10 @@ function CosmosHeroWhirl({
         top: "calc(50% - 50vh)",
         transition: "opacity 300ms linear",
         WebkitMaskImage:
-          "radial-gradient(45% 45%, transparent 0% 50.5%, var(--sf-cosmos-veil) 90%)",
+          "radial-gradient(42% 42%, transparent 0% 38%, var(--sf-cosmos-veil) 88%)",
         contain: "layout style",
         maskImage:
-          "radial-gradient(45% 45%, transparent 0% 50.5%, var(--sf-cosmos-veil) 90%)",
+          "radial-gradient(42% 42%, transparent 0% 38%, var(--sf-cosmos-veil) 88%)",
       }}
     >
       <div
@@ -1100,9 +1142,6 @@ function SectionHeading({
 }) {
   return (
     <div>
-      {section.eyebrow ? (
-        <p className="sf-eyebrow mb-4">{section.eyebrow}</p>
-      ) : null}
       <AnimatedWords
         as="h2"
         text={section.title}
@@ -1110,42 +1149,14 @@ function SectionHeading({
           "sf-display-page sf-display-tight",
           titleClassName,
         )}
+        delay={HOMEPAGE_LINE_REVEAL.delay}
+        duration={HOMEPAGE_LINE_REVEAL.duration}
         lineClassName="leading-[0.84]"
+        revealGroupOnView
+        rootMargin={HOMEPAGE_LINE_REVEAL.rootMargin}
+        stagger={HOMEPAGE_LINE_REVEAL.stagger}
         triggerOnView
       />
-    </div>
-  );
-}
-
-function BrandIntroShowcase({ media }: { media: CosmosMediaItem[] }) {
-  const showcaseMedia = media.slice(0, 9);
-
-  if (showcaseMedia.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="mt-10 md:mt-14">
-      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-        <p className="sf-eyebrow">Selected stills</p>
-        <p className="sf-caption max-sm:text-[0.6875rem]">
-          A glimpse into the visual language behind the work
-        </p>
-      </div>
-
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
-        {showcaseMedia.map((item) => (
-          <div key={item.src} className="group min-w-0">
-            <WorkIndexTileMedia
-              imageSrc={item.src}
-              imageAlt={item.alt ?? "Studio Finity showcase image"}
-              lqip={item.lqip}
-              quality={88}
-              sizes="(max-width: 1023px) 33vw, 28vw"
-            />
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

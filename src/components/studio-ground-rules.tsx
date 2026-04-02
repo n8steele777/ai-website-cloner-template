@@ -227,7 +227,7 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
         data-about-reveal
         className="sf-eyebrow text-(--sf-text-subtle)"
       >
-        OUR GROUND RULES
+        Our ground rules
       </p>
 
       <div
@@ -265,9 +265,11 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
                 data-rule-id={rule.id}
                 data-rule-active={isActive ? "true" : undefined}
                 className={cn(
-                  "group min-h-11 w-full min-w-0 py-2.5 text-left transition-opacity duration-280 ease-sf-out lg:transition-none",
+                  "group min-h-11 w-full min-w-0 rounded-sm py-2.5 text-left transition-opacity duration-280 ease-sf-out lg:transition-none",
                   "max-lg:touch-manipulation lg:min-h-0 lg:py-0.5",
                   "max-lg:active:opacity-90",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/18",
+                  "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 )}
                 onMouseEnter={(event) => {
                   if (isMobileLayout) {

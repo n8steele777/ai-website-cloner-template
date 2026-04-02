@@ -11,6 +11,7 @@ type AnimatedWordsProps<T extends ElementType = "p"> = {
   /** Animate each newline-separated line as one unit (default). Set false for per-word stagger. */
   byLine?: boolean;
   className?: string;
+  id?: string;
   delay?: number;
   duration?: number;
   highlightClassName?: string;
@@ -21,6 +22,11 @@ type AnimatedWordsProps<T extends ElementType = "p"> = {
   text: string;
   threshold?: number;
   triggerOnView?: boolean;
+  /**
+   * With `triggerOnView` + `byLine`, observe the root once and run one staggered line
+   * timeline (instead of per-line observers). Use when lines are typically visible together.
+   */
+  revealGroupOnView?: boolean;
 };
 
 const VIEWPORT_VISIBILITY = 0.96;
@@ -29,6 +35,7 @@ export function AnimatedWords<T extends ElementType = "p">({
   as,
   byLine = true,
   className,
+  id,
   delay = 0,
   duration = 1.02,
   highlightClassName,
@@ -39,6 +46,7 @@ export function AnimatedWords<T extends ElementType = "p">({
   text,
   threshold = 0,
   triggerOnView = false,
+  revealGroupOnView = false,
 }: AnimatedWordsProps<T>) {
   const { pageReady } = usePageTransition();
   const Component = (as ?? "p") as ElementType;
@@ -106,7 +114,83 @@ export function AnimatedWords<T extends ElementType = "p">({
               return;
             }
 
-            if (triggerOnView) {
+            if (triggerOnView && revealGroupOnView) {
+              let rootObserver: IntersectionObserver | null = null;
+              let groupTimeline: gsap.core.Timeline | null = null;
+              let hasPlayed = false;
+
+              const playGroupStagger = () => {
+                if (hasPlayed || cancelled || fontRaceDone || lineNodes.length === 0) {
+                  return;
+                }
+                hasPlayed = true;
+                groupTimeline = gsap.timeline({
+                  defaults: {
+                    duration,
+                    ease: "power4.out",
+                    overwrite: "auto",
+                  },
+                  onComplete: () => {
+                    gsap.set(lineNodes, { clearProps: "willChange" });
+                  },
+                });
+                groupTimeline.fromTo(
+                  lineNodes,
+                  {
+                    autoAlpha: 0,
+                    force3D: true,
+                    immediateRender: false,
+                    yPercent: 38,
+                  },
+                  {
+                    autoAlpha: 1,
+                    delay,
+                    force3D: true,
+                    immediateRender: false,
+                    stagger: { each: stagger },
+                    yPercent: 0,
+                  },
+                );
+              };
+
+              const root = rootRef.current;
+              const viewportHeightGroup =
+                window.innerHeight || document.documentElement.clientHeight || 0;
+
+              if (root) {
+                const rootRect = root.getBoundingClientRect();
+                const rootInitiallyVisible =
+                  rootRect.bottom > 0 && rootRect.top < viewportHeightGroup * VIEWPORT_VISIBILITY;
+
+                if (rootInitiallyVisible) {
+                  playGroupStagger();
+                } else {
+                  rootObserver = new IntersectionObserver(
+                    (entries) => {
+                      entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                          playGroupStagger();
+                          rootObserver?.disconnect();
+                          rootObserver = null;
+                        }
+                      });
+                    },
+                    {
+                      rootMargin,
+                      threshold,
+                    },
+                  );
+                  rootObserver.observe(root);
+                }
+              }
+
+              return () => {
+                rootObserver?.disconnect();
+                groupTimeline?.kill();
+              };
+            }
+
+            if (triggerOnView && !revealGroupOnView) {
               const observers: IntersectionObserver[] = [];
               const animatedLineBlocks = new Set<number>();
               const visibilityThreshold = threshold;
@@ -365,12 +449,18 @@ export function AnimatedWords<T extends ElementType = "p">({
     threshold,
     totalWords,
     triggerOnView,
+    revealGroupOnView,
     wordsByLine,
     needsWordSpans,
   ]);
 
   return (
-    <Component ref={rootRef} aria-label={lines.join(" ")} className={className}>
+    <Component
+      ref={rootRef}
+      id={id}
+      aria-label={lines.join(" ")}
+      className={className}
+    >
       {needsWordSpans
         ? wordsByLine.map((words, lineIndex) => {
             const line = lines[lineIndex] ?? "";

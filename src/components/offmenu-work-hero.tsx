@@ -103,7 +103,7 @@ export function OffMenuWorkHero({
       {
         opacity: 1,
         duration: transitionMatches ? 0.78 : 0.6,
-        delay: transitionMatches ? 0.62 : 0.46,
+        delay: transitionMatches ? 0.48 : 0.32,
         ease: "power4.out",
       },
     );
@@ -166,7 +166,7 @@ export function OffMenuWorkHero({
             text={title}
             className="work-hero-title max-w-full text-balance sm:max-w-[min(100%,14ch)]"
             lineClassName="leading-[1.02]"
-            delay={transitionMatches ? 0.3 : 0.35}
+            delay={transitionMatches ? 0.18 : 0.22}
           />
           {description ? (
             <p className="mt-5 max-w-md wrap-break-word text-base leading-relaxed text-white/76 md:text-lg">

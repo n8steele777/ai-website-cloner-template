@@ -94,7 +94,7 @@ export function WorkIndexTileTitle({
         : "mt-5 text-center sm:mt-6";
 
   const titleTypography = cn(
-    "min-w-0 text-center font-display font-semibold tracking-[-0.03em] text-foreground",
+    "min-w-0 text-center font-display font-semibold tracking-[var(--sf-tracking-title)] text-foreground",
     density === "compact"
       ? "break-words text-pretty text-[0.8125rem] sm:text-[0.875rem] lg:text-[0.9375rem] lg:leading-snug"
       : density === "workGrid"

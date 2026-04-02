@@ -21,10 +21,19 @@ export interface CosmosFeatureSection {
   body?: string;
 }
 
-export interface CosmosPrinciple {
-  label: string;
-  title: string;
-  supportingText: string;
+/** Homepage intro band — body copy, location, CTA to `/about`. */
+export interface CosmosStudioAboutSection {
+  intro: string;
+  location: string;
+  aboutHref: string;
+}
+
+/** Homepage expertise / industries lists (aligned with `/about`). */
+export interface CosmosExpertiseIndustriesSection {
+  expertiseEyebrow: string;
+  expertise: string[];
+  industriesEyebrow: string;
+  industries: string[];
 }
 
 export interface CosmosFeaturedProject {
@@ -58,9 +67,8 @@ export interface CosmosHomepageData {
   brandIntro: CosmosFeatureSection & {
     supportingText: string;
   };
-  principles: CosmosFeatureSection & {
-    items: CosmosPrinciple[];
-  };
+  studioAbout: CosmosStudioAboutSection;
+  expertiseIndustries: CosmosExpertiseIndustriesSection;
   featuredWork: CosmosFeatureSection & {
     projects: CosmosFeaturedProject[];
   };

@@ -127,11 +127,7 @@ export function OffMenuHomepage({
     const bounds = thumb.getBoundingClientRect();
     const cornerPx = getWorkIndexCardBorderRadiusPx();
 
-    openingRef.current = true;
-    gsap.set(thumb, { opacity: 0 });
-    void thumb.offsetHeight;
-
-    startCaseStudyTransition({
+    const didStart = startCaseStudyTransition({
       element: thumb,
       slug: caseStudy.slug,
       href: caseStudy.href,
@@ -146,6 +142,12 @@ export function OffMenuHomepage({
       sourceBorderRadiusPx: cornerPx,
       sourceRadius: `${cornerPx}px`,
     });
+
+    if (!didStart) {
+      return;
+    }
+
+    openingRef.current = true;
   }
 
   if (n === 0) {

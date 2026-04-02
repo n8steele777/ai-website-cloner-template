@@ -53,7 +53,8 @@ interface TransitionState {
 interface CaseStudyTransitionContextValue {
   prefetchCaseStudy: (href: string) => void;
   signalHeroReady: () => void;
-  startCaseStudyTransition: (request: TransitionRequest) => void;
+  /** Returns false if a transition is already running (caller must not hide the source). */
+  startCaseStudyTransition: (request: TransitionRequest) => boolean;
   state: TransitionState;
 }
 
@@ -116,6 +117,7 @@ export function CaseStudyTransitionProvider({
     }
 
     if (sourceElementRef.current) {
+      gsap.killTweensOf(sourceElementRef.current);
       sourceElementRef.current.style.opacity = "";
       sourceElementRef.current = null;
     }
@@ -265,7 +267,7 @@ export function CaseStudyTransitionProvider({
       signalHeroReady,
       startCaseStudyTransition: (request) => {
         if (startedRef.current) {
-          return;
+          return false;
         }
 
         const bounds =
@@ -308,6 +310,8 @@ export function CaseStudyTransitionProvider({
           image.decoding = "async";
           image.src = request.thumbnailXl;
         }
+
+        return true;
       },
       state,
     }),
@@ -322,7 +326,7 @@ export function CaseStudyTransitionProvider({
         <div ref={backdropRef} className="absolute inset-0 bg-background opacity-0" />
         <div
           ref={overlayRef}
-          className="relative isolate will-change-transform"
+          className="relative isolate will-change-transform bg-muted/25"
           style={{
             overflow: "hidden",
             position: "fixed",

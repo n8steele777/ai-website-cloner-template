@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
   type ReactNode,
+  type RefObject,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
@@ -16,6 +17,7 @@ import { scrollToInstant } from "@/lib/smooth-scroll";
 
 interface PageTransitionContextValue {
   canTransitionHref: (href: string) => boolean;
+  contentRef: RefObject<HTMLDivElement | null>;
   navigateWithTransition: (href: string) => void;
   pageReady: boolean;
   prefetchHref: (href: string) => void;
@@ -230,6 +232,7 @@ export function PageTransitionProvider({
   const value = useMemo<PageTransitionContextValue>(
     () => ({
       canTransitionHref,
+      contentRef,
       navigateWithTransition,
       pageReady,
       prefetchHref,
@@ -239,7 +242,7 @@ export function PageTransitionProvider({
 
   return (
     <PageTransitionContext.Provider value={value}>
-      <div ref={contentRef}>{children}</div>
+      {children}
       <div
         ref={overlayRef}
         className="pointer-events-none fixed inset-0 z-500 opacity-0"

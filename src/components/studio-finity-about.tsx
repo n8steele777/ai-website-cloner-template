@@ -43,8 +43,8 @@ export function StudioFinityAbout({
     <main ref={rootRef} className="offmenu-shell min-h-screen bg-background text-foreground">
       <StudioFinityHeader activeHref="/about" links={navigationLinks}>
         <section className="relative min-h-[64dvh] sf-page-pad pb-16 pt-18 md:min-h-[78vh] md:pb-32 md:pt-32">
-          <div className="sf-page-content relative overflow-hidden rounded-[22px] pb-12 pt-11 md:rounded-[28px] md:pb-28 md:pt-20 lg:pb-32">
-            <div className="relative pt-14 md:pt-32">
+          <div className="sf-page-content max-md:px-0 relative overflow-hidden rounded-[22px] pb-12 pt-11 md:rounded-[28px] md:pb-28 md:pt-20 lg:pb-32">
+            <div className="relative px-3 pt-14 md:px-0 md:pt-32">
               <AnimatedLines
                 as="h1"
                 text={content.hero}
@@ -58,14 +58,14 @@ export function StudioFinityAbout({
           </div>
         </section>
 
-        <section className="sf-page-pad pb-18 pt-12 md:pb-32 md:pt-20">
-          <div className="sf-page-content mx-auto max-w-[1040px]">
+        <section className="hidden lg:block sf-page-pad pb-18 pt-12 md:pb-32 md:pt-20">
+          <div className="sf-page-content max-md:px-0 mx-auto max-w-[1040px]">
             <StudioGroundRules rules={content.rules} />
           </div>
         </section>
 
         <section className="sf-page-pad pb-22 pt-14 md:pb-36 md:pt-24">
-          <div className="sf-page-content grid gap-12 lg:grid-cols-[1.55fr_0.8fr] lg:gap-18">
+          <div className="sf-page-content max-md:px-0 grid gap-12 lg:grid-cols-[1.55fr_0.8fr] lg:gap-18">
             <div>
               <p data-about-reveal className="sf-eyebrow">
                 Expertise
@@ -81,7 +81,7 @@ export function StudioFinityAbout({
               <p data-about-reveal className="sf-eyebrow">
                 Industries
               </p>
-              <div data-about-stagger className="sf-body-large mt-4 flex max-w-[20rem] flex-col gap-2.5 text-black/92 md:mt-6">
+              <div data-about-stagger className="sf-body-large mt-4 flex max-w-[20rem] flex-col gap-2.5 text-foreground/92 md:mt-6">
                 {content.industries.map((item) => (
                   <p key={item} data-about-item>{item}</p>
                 ))}
@@ -91,7 +91,7 @@ export function StudioFinityAbout({
         </section>
 
         <section className="sf-page-pad pb-26 pt-16 md:pb-44 md:pt-28">
-          <div className="sf-page-content mx-auto max-w-[760px]">
+          <div className="sf-page-content max-md:px-0 mx-auto max-w-[760px]">
             <p data-about-reveal className="sf-eyebrow">
               Clients
             </p>

@@ -83,14 +83,17 @@ export function useContactDialog(): ContactDialogContextValue {
 
 export function ContactDialogProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  /** Bump on each open so the sheet remounts with fresh form state (avoids reset-in-effect lint + cascades). */
+  const [sheetKey, setSheetKey] = useState(0);
   const openContact = useCallback(() => {
+    setSheetKey((k) => k + 1);
     setOpen(true);
   }, []);
 
   return (
     <ContactDialogContext.Provider value={{ openContact }}>
       {children}
-      <ContactFormSheet open={open} onOpenChange={setOpen} />
+      <ContactFormSheet key={sheetKey} open={open} onOpenChange={setOpen} />
     </ContactDialogContext.Provider>
   );
 }
@@ -109,7 +112,6 @@ function ContactFormSheet({
   const successCloseRef = useRef<HTMLButtonElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const mounted = typeof document !== "undefined";
-  const wasOpenRef = useRef(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -128,20 +130,6 @@ function ContactFormSheet({
       submitAbortRef.current?.abort();
       submitAbortRef.current = null;
     }
-  }, [open]);
-
-  useEffect(() => {
-    if (open && !wasOpenRef.current) {
-      setName("");
-      setEmail("");
-      setMessage("");
-      setHoneypot("");
-      setSubmitOk(false);
-      setSubmitAttempted(false);
-      setFormError(null);
-      setIsSubmitting(false);
-    }
-    wasOpenRef.current = open;
   }, [open]);
 
   useEffect(() => {
