@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { Ref } from "react";
-import { isSanityImageUrl, sanityImageLoader } from "@/lib/sanity-image-loader";
+import { imageLoader, isSanityImageUrl } from "@/lib/sanity-image-loader";
 import { cn } from "@/lib/utils";
 
 /** Default `sizes` for `/work` index (three columns through `lg`, then four / five). */
@@ -41,7 +41,7 @@ export function WorkIndexTileMedia({
   lqip,
   sizes = WORK_INDEX_GRID_IMAGE_SIZES,
   priority = false,
-  quality = 95,
+  quality = 85,
   thumbRef,
   className,
 }: WorkIndexTileMediaProps) {
@@ -62,7 +62,7 @@ export function WorkIndexTileMedia({
           alt={imageAlt}
           blurDataURL={lqip}
           fill
-          loader={isSanityImageUrl(imageSrc) ? sanityImageLoader : undefined}
+          loader={isSanityImageUrl(imageSrc) ? imageLoader : undefined}
           placeholder={lqip ? "blur" : "empty"}
           priority={priority}
           quality={quality}

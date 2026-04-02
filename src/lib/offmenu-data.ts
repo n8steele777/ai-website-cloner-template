@@ -169,6 +169,19 @@ function excerpt(text: string, length = 190) {
   return `${text.slice(0, length).trim()}...`;
 }
 
+/** Roles / scope lines from legacy CSV "Credits (left side)" column (HTML). */
+function creditsLeftToDeliverables(html: string): string[] | undefined {
+  if (!html?.trim()) {
+    return undefined;
+  }
+  const text = htmlToText(html);
+  const lines = text
+    .split(/\n+/)
+    .map((line) => line.replace(/[,;]+$/g, "").trim())
+    .filter(Boolean);
+  return lines.length > 0 ? lines : undefined;
+}
+
 function formatCategory(category: string) {
   const parts = category
     .split(/\s+/)
@@ -224,12 +237,18 @@ const allWorkProjectsInternal: WorkProjectDetail[] = worksRows.map((row, index, 
   const summary = row["SEO"] ? decodeHtmlEntities(row["SEO"]).trim() : excerpt(introduction);
   const nextOne = rows[(index + 1) % rows.length]?.["Slug"];
   const nextTwo = rows[(index + 2) % rows.length]?.["Slug"];
+  const fromCredits = creditsLeftToDeliverables(row["Credits (left side)"] ?? "");
+  const fromCategory = row["Category"]?.trim()
+    ? row["Category"].split(/\s*\/\s*/).map((part) => part.trim()).filter(Boolean)
+    : undefined;
+  const deliverables = fromCredits?.length ? fromCredits : fromCategory?.length ? fromCategory : undefined;
 
   return {
     slug: row["Slug"],
     title: row["Title"],
     heroImageLight: row["Main Image"] || row["Hover Image (footer)"],
     heroImageDark: row["Main Image"] || row["Hover Image (footer)"],
+    deliverables,
     introduction,
     summary,
     galleryMedia,

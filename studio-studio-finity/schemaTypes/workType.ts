@@ -1,4 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {galleryItemType} from './galleryItemType'
 
 export const workType = defineType({
   name: 'work',
@@ -35,9 +36,11 @@ export const workType = defineType({
     defineField({
       name: 'category',
       title: 'Category',
-      type: 'string',
+      type: 'text',
+      rows: 3,
       group: 'overview',
-      description: 'Short label like "Web Creative Brand".',
+      description:
+        'Short label for listings. Use line breaks or " / " between words (e.g. Web / Creative / Brand). Line breaks show as separate lines when this is used as a fallback for Deliverables.',
     }),
     defineField({
       name: 'mainColor',
@@ -57,6 +60,22 @@ export const workType = defineType({
       rows: 8,
       description: 'Main paragraph shown on the case-study page.',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'deliverables',
+      title: 'Deliverables',
+      type: 'array',
+      group: 'overview',
+      description: 'Scope items shown in the left column on the work detail page (e.g. Strategy, Brand identity).',
+      of: [
+        defineArrayMember({
+          type: 'string',
+          title: 'Item',
+        }),
+      ],
+      options: {
+        layout: 'list',
+      },
     }),
     defineField({
       name: 'heroImage',
@@ -83,10 +102,15 @@ export const workType = defineType({
       validation: (rule) => rule.required().min(1),
       of: [
         defineArrayMember({
+          type: galleryItemType.name,
+          title: 'Gallery item (caption + layout)',
+        }),
+        defineArrayMember({
           type: 'image',
+          title: 'Image (legacy)',
           options: {hotspot: true},
           description:
-            'Upload images here so the CDN can resize and auto-encode (WebP/AVIF); external URLs won’t get these optimizations.',
+            'Prefer “Gallery item” for captions and width. Plain image for quick adds.',
           fields: [
             defineField({
               name: 'alt',
@@ -97,7 +121,7 @@ export const workType = defineType({
         }),
         defineArrayMember({
           type: 'file',
-          title: 'Video',
+          title: 'Video (legacy)',
           options: {accept: 'video/*'},
           fields: [
             defineField({

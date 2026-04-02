@@ -30,6 +30,9 @@ export interface CaseStudy {
   mobilePosition: OrbitPosition;
 }
 
+/** Desktop span from structured gallery items; omit for legacy grid behavior. */
+export type WorkGalleryLayoutMode = "full" | "half";
+
 export interface WorkGalleryItem {
   kind: "image" | "video";
   src: string;
@@ -39,6 +42,10 @@ export interface WorkGalleryItem {
   lqip?: string;
   title?: string;
   width?: number;
+  caption?: string;
+  layout?: WorkGalleryLayoutMode;
+  /** Sanity `_key` when present (stable list keys). */
+  key?: string;
 }
 
 export interface WorkTextSection {
@@ -53,6 +60,8 @@ export interface WorkProjectDetail {
   heroImageLight: string;
   heroImageDark: string;
   heroLqip?: string;
+  /** Scope / services list for left meta column (optional; from CMS or derived from category). */
+  deliverables?: string[];
   introduction: string;
   summary?: string;
   galleryMedia: WorkGalleryItem[];

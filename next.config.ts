@@ -31,7 +31,10 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   output: "standalone",
   images: {
-    qualities: [75, 80, 88, 95],
+    qualities: [75, 80, 82, 85, 88, 95],
+    /** Fewer widths → better Sanity CDN cache hits (same transformed URL reused). */
+    deviceSizes: [640, 750, 828, 1080, 1200, 1536, 1920],
+    imageSizes: [32, 64, 96, 128, 256, 384, 420],
     remotePatterns: [
       {
         protocol: "https",

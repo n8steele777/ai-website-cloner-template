@@ -1116,12 +1116,13 @@ function CosmosFilmHandoff({
               <div className="relative flex size-full items-center justify-center">
                 <video
                   src={video.src}
+                  poster={video.posterSrc}
                   aria-label={video.alt}
                   autoPlay
                   loop
                   muted
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   className="max-h-full w-auto max-w-full object-contain"
                 />
               </div>

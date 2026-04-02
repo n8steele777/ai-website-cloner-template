@@ -5,6 +5,8 @@ export interface CosmosMediaItem {
   alt: string;
   kind?: "image" | "video";
   lqip?: string;
+  /** Still image shown before the first video frame (LCP / bandwidth). */
+  posterSrc?: string;
 }
 
 export interface CosmosButton {

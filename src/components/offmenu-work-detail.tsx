@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
-import { isSanityImageUrl, sanityImageLoader } from "@/lib/sanity-image-loader";
+import { imageLoader, isSanityImageUrl } from "@/lib/sanity-image-loader";
 import { StudioFinityFullPageFooter } from "@/components/studio-finity-full-page-footer";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { OffMenuWorkHero } from "@/components/offmenu-work-hero";
@@ -25,6 +25,7 @@ export function OffMenuWorkDetail({
   void _resourceLinks;
   const { pageReady } = usePageTransition();
   const introRootRef = useRef<HTMLElement | null>(null);
+  const hasWorkMeta = Boolean(project.deliverables && project.deliverables.length > 0);
 
   useLayoutEffect(() => {
     const root = introRootRef.current;
@@ -47,19 +48,34 @@ export function OffMenuWorkDetail({
 
           <section
             ref={introRootRef}
-            className="p-6 md:p-8 lg:p-10 xl:p-12"
+            className="border-border/70 border-t px-4 py-12 md:py-16 lg:py-20"
             id="introduction"
           >
-            <div className="max-w-5xl">
-              <span data-about-reveal className="sf-eyebrow text-foreground">
-                Introduction
-              </span>
-              <p
-                data-about-reveal
-                className="sf-title-xl mt-8 max-w-4xl wrap-break-word whitespace-pre-line"
+            <div
+              className={cn(
+                "mx-auto w-full max-w-[2400px]",
+                hasWorkMeta &&
+                  "grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,17.5rem)_minmax(0,1fr)] md:items-start md:gap-0 lg:grid-cols-[minmax(0,19.5rem)_minmax(0,1fr)]",
+              )}
+            >
+              {hasWorkMeta ? <WorkDetailMetaColumn deliverables={project.deliverables} /> : null}
+              <div
+                className={cn(
+                  "min-w-0",
+                  hasWorkMeta && "md:border-border md:border-l md:pl-8 lg:pl-12",
+                  !hasWorkMeta && "mx-auto max-w-5xl",
+                )}
               >
-                {project.introduction}
-              </p>
+                <p
+                  data-about-reveal
+                  className={cn(
+                    "sf-title-xl text-balance wrap-break-word whitespace-pre-line tracking-[-0.02em]",
+                    !hasWorkMeta && "max-w-4xl",
+                  )}
+                >
+                  {project.introduction}
+                </p>
+              </div>
             </div>
           </section>
 
@@ -72,32 +88,79 @@ export function OffMenuWorkDetail({
   );
 }
 
+function WorkDetailMetaColumn({ deliverables }: { deliverables?: string[] }) {
+  if (!deliverables?.length) {
+    return null;
+  }
+
+  return (
+    <div className="md:pr-6 lg:pr-8">
+      <div data-about-reveal className="border-border border-l pl-4">
+        <dl>
+          <dt className="text-[0.8125rem] font-medium text-muted-foreground">Deliverables</dt>
+          <dd className="m-0 mt-2">
+            <ul className="list-none space-y-1 p-0">
+              {deliverables.map((line, index) => (
+                <li
+                  key={`${index}-${line}`}
+                  className="text-base font-normal leading-snug text-foreground"
+                >
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  );
+}
+
+function workGallerySizes(
+  item: WorkGalleryItem,
+  index: number,
+  total: number,
+  remainderAfterLeadOdd: boolean,
+): { sizes: string; spanFull: boolean } {
+  const full = "(max-width: 767px) 100vw, min(100vw, 2400px)";
+  const half = "(max-width: 767px) 100vw, 50vw";
+
+  if (item.layout === "full") {
+    return { spanFull: true, sizes: full };
+  }
+  if (item.layout === "half") {
+    return { spanFull: false, sizes: half };
+  }
+
+  /** Legacy: first item full width; odd tail after lead may span 2. */
+  const isLead = index === 0;
+  const isTailFullWidth = remainderAfterLeadOdd && index === total - 1 && !isLead;
+  const spanFull = isLead || isTailFullWidth;
+  return { spanFull, sizes: spanFull ? full : half };
+}
+
 function WorkGallery({ items }: { items: WorkGalleryItem[] }) {
-  /** After the lead full-width tile, if the remainder count is odd the last tile spans both columns. */
+  /** After the lead full-width tile, if the remainder count is odd the last tile spans both columns (legacy only). */
   const remainderAfterLeadOdd = items.length > 1 && (items.length - 1) % 2 === 1;
 
   return (
     <section className="w-full pb-8 pt-4 md:pb-12 md:pt-6" aria-label="Project gallery">
-      <div className="mx-auto w-full max-w-[2400px] px-3 sm:px-4 md:px-5 lg:px-6">
-        <div className="grid w-full grid-cols-1 items-start gap-3 sm:gap-4 md:grid-cols-2 md:gap-5 lg:gap-6 xl:gap-8">
+      <div className="mx-auto w-full max-w-[2400px] px-4">
+        <div className="grid w-full grid-cols-1 items-start gap-1.5 sm:gap-2 md:grid-cols-2 md:gap-2 lg:gap-2.5 xl:gap-3">
           {items.map((item, index) => {
-            const isLead = index === 0;
-            const isTailFullWidth =
-              remainderAfterLeadOdd && index === items.length - 1 && !isLead;
+            const { sizes, spanFull } = workGallerySizes(
+              item,
+              index,
+              items.length,
+              remainderAfterLeadOdd,
+            );
 
             return (
               <WorkGalleryTile
-                key={`${item.src}-${index}`}
+                key={item.key ?? `${item.src}-${index}`}
                 item={item}
-                className={cn(
-                  "min-w-0",
-                  (isLead || isTailFullWidth) && "md:col-span-2",
-                )}
-                sizes={
-                  isLead || isTailFullWidth
-                    ? "(max-width: 767px) 100vw, min(100vw, 2400px)"
-                    : "(max-width: 767px) 100vw, 50vw"
-                }
+                className={cn(spanFull && "md:col-span-2")}
+                sizes={sizes}
               />
             );
           })}
@@ -124,36 +187,42 @@ function WorkGalleryTile({
   const fallbackH = item.height ?? Math.round(fallbackW / intrinsicRatio);
 
   return (
-    <div
-      className={cn(
-        "overflow-hidden rounded-[20px] bg-muted/30 ring-1 ring-border/90 shadow-(--sf-shadow-media-md) md:rounded-[28px]",
-        className,
-      )}
-    >
-      {item.kind === "video" ? (
-        <video
-          src={item.src}
-          aria-label={item.alt ?? item.title ?? "Gallery video"}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="block h-auto w-full rounded-[20px] md:rounded-[28px]"
-        />
-      ) : (
-        <Image
-          src={item.src}
-          alt={item.alt ?? item.title ?? "Gallery image"}
-          blurDataURL={item.lqip}
-          width={fallbackW}
-          height={fallbackH}
-          loader={isSanityImageUrl(item.src) ? sanityImageLoader : undefined}
-          placeholder={item.lqip ? "blur" : "empty"}
-          sizes={sizes}
-          className="block h-auto w-full rounded-[20px] md:rounded-[28px]"
-        />
-      )}
+    <div className={cn("flex min-w-0 flex-col", className)}>
+      <div
+        className={cn(
+          "overflow-hidden rounded-lg bg-muted/30 ring-1 ring-border/90 shadow-(--sf-shadow-media-md) md:rounded-xl",
+        )}
+      >
+        {item.kind === "video" ? (
+          <video
+            src={item.src}
+            aria-label={item.alt ?? item.title ?? item.caption ?? "Gallery video"}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="block h-auto w-full rounded-lg md:rounded-xl"
+          />
+        ) : (
+          <Image
+            src={item.src}
+            alt={item.alt ?? item.title ?? "Gallery image"}
+            blurDataURL={item.lqip}
+            width={fallbackW}
+            height={fallbackH}
+            loader={isSanityImageUrl(item.src) ? imageLoader : undefined}
+            placeholder={item.lqip ? "blur" : "empty"}
+            sizes={sizes}
+            className="block h-auto w-full rounded-lg md:rounded-xl"
+          />
+        )}
+      </div>
+      {item.caption ? (
+        <p className="mt-2 text-sm leading-snug text-muted-foreground whitespace-pre-line">
+          {item.caption}
+        </p>
+      ) : null}
     </div>
   );
 }

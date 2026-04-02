@@ -1,8 +1,16 @@
 "use client";
 
+import { AnimatedWords } from "@/components/animated-words";
 import { useContactDialog } from "@/components/contact-dialog-provider";
-import { ShimmerText } from "@/components/ui/shimmer-text";
 import { cn } from "@/lib/utils";
+
+/** Matches homepage section `AnimatedWords` timing (`cosmos-homepage` HOMEPAGE_LINE_REVEAL). */
+const FOOTER_LINE_REVEAL = {
+  delay: 0,
+  duration: 1.02,
+  rootMargin: "0px 0px -12% 0px",
+  stagger: 0.04,
+} as const;
 
 /** Shared fluid display scale for headline + contact (matches fill behavior). */
 const footerDisplayClassName = cn(
@@ -27,18 +35,22 @@ export function StudioFinityFullPageFooter() {
             )}
           >
             <div className="min-w-0 w-full">
-              <h2
+              <AnimatedWords
+                as="h2"
+                text="Let's make something the world won't see coming."
                 className={cn(
                   footerDisplayClassName,
                   "text-(--sf-text-quiet)!",
                   "w-full max-w-full text-balance md:w-max md:max-w-none md:whitespace-nowrap",
-                  "max-md:leading-[0.92]",
                 )}
-              >
-                Let&apos;s make something{" "}
-                <br className="md:hidden" aria-hidden />
-                the world won&apos;t see coming.
-              </h2>
+                lineClassName="max-md:leading-[0.92]"
+                delay={FOOTER_LINE_REVEAL.delay}
+                duration={FOOTER_LINE_REVEAL.duration}
+                revealGroupOnView
+                rootMargin={FOOTER_LINE_REVEAL.rootMargin}
+                stagger={FOOTER_LINE_REVEAL.stagger}
+                triggerOnView
+              />
             </div>
 
             <button
@@ -53,13 +65,17 @@ export function StudioFinityFullPageFooter() {
                 "focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               )}
             >
-              <ShimmerText
+              <AnimatedWords
+                as="span"
+                text="Get in touch."
                 className={footerDisplayClassName}
-                duration={2.75}
-                delay={0.35}
-              >
-                Get in touch.
-              </ShimmerText>
+                delay={FOOTER_LINE_REVEAL.stagger * 4}
+                duration={FOOTER_LINE_REVEAL.duration}
+                revealGroupOnView
+                rootMargin={FOOTER_LINE_REVEAL.rootMargin}
+                stagger={FOOTER_LINE_REVEAL.stagger}
+                triggerOnView
+              />
             </button>
           </div>
         </div>
