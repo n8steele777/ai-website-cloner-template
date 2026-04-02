@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
-import { AnimatedWords } from "@/components/animated-words";
 import { isSanityImageUrl, sanityImageLoader } from "@/lib/sanity-image-loader";
 import { StudioFinityFullPageFooter } from "@/components/studio-finity-full-page-footer";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
@@ -66,22 +65,6 @@ export function OffMenuWorkDetail({
 
           {project.galleryMedia.length > 0 ? <WorkGallery items={project.galleryMedia} /> : null}
         </div>
-
-        <section className="flex flex-col items-center justify-center gap-8 p-8 text-center md:p-10 lg:p-12">
-          <AnimatedWords
-            as="h2"
-            text={project.ctaTitle}
-            className="sf-title-xl text-center"
-            lineClassName="leading-[1.04]"
-            triggerOnView
-          />
-          <a
-            href={project.ctaHref}
-            className="sf-interactive sf-pill-button sf-pill-button-primary text-base md:text-lg"
-          >
-            {project.ctaLabel}
-          </a>
-        </section>
 
         <StudioFinityFullPageFooter />
       </StudioFinityHeader>
