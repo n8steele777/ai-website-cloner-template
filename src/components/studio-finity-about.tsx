@@ -1,13 +1,20 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
-import { AnimatedWords } from "@/components/animated-words";
+import {
+  AnimatedLines,
+  type AnimatedLinesPhraseHighlight,
+} from "@/components/animated-lines";
 import { StudioFinityFullPageFooter } from "@/components/studio-finity-full-page-footer";
 import { StudioGroundRules } from "@/components/studio-ground-rules";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { usePageTransition } from "@/components/page-transition-provider";
 import { mountDataAboutScrollReveals } from "@/lib/gsap-data-about-reveal";
 import type { NavLink, StudioAboutContent } from "@/types/offmenu";
+
+const ABOUT_HERO_PHRASE_HIGHLIGHTS: readonly AnimatedLinesPhraseHighlight[] = [
+  { phrase: "Studio Finity", className: "sf-text-quiet" },
+];
 
 interface StudioFinityAboutProps {
   content: StudioAboutContent;
@@ -38,11 +45,12 @@ export function StudioFinityAbout({
         <section className="relative min-h-[64dvh] sf-page-pad pb-16 pt-18 md:min-h-[78vh] md:pb-32 md:pt-32">
           <div className="sf-page-content relative overflow-hidden rounded-[22px] pb-12 pt-11 md:rounded-[28px] md:pb-28 md:pt-20 lg:pb-32">
             <div className="relative pt-14 md:pt-32">
-              <AnimatedWords
+              <AnimatedLines
                 as="h1"
                 text={content.hero}
                 className="about-hero-display sf-display-tight max-w-[13ch]"
                 lineClassName="leading-[0.84]"
+                phraseHighlights={ABOUT_HERO_PHRASE_HIGHLIGHTS}
                 delay={0.08}
                 stagger={0.1}
               />

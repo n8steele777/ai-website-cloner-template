@@ -456,6 +456,30 @@ html.lenis {
   }
 }
 
+/* SplitType (AnimatedLines): match parent display type — inherit tracking/size/font, keep normal kerning for parity with non-split headlines */
+.sf-split-type-root {
+  color: inherit;
+  font: inherit;
+  font-kerning: normal;
+  letter-spacing: inherit;
+  text-wrap: inherit;
+  white-space: normal;
+}
+
+.sf-split-type-root .line {
+  color: inherit;
+  font: inherit;
+  font-kerning: normal;
+  letter-spacing: inherit;
+  text-align: inherit;
+}
+
+/* Phrase highlights inside split lines: keep display tracking; color comes from utility (e.g. .sf-text-quiet) */
+.sf-split-type-root .line span {
+  font: inherit;
+  letter-spacing: inherit;
+}
+
 .about-expertise-display {
   display: flex;
   flex-direction: column;
