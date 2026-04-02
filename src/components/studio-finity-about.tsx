@@ -40,14 +40,11 @@ export function StudioFinityAbout({
             <div className="relative pt-14 md:pt-32">
               <AnimatedWords
                 as="h1"
-                byLine={false}
                 text={content.hero}
                 className="about-hero-display sf-display-tight max-w-[13ch]"
                 lineClassName="leading-[0.84]"
                 delay={0.08}
-                stagger={0.022}
-                highlightWords={["Studio", "Finity"]}
-                highlightClassName="sf-text-quiet"
+                stagger={0.1}
               />
             </div>
           </div>

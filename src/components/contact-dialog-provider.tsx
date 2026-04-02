@@ -453,17 +453,16 @@ function ContactFormSheet({
             aria-modal="true"
             aria-labelledby={titleId}
             aria-describedby={descriptionId}
-            className="fixed inset-x-0 bottom-0 z-281 flex max-h-[min(88dvh,calc(100dvh-2.5rem))] justify-center px-0 pt-10 outline-none sm:px-4"
+            className="pointer-events-none fixed inset-x-0 bottom-0 z-281 flex max-h-[min(88dvh,calc(100dvh-2.5rem))] justify-center px-0 pt-10 outline-none sm:px-4"
             initial={reduceMotion ? { opacity: 0 } : { y: "100%" }}
             animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { y: "100%" }}
             transition={sheetTransition}
-            onPointerDown={(e) => e.stopPropagation()}
           >
             <motion.div
               layout
               transition={{ layout: layoutTransition }}
-              className="relative flex w-full max-w-lg min-w-0 flex-col overflow-hidden rounded-t-2xl border border-border/40 border-b-0 bg-background shadow-(--sf-shadow-sheet-up)"
+              className="pointer-events-auto relative flex w-full max-w-lg min-w-0 flex-col overflow-hidden rounded-t-2xl border border-border/40 border-b-0 bg-background shadow-(--sf-shadow-sheet-up)"
             >
               <div
                 className="flex shrink-0 touch-none justify-center pt-2 pb-1 sm:pt-2.5 sm:pb-1.5"
