@@ -257,12 +257,14 @@ function sanityWorkToFeaturedProject(work: SanityWorkDocument): CosmosFeaturedPr
 
   return {
     category: formatCategoryLabel(work.category),
+    slug: work.slug,
     href: `/work/${work.slug}`,
     image: {
       src,
       alt: getPrimaryAlt(work),
       lqip: getPrimaryLqip(work),
     },
+    imageXl: optimizeSanityImageUrl(getPrimaryImage(work), { width: 2800, quality: 94 }),
     summary: fallbackText(work.seo?.description, work.introduction ?? ""),
     title: work.title,
   };

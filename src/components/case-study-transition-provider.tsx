@@ -257,6 +257,9 @@ export function CaseStudyTransitionProvider({
   const contextValue = useMemo<CaseStudyTransitionContextValue>(
     () => ({
       prefetchCaseStudy: (href) => {
+        if (typeof href !== "string" || href.length === 0) {
+          return;
+        }
         router.prefetch(href);
       },
       signalHeroReady,

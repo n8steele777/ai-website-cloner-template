@@ -32,13 +32,15 @@ export function OffMenuWorkFooter({ navigationLinks }: OffMenuWorkFooterProps) {
             );
           }
 
-          if (link.external || link.href.startsWith("mailto:")) {
+          const safeHref = typeof link.href === "string" ? link.href : "";
+
+          if (link.external || safeHref.startsWith("mailto:")) {
             return (
               <a
                 key={link.label}
-                href={link.href}
-                target={link.href.startsWith("http") ? "_blank" : undefined}
-                rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+                href={safeHref || "#"}
+                target={safeHref.startsWith("http") ? "_blank" : undefined}
+                rel={safeHref.startsWith("http") ? "noreferrer" : undefined}
               >
                 {link.label}
               </a>
@@ -46,7 +48,7 @@ export function OffMenuWorkFooter({ navigationLinks }: OffMenuWorkFooterProps) {
           }
 
           return (
-            <TransitionLink key={link.label} href={link.href}>
+            <TransitionLink key={link.label} href={safeHref || "/"}>
               {link.label}
             </TransitionLink>
           );

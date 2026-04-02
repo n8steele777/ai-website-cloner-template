@@ -11,5 +11,8 @@ export function getSiteUrl(): string {
         ? `https://${process.env.VERCEL_URL}`
         : "http://localhost:3000");
 
-  return candidate.startsWith("http") ? candidate : `https://${candidate}`;
+  const trimmed =
+    typeof candidate === "string" ? candidate.trim() : "";
+  const base = trimmed.length > 0 ? trimmed : "http://localhost:3000";
+  return base.startsWith("http") ? base : `https://${base}`;
 }

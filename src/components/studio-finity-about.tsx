@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 import { AnimatedWords } from "@/components/animated-words";
+import { StudioFinityFullPageFooter } from "@/components/studio-finity-full-page-footer";
 import { StudioGroundRules } from "@/components/studio-ground-rules";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
 import { usePageTransition } from "@/components/page-transition-provider";
@@ -39,13 +40,14 @@ export function StudioFinityAbout({
             <div className="relative pt-14 md:pt-32">
               <AnimatedWords
                 as="h1"
+                byLine={false}
                 text={content.hero}
                 className="about-hero-display sf-display-tight max-w-[13ch]"
                 lineClassName="leading-[0.84]"
                 delay={0.08}
                 stagger={0.022}
                 highlightWords={["Studio", "Finity"]}
-                highlightClassName="text-(--sf-text-muted)"
+                highlightClassName="sf-text-quiet"
               />
             </div>
           </div>
@@ -95,6 +97,8 @@ export function StudioFinityAbout({
             </div>
           </div>
         </section>
+
+        <StudioFinityFullPageFooter />
       </StudioFinityHeader>
     </main>
   );

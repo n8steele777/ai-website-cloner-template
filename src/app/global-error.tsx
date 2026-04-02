@@ -1,19 +1,22 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
 import "./globals.css";
 
 export default function GlobalError({
   error,
-  reset: _reset,
+  reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  void _reset;
   useEffect(() => {
     console.error(error);
   }, [error]);
+
+  const ctaClassName =
+    "sf-caption mt-2 inline-flex w-fit min-h-11 items-center justify-center rounded-full border border-border bg-background px-6 py-3 outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80";
 
   return (
     <html lang="en">
@@ -24,12 +27,18 @@ export default function GlobalError({
           <p className="sf-body-copy max-w-prose">
             If the problem continues, return to the site later or go home.
           </p>
-          <a
-            href="/"
-            className="sf-caption mt-2 inline-flex w-fit min-h-11 items-center justify-center rounded-full border border-border bg-background px-6 py-3 outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80"
-          >
-            Home
-          </a>
+          <div className="mt-2 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={reset}
+              className={ctaClassName}
+            >
+              Try again
+            </button>
+            <Link href="/" className={ctaClassName}>
+              Home
+            </Link>
+          </div>
         </main>
       </body>
     </html>

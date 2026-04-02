@@ -6,6 +6,7 @@ import {
   offMenuWorkNavigationLinks,
 } from "@/lib/site-data";
 import { buildWorkProjects, fetchSanityWorks } from "@/lib/sanity-work";
+import { getSiteUrl } from "@/lib/site-url";
 
 interface WorkPageProps {
   params: Promise<{
@@ -30,9 +31,30 @@ export async function generateMetadata({ params }: WorkPageProps): Promise<Metad
     return {};
   }
 
+  const description =
+    project.summary?.trim() ?? `${project.title} — A Studio Finity case study.`;
+  const base = getSiteUrl().replace(/\/$/, "");
+  const defaultShareImage = `${base}/logos/SF-Social-Share.png`;
+  const hero = project.heroImageLight?.trim();
+  const ogImageUrl =
+    hero && (hero.startsWith("https://") || hero.startsWith("http://"))
+      ? hero
+      : defaultShareImage;
+
   return {
     title: `${project.title} | Studio Finity`,
-    description: project.summary ?? `${project.title} — A Studio Finity case study.`,
+    description,
+    openGraph: {
+      title: `${project.title} | Studio Finity`,
+      description,
+      images: [{ url: ogImageUrl, alt: project.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} | Studio Finity`,
+      description,
+      images: [ogImageUrl],
+    },
   };
 }
 

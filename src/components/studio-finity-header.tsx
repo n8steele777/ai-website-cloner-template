@@ -12,6 +12,14 @@ const HEADER_LOGO_SRC = "/logos/SF-Logo-Dark.png";
 const headerFocusRing =
   "outline-none focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
+/** sf pill + hover/active; no visible focus (overrides `.sf-interactive:focus-visible`) */
+const navPillShared =
+  "sf-interactive sf-pill-button outline-none transition-[opacity,transform] duration-280 ease-sf-out focus-visible:!shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 active:scale-[0.98] motion-reduce:active:scale-100";
+
+const navPillPrimary = cn(navPillShared, "sf-pill-button-primary");
+
+const navPillSecondary = cn(navPillShared, "sf-pill-button-secondary");
+
 export interface StudioFinityHeaderProps {
   links: NavLink[];
   activeHref?: string;
@@ -29,12 +37,7 @@ export function StudioFinityHeader({
 
   return (
     <>
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-220 border-b border-border/40 bg-background/95 backdrop-blur-sm",
-          className,
-        )}
-      >
+      <header className={cn("fixed inset-x-0 top-0 z-220", className)}>
         <div className="mx-auto flex max-w-[100vw] items-center justify-between gap-3 px-4 py-2 md:gap-4 md:px-6 md:py-4">
           <TransitionLink
             href="/"
@@ -55,10 +58,14 @@ export function StudioFinityHeader({
           </TransitionLink>
           <nav
             aria-label="Primary"
-            className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-5 sm:gap-y-2 md:gap-x-7"
+            className="flex flex-wrap items-center justify-end gap-x-1.5 gap-y-1 sm:gap-x-2 md:gap-x-2"
           >
             {visibleLinks.map((link) => (
-              <HeaderNavLink key={`${link.href}-${link.label}`} link={link} activeHref={activeHref} />
+              <HeaderNavLink
+                key={`${typeof link.href === "string" ? link.href : "link"}-${link.label}`}
+                link={link}
+                activeHref={activeHref}
+              />
             ))}
           </nav>
         </div>
@@ -70,13 +77,11 @@ export function StudioFinityHeader({
 
 function HeaderNavLink({ link, activeHref }: { link: NavLink; activeHref?: string }) {
   const { openContact } = useContactDialog();
-  const active = link.href === activeHref;
-  const className = cn(
-    "inline-flex min-h-11 items-center rounded-sm text-sm font-medium tracking-[0.01em] text-foreground transition-colors duration-280 ease-sf-out touch-manipulation md:min-h-0",
-    headerFocusRing,
-    active ? "text-foreground" : "text-(--sf-text-muted) hover:text-foreground active:text-foreground/90",
-    "px-0.5 sm:px-1 md:px-0",
-  );
+  const safeHref = typeof link.href === "string" ? link.href : "";
+  const active = safeHref === activeHref;
+  const isPrimary = Boolean(link.opensContactForm);
+
+  const className = cn(isPrimary ? navPillPrimary : navPillSecondary);
 
   if (link.opensContactForm) {
     return (
@@ -91,12 +96,12 @@ function HeaderNavLink({ link, activeHref }: { link: NavLink; activeHref?: strin
     );
   }
 
-  if (link.external || link.href.startsWith("mailto:")) {
+  if (link.external || safeHref.startsWith("mailto:")) {
     return (
       <a
-        href={link.href}
-        target={link.href.startsWith("http") ? "_blank" : undefined}
-        rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+        href={safeHref || "#"}
+        target={safeHref.startsWith("http") ? "_blank" : undefined}
+        rel={safeHref.startsWith("http") ? "noreferrer" : undefined}
         className={className}
       >
         {link.label}
@@ -105,7 +110,7 @@ function HeaderNavLink({ link, activeHref }: { link: NavLink; activeHref?: strin
   }
 
   return (
-    <TransitionLink href={link.href} className={className} aria-current={active ? "page" : undefined}>
+    <TransitionLink href={safeHref || "/"} className={className} aria-current={active ? "page" : undefined}>
       {link.label}
     </TransitionLink>
   );

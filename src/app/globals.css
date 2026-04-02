@@ -141,8 +141,10 @@
   --sf-text-muted: rgba(17, 17, 17, 0.72);
   /* ≥4.5:1 vs --sf-bg for normal text (WCAG AA); 0.56 was ~4.3:1 at 12px */
   --sf-text-subtle: rgba(17, 17, 17, 0.66);
-  /* Ground rules: idle rows only; full `--sf-text` on hover/focus for contrast + readability */
-  --sf-ground-rules-idle: color-mix(in srgb, var(--sf-text) 36%, var(--sf-bg));
+  /* Large display / accents only — lighter than --sf-text-muted */
+  --sf-text-quiet: rgba(17, 17, 17, 0.52);
+  /* Ground rules: idle rows only; full `--sf-text` on hover/focus. Use subtle body token so list type passes WCAG contrast in axe/CI. */
+  --sf-ground-rules-idle: var(--sf-text-subtle);
   --sf-border: rgba(17, 17, 17, 0.1);
   --sf-border-strong: rgba(17, 17, 17, 0.14);
   --sf-inverse-bg: #111111;
@@ -278,6 +280,10 @@ html.lenis {
   color: var(--sf-text-muted);
 }
 
+.sf-text-quiet {
+  color: var(--sf-text-quiet);
+}
+
 .sf-caption {
   color: var(--sf-text-subtle);
   font-size: 0.92rem;
@@ -300,6 +306,10 @@ html.lenis {
 
 .sf-copy-muted {
   color: var(--sf-text-muted);
+}
+
+.sf-copy-quiet {
+  color: var(--sf-text-quiet);
 }
 
 .sf-copy-subtle {
@@ -589,12 +599,6 @@ html.lenis {
     box-shadow var(--sf-duration-ui) var(--sf-ease-out);
 }
 
-@media (hover: hover) {
-  .sf-interactive:hover {
-    transform: translateY(-1px);
-  }
-}
-
 .sf-interactive:focus-visible {
   outline: none;
   box-shadow: 0 0 0 4px var(--sf-focus-ring);
@@ -621,7 +625,8 @@ html.lenis {
 }
 
 .sf-pill-button-primary:hover {
-  opacity: 0.92;
+  /* Solid fill only — opacity lets the dark hero show through and the chip “vanishes”. */
+  background: color-mix(in srgb, var(--sf-inverse-text) 12%, var(--sf-inverse-bg));
 }
 
 .sf-pill-button-secondary {
@@ -631,7 +636,9 @@ html.lenis {
 }
 
 .sf-pill-button-secondary:hover {
-  background: rgba(17, 17, 17, 0.04);
+  /* Stay on a light surface: dark tint is invisible on dark imagery behind the header. */
+  background: rgba(255, 255, 255, 0.94);
+  border-color: var(--sf-border-strong);
 }
 
 .sf-inline-link {

@@ -128,7 +128,7 @@ export function buildCosmosHomepageData(
   },
   principles: {
     eyebrow: "What guides the work",
-    title: "Simple ideas. Precise execution. No extra noise.",
+    title: "Simple\nideas.\nPrecise\nexecution.\nNo extra\nnoise.",
     items: [
       {
         label: "01",
@@ -158,29 +158,8 @@ export function buildCosmosHomepageData(
   },
   featuredWork: {
     eyebrow: "Selected work",
-    title: "A few recent projects.",
+    title: "A few\nrecent\nprojects.",
     projects: featuredProjects,
-  },
-  capabilities: {
-    eyebrow: "Capabilities",
-    title: "Built to carry a brand across every surface that matters.",
-    items: [
-      {
-        title: "Brand",
-        description:
-          "Identity systems, creative direction, and visual worlds that feel distinct without trying too hard.",
-      },
-      {
-        title: "Digital",
-        description:
-          "Web experiences with clean hierarchy, strong pacing, and enough restraint to let the work speak first.",
-      },
-      {
-        title: "Visual storytelling",
-        description:
-          "Campaigns, photography, motion, and film built with the same standard of clarity and finish.",
-      },
-    ],
   },
   contactCta: {
     eyebrow: "Contact",

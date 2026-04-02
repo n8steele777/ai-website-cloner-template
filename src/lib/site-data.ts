@@ -56,7 +56,7 @@ export const offMenuResourceLinks: NavLink[] = [
 
 export const studioFinityAboutContent: StudioAboutContent = {
   hero:
-    "We shape brands and build visual work with the same level of precision. From identity systems to digital experiences, campaigns, and films, Studio Finity creates work with clear ideas, sharp execution, and a finish that holds weight.",
+    "We shape brands and build visual work with the same level of precision.\nFrom identity systems to digital experiences, campaigns, and films, Studio Finity creates work with clear ideas, sharp execution, and a finish that holds weight.",
   introLabel: "Intro",
   intro:
     "Studio Finity is a design studio working across brand, digital, and visual storytelling. We help brands look distinct, feel elevated, and communicate with clarity—whether the audience meets you on a website, in a campaign, or in a short-form cut.",

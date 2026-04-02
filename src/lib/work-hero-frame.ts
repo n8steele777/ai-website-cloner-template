@@ -1,6 +1,6 @@
 /**
  * Pixel geometry for {@link OffMenuWorkHero} — keep in sync with
- * `top-17 md:top-18`, `inset-x-4`, `bottom-4`, `rounded-3xl` (work index tiles).
+ * `top-20 md:top-21`, `inset-x-4`, `bottom-4`, `rounded-3xl` (work index tiles).
  */
 
 export const WORK_HERO_MD_MEDIA = "(min-width: 768px)";
@@ -68,8 +68,8 @@ export function getWorkHeroTargetRect(): WorkHeroTargetRect {
   const isMd = window.matchMedia(WORK_HERO_MD_MEDIA).matches;
   const insetX = 16;
   const bottomInset = 16;
-  // Match header (~60px) + small gap; Tailwind v4 spacing: 17→4.25rem, 18→4.5rem @ 16px root.
-  const topInset = isMd ? 72 : 68;
+  // Match header + breathing room under nav; spacing scale: 20→5rem, 21→5.25rem @ 16px root.
+  const topInset = isMd ? 84 : 80;
   const width = Math.round(document.documentElement.clientWidth - insetX * 2);
   const height = Math.round(window.innerHeight - topInset - bottomInset);
 

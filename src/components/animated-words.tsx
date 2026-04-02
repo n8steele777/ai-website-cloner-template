@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 type AnimatedWordsProps<T extends ElementType = "p"> = {
   as?: T;
-  /** Animate each newline-separated line as one unit (smoother for multi-word hero copy). */
+  /** Animate each newline-separated line as one unit (default). Set false for per-word stagger. */
   byLine?: boolean;
   className?: string;
   delay?: number;
@@ -27,7 +27,7 @@ const VIEWPORT_VISIBILITY = 0.96;
 
 export function AnimatedWords<T extends ElementType = "p">({
   as,
-  byLine = false,
+  byLine = true,
   className,
   delay = 0,
   duration = 1.02,
@@ -56,6 +56,8 @@ export function AnimatedWords<T extends ElementType = "p">({
   );
   const wordsByLine = useMemo(() => lines.map((line) => line.split(/\s+/).filter(Boolean)), [lines]);
   const totalWords = useMemo(() => wordsByLine.reduce((count, words) => count + words.length, 0), [wordsByLine]);
+  /** Per-word spans are only for per-word animation (`byLine={false}`) or highlighted tokens. */
+  const needsWordSpans = !byLine || highlightWords.length > 0;
 
   useLayoutEffect(() => {
     lineRefs.current = lineRefs.current.slice(0, lines.length);
@@ -104,6 +106,75 @@ export function AnimatedWords<T extends ElementType = "p">({
               return;
             }
 
+            if (triggerOnView) {
+              const observers: IntersectionObserver[] = [];
+              const animatedLineBlocks = new Set<number>();
+              const visibilityThreshold = threshold;
+
+              const revealLineBlock = (lineIndex: number) => {
+                const node = lineNodes[lineIndex];
+                if (cancelled || fontRaceDone || animatedLineBlocks.has(lineIndex) || !node) {
+                  return;
+                }
+
+                animatedLineBlocks.add(lineIndex);
+                gsap.fromTo(
+                  node,
+                  {
+                    autoAlpha: 0,
+                    force3D: true,
+                    immediateRender: false,
+                    yPercent: 38,
+                  },
+                  {
+                    autoAlpha: 1,
+                    delay,
+                    duration,
+                    ease: "power4.out",
+                    force3D: true,
+                    overwrite: "auto",
+                    yPercent: 0,
+                    onComplete: () => {
+                      gsap.set(node, { clearProps: "willChange" });
+                    },
+                  },
+                );
+              };
+
+              const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+
+              lineNodes.forEach((lineNode, lineIndex) => {
+                const rect = lineNode.getBoundingClientRect();
+                const initiallyVisible = rect.bottom > 0 && rect.top < viewportHeight * VIEWPORT_VISIBILITY;
+
+                if (initiallyVisible) {
+                  revealLineBlock(lineIndex);
+                }
+
+                const observer = new IntersectionObserver(
+                  (entries) => {
+                    entries.forEach((entry) => {
+                      if (entry.isIntersecting) {
+                        revealLineBlock(lineIndex);
+                        observer.unobserve(entry.target);
+                      }
+                    });
+                  },
+                  {
+                    rootMargin,
+                    threshold: visibilityThreshold,
+                  },
+                );
+
+                observer.observe(lineNode);
+                observers.push(observer);
+              });
+
+              return () => {
+                observers.forEach((observer) => observer.disconnect());
+              };
+            }
+
             lineTimeline = gsap.timeline({
               defaults: {
                 duration,
@@ -122,16 +193,23 @@ export function AnimatedWords<T extends ElementType = "p">({
               immediateRender: false,
               yPercent: 0,
             });
+
+            return undefined;
           };
 
+          let cleanupScroll: (() => void) | undefined;
+
           void fontsReadyPromise().then(() => {
-            window.requestAnimationFrame(initByLine);
+            window.requestAnimationFrame(() => {
+              cleanupScroll = initByLine();
+            });
           });
 
           return () => {
             fontRaceDone = true;
             lineTimeline?.kill();
             gsap.killTweensOf(lineNodes);
+            cleanupScroll?.();
           };
         });
       } else {
@@ -288,54 +366,70 @@ export function AnimatedWords<T extends ElementType = "p">({
     totalWords,
     triggerOnView,
     wordsByLine,
+    needsWordSpans,
   ]);
 
   return (
     <Component ref={rootRef} aria-label={lines.join(" ")} className={className}>
-      {wordsByLine.map((words, lineIndex) => {
-        const line = lines[lineIndex] ?? "";
+      {needsWordSpans
+        ? wordsByLine.map((words, lineIndex) => {
+            const line = lines[lineIndex] ?? "";
 
-        return (
-          <span
-            key={`${line}-${lineIndex}`}
-            aria-hidden="true"
-            ref={(node) => {
-              if (node) {
-                lineRefs.current[lineIndex] = node;
-              }
-            }}
-            className={cn("block", lineClassName)}
-          >
-            {words.map((word, wordIndex) => {
-              const flatWordIndex =
-                wordsByLine
-                  .slice(0, lineIndex)
-                  .reduce((count, currentWords) => count + currentWords.length, 0) + wordIndex;
+            return (
+              <span
+                key={`${line}-${lineIndex}`}
+                aria-hidden="true"
+                ref={(node) => {
+                  if (node) {
+                    lineRefs.current[lineIndex] = node;
+                  }
+                }}
+                className={cn("block", lineClassName)}
+              >
+                {words.map((word, wordIndex) => {
+                  const flatWordIndex =
+                    wordsByLine
+                      .slice(0, lineIndex)
+                      .reduce((count, currentWords) => count + currentWords.length, 0) + wordIndex;
 
-              return (
-                <span
-                  key={`${word}-${lineIndex}-${wordIndex}`}
-                  className={cn("animated-word-wrap", wordIndex < words.length - 1 && "mr-[0.22em]")}
-                >
-                  <span
-                    ref={(node) => {
-                      if (node) {
-                        wordRefs.current[flatWordIndex] = node;
-                      }
-                    }}
-                    className={cn(
-                      "animated-word inline-block",
-                      highlightWords.includes(word.replace(/[.,!?;:]+$/g, "")) ? highlightClassName : null,
-                    )}
-                  >
-                    {word}
-                  </span>
-                </span>
-              );
-            })}
-          </span>
-        );
-      })}
+                  return (
+                    <span
+                      key={`${word}-${lineIndex}-${wordIndex}`}
+                      className={cn("animated-word-wrap", wordIndex < words.length - 1 && "mr-[0.22em]")}
+                    >
+                      <span
+                        ref={(node) => {
+                          if (node) {
+                            wordRefs.current[flatWordIndex] = node;
+                          }
+                        }}
+                        className={cn(
+                          "animated-word inline-block",
+                          highlightWords.includes(word.replace(/[.,!?;:]+$/g, "")) ? highlightClassName : null,
+                        )}
+                      >
+                        {word}
+                      </span>
+                    </span>
+                  );
+                })}
+              </span>
+            );
+          })
+        : lines.map((line, lineIndex) => (
+            <span
+              key={`${line}-${lineIndex}`}
+              aria-hidden="true"
+              ref={(node) => {
+                if (node) {
+                  lineRefs.current[lineIndex] = node;
+                }
+              }}
+              className={cn("block", lineClassName)}
+            >
+              {line}
+            </span>
+          ))}
     </Component>
   );
 }

@@ -46,7 +46,7 @@ export function PageTransitionProvider({
   children: ReactNode;
 }) {
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const veilRef = useRef<HTMLDivElement>(null);
@@ -57,7 +57,7 @@ export function PageTransitionProvider({
 
   const canTransitionHref = useCallback(
     (href: string) => {
-      if (!href || !href.startsWith("/")) {
+      if (typeof href !== "string" || href.length === 0 || !href.startsWith("/")) {
         return false;
       }
 
@@ -269,6 +269,10 @@ export function shouldHandleTransitionClick(
   event: TransitionClickEvent,
   canTransitionHref: (href: string) => boolean,
 ) {
+  if (typeof href !== "string" || href.length === 0) {
+    return false;
+  }
+
   if (event.defaultPrevented) {
     return false;
   }

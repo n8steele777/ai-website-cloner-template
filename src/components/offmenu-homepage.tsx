@@ -159,7 +159,7 @@ export function OffMenuHomepage({
   }
 
   return (
-    <StudioFinityHeader activeHref="/work" links={navigationLinks} className="border-border/30">
+    <StudioFinityHeader activeHref="/work" links={navigationLinks}>
       <main className="min-h-screen bg-background pt-16 md:pt-17">
         <section
           ref={gridSectionRef}
@@ -178,7 +178,11 @@ export function OffMenuHomepage({
               return (
                 <li key={caseStudy.slug} data-work-card="" className="min-w-0">
                   <Link
-                    href={caseStudy.href}
+                    href={
+                      typeof caseStudy.href === "string" && caseStudy.href.length > 0
+                        ? caseStudy.href
+                        : "/"
+                    }
                     aria-label={`Open ${caseStudy.title}`}
                     className="group touch-manipulation outline-none block focus-visible:ring-2 focus-visible:ring-foreground/12 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     onMouseEnter={() => prefetchCaseStudy(caseStudy.href)}

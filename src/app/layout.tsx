@@ -3,6 +3,8 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import localFont from "next/font/local";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ReactGrabDev } from "@/components/react-grab-dev";
 import { ContactDialogProvider } from "@/components/contact-dialog-provider";
 import { CaseStudyTransitionProvider } from "@/components/case-study-transition-provider";
@@ -128,6 +130,8 @@ export default function RootLayout({
             </CaseStudyTransitionProvider>
           </SmoothScrollProvider>
         </ContactDialogProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

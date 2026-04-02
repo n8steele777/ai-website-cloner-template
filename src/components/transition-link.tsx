@@ -7,6 +7,26 @@ import {
   usePageTransition,
 } from "@/components/page-transition-provider";
 
+function linkHrefToString(href: LinkProps["href"]): string {
+  if (typeof href === "string") {
+    return href;
+  }
+  if (href && typeof href === "object") {
+    const o = href as {
+      pathname?: string;
+      search?: string;
+      hash?: string;
+    };
+    const pathname = typeof o.pathname === "string" ? o.pathname : "";
+    if (pathname.length > 0) {
+      const search = typeof o.search === "string" ? o.search : "";
+      const hash = typeof o.hash === "string" ? o.hash : "";
+      return `${pathname}${search}${hash}`;
+    }
+  }
+  return "/";
+}
+
 interface TransitionLinkProps extends LinkProps {
   children: ReactNode;
   className?: string;
@@ -27,12 +47,14 @@ export function TransitionLink({
   ...props
 }: TransitionLinkProps) {
   const { canTransitionHref, navigateWithTransition, prefetchHref } = usePageTransition();
-  const hrefString = typeof href === "string" ? href : href.toString();
+  /** Next.js Link calls path logic on `href`; null/undefined throws (e.g. `.startsWith`). */
+  const hrefForLink = href == null ? "/" : href;
+  const hrefString = linkHrefToString(hrefForLink);
 
   return (
     <Link
       {...props}
-      href={href}
+      href={hrefForLink}
       className={className}
       onClick={(event) => {
         onClick?.(event);

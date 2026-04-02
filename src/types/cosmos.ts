@@ -29,15 +29,13 @@ export interface CosmosPrinciple {
 
 export interface CosmosFeaturedProject {
   title: string;
+  slug: string;
   href: string;
   category: string;
   summary: string;
   image: CosmosMediaItem;
-}
-
-export interface CosmosCapability {
-  title: string;
-  description: string;
+  /** Larger URL for case-study open transition overlay (matches `/work` grid). */
+  imageXl?: string;
 }
 
 export interface CosmosFilterChip {
@@ -65,9 +63,6 @@ export interface CosmosHomepageData {
   };
   featuredWork: CosmosFeatureSection & {
     projects: CosmosFeaturedProject[];
-  };
-  capabilities: CosmosFeatureSection & {
-    items: CosmosCapability[];
   };
   contactCta: {
     eyebrow?: string;

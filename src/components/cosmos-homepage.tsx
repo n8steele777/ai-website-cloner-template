@@ -1,11 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import gsap from "gsap";
 import { AnimatedWords } from "@/components/animated-words";
-import { useContactDialog } from "@/components/contact-dialog-provider";
+import { useCaseStudyTransition } from "@/components/case-study-transition-provider";
+import { StudioFinityFullPageFooter } from "@/components/studio-finity-full-page-footer";
 import { StudioFinityHeader } from "@/components/studio-finity-header";
-import { TransitionLink } from "@/components/transition-link";
 import {
   WORK_INDEX_GRID_GAP_CLASSNAME,
   WORK_INDEX_GRID_IMAGE_SIZES,
@@ -13,11 +14,10 @@ import {
   WorkIndexTileMedia,
 } from "@/components/work-index-tile";
 import { fontsReadyPromise, GSAP_MOTION } from "@/lib/gsap-motion";
+import { getWorkIndexCardBorderRadiusPx } from "@/lib/work-hero-frame";
 import { offMenuHeroWords } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import type {
-  CosmosButton,
-  CosmosCapability,
   CosmosFeatureSection,
   CosmosHomepageData,
   CosmosMediaItem,
@@ -213,6 +213,17 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
   const [heroViewportHeight, setHeroViewportHeight] = useState(900);
   const [heroViewportWidth, setHeroViewportWidth] = useState(1440);
   const [activePrincipleIndex, setActivePrincipleIndex] = useState(0);
+  const featuredThumbRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const featuredOpeningRef = useRef(false);
+  const { prefetchCaseStudy, startCaseStudyTransition, state: caseStudyTransitionState } =
+    useCaseStudyTransition();
+
+  useLayoutEffect(() => {
+    if (caseStudyTransitionState.isTransitioning) {
+      return;
+    }
+    featuredOpeningRef.current = false;
+  }, [caseStudyTransitionState.isTransitioning]);
 
   useEffect(() => {
     const onResize = () => {
@@ -251,6 +262,44 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
   );
   const activePrinciple =
     data.principles.items[activePrincipleIndex] ?? data.principles.items[0] ?? null;
+  const featuredProjects = data.featuredWork.projects;
+
+  function openFeaturedWork(index: number) {
+    const project = featuredProjects[index];
+    const thumb = featuredThumbRefs.current[index];
+
+    if (
+      !thumb ||
+      !project ||
+      featuredOpeningRef.current ||
+      caseStudyTransitionState.isTransitioning
+    ) {
+      return;
+    }
+
+    const bounds = thumb.getBoundingClientRect();
+    const cornerPx = getWorkIndexCardBorderRadiusPx();
+
+    featuredOpeningRef.current = true;
+    gsap.set(thumb, { opacity: 0 });
+    void thumb.offsetHeight;
+
+    startCaseStudyTransition({
+      element: thumb,
+      slug: project.slug,
+      href: project.href,
+      sourceBounds: {
+        height: bounds.height,
+        left: bounds.left,
+        top: bounds.top,
+        width: bounds.width,
+      },
+      thumbnail: project.image.src,
+      thumbnailXl: project.imageXl,
+      sourceBorderRadiusPx: cornerPx,
+      sourceRadius: `${cornerPx}px`,
+    });
+  }
 
   return (
     <main className="min-h-screen bg-(--sf-bg) text-(--sf-text)">
@@ -368,69 +417,53 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
               <SectionHeading section={data.featuredWork} titleClassName="max-w-[7ch]" />
 
               <div className={cn("grid grid-cols-3", WORK_INDEX_GRID_GAP_CLASSNAME)}>
-                {data.featuredWork.projects.map((project) => (
-                  <TransitionLink
-                    key={project.href}
-                    href={project.href}
-                    aria-label={`Open ${project.title}`}
-                    className="group block touch-manipulation outline-none focus-visible:ring-2 focus-visible:ring-foreground/12 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  >
-                    <WorkIndexTileContent
-                      imageSrc={project.image.src}
-                      imageAlt={project.image.alt}
-                      density="workGrid"
-                      lqip={project.image.lqip}
-                      title={project.title}
-                      titleAs="h3"
-                      quality={95}
-                      sizes={WORK_INDEX_GRID_IMAGE_SIZES}
-                    />
-                  </TransitionLink>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+                {featuredProjects.map((project, index) => {
+                  const imageSrc = project.imageXl ?? project.image.src;
 
-        <section className="sf-home-section">
-          <div className="sf-home-section-inner sf-home-divider">
-            <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-              <SectionHeading section={data.capabilities} titleClassName="max-w-[10ch]" />
-
-              <div className="grid gap-4 md:grid-cols-3">
-                {data.capabilities.items.map((item) => (
-                  <CapabilityCard key={item.title} item={item} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="sf-home-cta-section">
-          <div className="sf-home-section-inner sf-home-divider">
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-end lg:gap-16">
-              <div>
-                {data.contactCta.eyebrow ? (
-                  <p className="sf-eyebrow mb-4">{data.contactCta.eyebrow}</p>
-                ) : null}
-                <AnimatedWords
-                  as="h2"
-                  text={data.contactCta.title}
-                  className="sf-display-page sf-display-tight max-w-88 text-balance lg:max-w-[min(100%,32rem)]"
-                  lineClassName="leading-[0.84]"
-                  triggerOnView
-                />
-              </div>
-              <div className="flex flex-col gap-6 lg:pb-1">
-                <p className="sf-body-copy max-w-xl text-pretty">
-                  {data.contactCta.supportingText}
-                </p>
-                <ActionLink action={data.contactCta.button} className="w-fit" />
+                  return (
+                    <Link
+                      key={project.slug}
+                      href={typeof project.href === "string" && project.href.length > 0 ? project.href : "/"}
+                      aria-label={`Open ${project.title}`}
+                      className="group block touch-manipulation outline-none focus-visible:ring-2 focus-visible:ring-foreground/12 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      onMouseEnter={() => prefetchCaseStudy(project.href)}
+                      onFocus={() => prefetchCaseStudy(project.href)}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        openFeaturedWork(index);
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key !== "Enter" && event.key !== " ") {
+                          return;
+                        }
+                        event.preventDefault();
+                        openFeaturedWork(index);
+                      }}
+                    >
+                      <WorkIndexTileContent
+                        imageSrc={imageSrc}
+                        imageAlt={project.image.alt}
+                        density="workGrid"
+                        lqip={project.image.lqip}
+                        title={project.title}
+                        titleAs="h3"
+                        priority={index < 9}
+                        quality={95}
+                        sizes={WORK_INDEX_GRID_IMAGE_SIZES}
+                        thumbRef={(element) => {
+                          featuredThumbRefs.current[index] = element;
+                        }}
+                      />
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>
         </section>
         </div>
+
+        <StudioFinityFullPageFooter />
       </StudioFinityHeader>
     </main>
   );
@@ -1114,64 +1147,5 @@ function BrandIntroShowcase({ media }: { media: CosmosMediaItem[] }) {
         ))}
       </div>
     </div>
-  );
-}
-
-function CapabilityCard({ item }: { item: CosmosCapability }) {
-  return (
-    <div className="sf-soft-card min-h-56 p-5 md:p-6">
-      <p className="sf-title-md">
-        {item.title}
-      </p>
-      <p className="sf-body-copy mt-4 max-w-[20rem]">
-        {item.description}
-      </p>
-    </div>
-  );
-}
-
-function ActionLink({
-  action,
-  className,
-}: {
-  action: CosmosButton;
-  className?: string;
-}) {
-  const { openContact } = useContactDialog();
-  const sharedClassName = cn(
-    "sf-interactive sf-pill-button items-center gap-2",
-    action.variant === "primary"
-      ? "sf-pill-button-primary"
-      : action.variant === "ghost"
-        ? "sf-inline-link px-2 py-2"
-        : "sf-pill-button-secondary",
-    className,
-  );
-
-  if (action.opensContactForm) {
-    return (
-      <button type="button" className={sharedClassName} onClick={() => openContact()}>
-        {action.label}
-      </button>
-    );
-  }
-
-  if (action.external || action.href.startsWith("mailto:")) {
-    return (
-      <a
-        href={action.href}
-        target={action.href.startsWith("http") ? "_blank" : undefined}
-        rel={action.href.startsWith("http") ? "noreferrer" : undefined}
-        className={sharedClassName}
-      >
-        {action.label}
-      </a>
-    );
-  }
-
-  return (
-    <TransitionLink href={action.href} className={sharedClassName}>
-      {action.label}
-    </TransitionLink>
   );
 }

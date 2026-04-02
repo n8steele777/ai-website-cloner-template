@@ -115,7 +115,7 @@ export function OffMenuWorkHero({
 
   return (
     <section className="relative min-h-screen">
-      <div className="absolute inset-x-4 bottom-4 top-17 overflow-hidden rounded-3xl md:inset-x-4 md:bottom-4 md:top-18">
+      <div className="absolute inset-x-4 bottom-4 top-20 overflow-hidden rounded-3xl md:inset-x-4 md:bottom-4 md:top-21">
         {heroLqip ? (
           <div
             aria-hidden
