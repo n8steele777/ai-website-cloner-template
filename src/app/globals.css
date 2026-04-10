@@ -144,8 +144,8 @@
   --sf-text-subtle: rgba(17, 17, 17, 0.66);
   /* Large display / accents only — lighter than --sf-text-muted */
   --sf-text-quiet: rgba(17, 17, 17, 0.52);
-  /* Ground rules: keep idle rows lighter than body copy so hover/focus has a clearer contrast step. */
-  --sf-ground-rules-idle: rgba(17, 17, 17, 0.56);
+  /* Ground rules: keep idle rows notably lighter so hover/focus reads with a stronger contrast step. */
+  --sf-ground-rules-idle: rgba(17, 17, 17, 0.24);
   --sf-border: rgba(17, 17, 17, 0.1);
   --sf-border-strong: rgba(17, 17, 17, 0.14);
   --sf-inverse-bg: #111111;

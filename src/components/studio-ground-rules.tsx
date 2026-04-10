@@ -349,7 +349,7 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
         <div
           ref={cardRef}
           className={cn(
-            "pointer-events-none absolute left-0 top-0 z-10 block w-max max-w-[min(100%,18rem)] transition-opacity duration-280 ease-sf-out lg:max-w-none",
+            "pointer-events-none absolute left-0 top-0 z-[230] block w-max max-w-[min(100%,18rem)] transition-opacity duration-280 ease-sf-out lg:max-w-none",
             activeRule?.reference
               ? "opacity-100"
               : "opacity-0",
