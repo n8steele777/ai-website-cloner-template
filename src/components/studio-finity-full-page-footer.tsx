@@ -68,7 +68,7 @@ export function StudioFinityFullPageFooter() {
               <AnimatedWords
                 as="span"
                 text="Get in touch."
-                className={footerDisplayClassName}
+                className={cn(footerDisplayClassName, "text-(--sf-text-quiet)")}
                 delay={FOOTER_LINE_REVEAL.stagger * 4}
                 duration={FOOTER_LINE_REVEAL.duration}
                 revealGroupOnView

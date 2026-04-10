@@ -48,7 +48,7 @@ export function WorkIndexTileMedia({
   return (
     <div
       className={cn(
-        "work-card-elevated relative overflow-hidden rounded-3xl bg-background",
+        "work-card-elevated relative overflow-hidden rounded-3xl",
         className,
       )}
     >

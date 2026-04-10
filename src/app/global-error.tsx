@@ -16,7 +16,7 @@ export default function GlobalError({
   }, [error]);
 
   const ctaClassName =
-    "sf-caption mt-2 inline-flex w-fit min-h-11 items-center justify-center rounded-full border border-border bg-background px-6 py-3 outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80";
+    "sf-button-label sf-button-shell mt-2 w-fit border border-border bg-background outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80";
 
   return (
     <html lang="en">

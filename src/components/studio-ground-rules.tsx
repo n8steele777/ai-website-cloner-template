@@ -20,6 +20,7 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
   const targetPositionRef = useRef({ x: 0, y: 0 });
   const pointerPositionRef = useRef({ x: 0, y: 0, hasValue: false });
   const activeRuleIdRef = useRef<string | null>(null);
+  const hasVisibleCardRef = useRef(false);
 
   const activeRule = rules.find((rule) => rule.id === activeRuleId) ?? null;
 
@@ -113,18 +114,22 @@ export function StudioGroundRules({ rules }: StudioGroundRulesProps) {
     };
   }, []);
 
-  useEffect(() => {
-    if (!activeRule?.reference || !pointerPositionRef.current.hasValue) {
+  useLayoutEffect(() => {
+    const isCardVisible = Boolean(activeRule?.reference);
+
+    if (!isCardVisible || !pointerPositionRef.current.hasValue) {
+      hasVisibleCardRef.current = isCardVisible;
       return;
     }
 
-    const frameId = window.requestAnimationFrame(() => {
-      updateCardTarget(pointerPositionRef.current.x, pointerPositionRef.current.y);
-    });
+    updateCardTarget(pointerPositionRef.current.x, pointerPositionRef.current.y);
 
-    return () => {
-      window.cancelAnimationFrame(frameId);
-    };
+    if (!hasVisibleCardRef.current && cardRef.current) {
+      currentPositionRef.current = { ...targetPositionRef.current };
+      cardRef.current.style.transform = `translate3d(${targetPositionRef.current.x}px, ${targetPositionRef.current.y}px, 0)`;
+    }
+
+    hasVisibleCardRef.current = true;
   }, [activeRule?.id, activeRule?.reference]);
 
   useEffect(() => {

@@ -353,7 +353,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
           <section
             className={cn(
               "sf-page-pad",
-              "py-28 md:py-36 lg:py-44",
+              "pb-28 pt-44 md:pb-36 md:pt-56 lg:pb-44 lg:pt-64",
             )}
             aria-label="Studio Finity"
           >
@@ -362,8 +362,8 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                 <AnimatedWords
                   as="div"
                   text={introLineRevealText}
-                  className="sf-body-copy text-balance text-(--sf-text)/88"
-                  lineClassName="leading-[1.45]"
+                  className="sf-body-large max-w-[56rem] text-balance text-(--sf-text)/88 md:text-[clamp(1.2rem,1.85vw,1.55rem)]"
+                  lineClassName="leading-[1.34] md:leading-[1.38]"
                   delay={HOMEPAGE_LINE_REVEAL.delay}
                   duration={HOMEPAGE_LINE_REVEAL.duration}
                   revealGroupOnView
@@ -374,8 +374,8 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                 <AnimatedWords
                   as="p"
                   text={data.studioAbout.location}
-                  className="sf-body-copy mt-6 text-balance text-muted-foreground md:mt-8"
-                  lineClassName="leading-[1.45]"
+                  className="sf-body-large mt-8 text-balance text-muted-foreground md:mt-10 md:text-[clamp(1.15rem,1.6vw,1.35rem)]"
+                  lineClassName="leading-[1.34] md:leading-[1.38]"
                   delay={locationLineRevealDelay}
                   duration={HOMEPAGE_LINE_REVEAL.duration}
                   revealGroupOnView
@@ -383,12 +383,6 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                   stagger={HOMEPAGE_LINE_REVEAL.stagger}
                   triggerOnView
                 />
-                <Link
-                  href={data.studioAbout.aboutHref}
-                  className="sf-caption mt-10 inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-background px-6 py-3 font-semibold outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80 md:mt-12"
-                >
-                  About
-                </Link>
               </div>
             </div>
           </section>
@@ -452,7 +446,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                 <SectionHeading section={data.featuredWork} titleClassName="max-w-[7ch]" />
                 <Link
                   href="/work"
-                  className="sf-caption mt-10 inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-background px-6 py-3 font-semibold outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80 md:mt-12"
+                  className="sf-button-label sf-button-shell mt-10 border border-border bg-background outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80 md:mt-12"
                 >
                   View all
                 </Link>
@@ -467,7 +461,7 @@ export function CosmosHomepage({ data }: CosmosHomepageProps) {
                       key={project.slug}
                       href={typeof project.href === "string" && project.href.length > 0 ? project.href : "/"}
                       aria-label={`Open ${project.title}`}
-                      className="group block touch-manipulation outline-none focus-visible:ring-2 focus-visible:ring-foreground/12 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      className="group block touch-manipulation outline-none sf-no-tap-highlight focus-visible:ring-2 focus-visible:ring-foreground/12 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                       onMouseEnter={() => prefetchCaseStudy(project.href)}
                       onFocus={() => prefetchCaseStudy(project.href)}
                       onClick={(event) => {
@@ -1094,10 +1088,10 @@ function CosmosFilmHandoff({
   const shadowOpacity = mapRange(progress, 0.14, 0.58, 0.08, 0.18);
 
   return (
-    <section className="relative">
+    <section className="relative z-30">
       <div className="relative h-[130dvh] -translate-y-24">
         <div
-          className="pointer-events-none sticky flex w-full flex-col"
+          className="pointer-events-none sticky z-30 flex w-full flex-col"
           style={{
             marginBottom: `-${bottomOffset}px`,
             top: `${topOffset}px`,
@@ -1106,14 +1100,20 @@ function CosmosFilmHandoff({
         >
           <div className="flex w-full flex-1 items-center justify-center px-2 sm:px-4">
             <div
-              className="group/film pointer-events-auto cursor-pointer overflow-hidden rounded-xl bg-background/30"
+              className="group/film pointer-events-auto relative isolate cursor-pointer"
               style={{
-                boxShadow: `0 28px 80px rgba(17, 17, 17, ${shadowOpacity})`,
                 height: `${videoHeight}px`,
                 width: `${videoWidth}px`,
               }}
             >
-              <div className="relative flex size-full items-center justify-center">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-xl"
+                style={{
+                  boxShadow: `0 28px 80px rgba(17, 17, 17, ${shadowOpacity})`,
+                }}
+              />
+              <div className="relative flex size-full items-center justify-center overflow-hidden rounded-xl bg-background/30">
                 <video
                   src={video.src}
                   poster={video.posterSrc}

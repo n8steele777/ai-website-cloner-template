@@ -33,7 +33,7 @@ export default function ErrorPage({
         <div className="flex flex-wrap gap-3 sm:gap-4">
           <Link
             href="/"
-            className="sf-caption inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-background px-6 py-3 outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80"
+            className="sf-button-label sf-button-shell border border-border bg-background outline-none transition-[opacity,background-color] duration-280 ease-sf-out hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-foreground/18 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:opacity-80"
           >
             Home
           </Link>

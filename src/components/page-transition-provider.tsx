@@ -245,7 +245,7 @@ export function PageTransitionProvider({
       {children}
       <div
         ref={overlayRef}
-        className="pointer-events-none fixed inset-0 z-500 opacity-0"
+        className="pointer-events-none fixed inset-0 z-[210] opacity-0"
         aria-hidden="true"
       >
         <div

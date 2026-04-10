@@ -95,6 +95,7 @@
   --sf-weight-body: 450;
   --sf-weight-strong: 500;
   --sf-weight-ui: 500;
+  --sf-weight-button: 650;
   --sf-weight-display: 500;
   --background: #fcfcfd;
   --foreground: #111111;
@@ -143,8 +144,8 @@
   --sf-text-subtle: rgba(17, 17, 17, 0.66);
   /* Large display / accents only — lighter than --sf-text-muted */
   --sf-text-quiet: rgba(17, 17, 17, 0.52);
-  /* Ground rules: idle rows only; full `--sf-text` on hover/focus. Use subtle body token so list type passes WCAG contrast in axe/CI. */
-  --sf-ground-rules-idle: var(--sf-text-subtle);
+  /* Ground rules: keep idle rows lighter than body copy so hover/focus has a clearer contrast step. */
+  --sf-ground-rules-idle: rgba(17, 17, 17, 0.56);
   --sf-border: rgba(17, 17, 17, 0.1);
   --sf-border-strong: rgba(17, 17, 17, 0.14);
   --sf-inverse-bg: #111111;
@@ -275,8 +276,8 @@ html.lenis {
 
 .sf-oh-nav-link {
   font-family: var(--font-oh-nav);
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.98rem;
+  font-weight: var(--sf-weight-button);
   letter-spacing: var(--sf-tracking-body);
   line-height: 1;
 }
@@ -318,6 +319,24 @@ html.lenis {
   font-weight: var(--sf-weight-strong);
   letter-spacing: var(--sf-tracking-body);
   line-height: 1.3;
+}
+
+.sf-button-label {
+  font-size: 0.98rem;
+  font-weight: var(--sf-weight-button);
+  letter-spacing: var(--sf-tracking-body);
+  line-height: 1;
+}
+
+.sf-button-shell {
+  display: inline-flex;
+  min-height: 3.25rem;
+  min-width: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 1rem 1.75rem;
+  white-space: nowrap;
 }
 
 .sf-copy-soft {
@@ -637,30 +656,34 @@ html.lenis {
   box-shadow: 0 0 0 4px var(--sf-focus-ring);
 }
 
+.sf-no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .sf-pill-button {
   display: inline-flex;
-  min-height: 48px;
-  min-width: 48px;
+  min-height: 3.25rem;
+  min-width: 3.25rem;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  padding: 0.875rem 1.25rem;
-  font-size: 0.92rem;
-  font-weight: 600;
+  padding: 1rem 1.75rem;
+  font-size: 0.98rem;
+  font-weight: var(--sf-weight-button);
   letter-spacing: var(--sf-tracking-body);
   line-height: 1;
   white-space: nowrap;
 }
 
-/* Header: between default `Button` (h-8) and full `.sf-pill-button` (48px) for tap targets + balance */
+/* Header: keep nav pills slightly smaller than full CTAs while matching the taller overall button system. */
 .sf-pill-button.sf-pill-button-compact {
-  min-height: 2.5rem;
-  height: 2.5rem;
+  min-height: 2.75rem;
+  height: 2.75rem;
   min-width: 0;
-  padding-inline: 0.875rem;
+  padding-inline: 1rem;
   padding-block: 0;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.92rem;
+  font-weight: var(--sf-weight-button);
 }
 
 .sf-pill-button-primary {

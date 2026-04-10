@@ -186,7 +186,7 @@ export function OffMenuHomepage({
                         : "/"
                     }
                     aria-label={`Open ${caseStudy.title}`}
-                    className="group touch-manipulation outline-none block focus-visible:ring-2 focus-visible:ring-foreground/12 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    className="group block touch-manipulation outline-none sf-no-tap-highlight focus-visible:ring-2 focus-visible:ring-foreground/12 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     onMouseEnter={() => prefetchCaseStudy(caseStudy.href)}
                     onFocus={() => prefetchCaseStudy(caseStudy.href)}
                     onClick={(event) => {
